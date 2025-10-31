@@ -11,8 +11,8 @@ NavMeshProjectSettings:
     cost: 1
   - name: Jump
     cost: 2
-  - name: Exit
-    cost: 10
+  - name: Street
+    cost: 2
   - name: CenterLine
     cost: 5
   - name: 
