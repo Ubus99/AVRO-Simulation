@@ -77,7 +77,7 @@ namespace Gameplay
             var cam = carAI.povCamera;
             cam.targetDisplay = (int)Screens.Closeup;
 
-            overviewManager.AddCamera(carAI.topDownCamera);
+            overviewManager.RegisterVehicle(carAI);
         }
 
         enum Screens

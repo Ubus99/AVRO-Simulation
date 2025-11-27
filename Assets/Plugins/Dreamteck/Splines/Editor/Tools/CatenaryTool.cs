@@ -1,19 +1,17 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using System.IO;
+using UnityEngine;
 
 namespace Dreamteck.Splines
 {
     public class CatenaryTool : SplineTool
     {
+        readonly Dictionary<SplineComputer, SplinePoint[]> _editSplines = new();
+        float _maxSagDistance = 10f;
+        float _minSagDistance;
+        float _sag;
         protected GameObject obj;
         protected ObjectController spawner;
-        private float _sag = 0f;
-        private float _minSagDistance = 0f;
-        private float _maxSagDistance = 10f;
-        private Dictionary<SplineComputer, SplinePoint[]> _editSplines = new Dictionary<SplineComputer, SplinePoint[]>();
 
         public override string GetName()
         {
@@ -44,13 +42,14 @@ namespace Dreamteck.Splines
         public override void Draw(Rect windowRect)
         {
             base.Draw(windowRect);
-            if(_editSplines.Keys.Count == 0 && splines.Count > 0)
+            if (_editSplines.Keys.Count == 0 && splines.Count > 0)
             {
-                if(GUILayout.Button("Convert Selected"))
+                if (GUILayout.Button("Convert Selected"))
                 {
                     ConvertSelected();
                 }
-            } else
+            }
+            else
             {
                 EditorGUI.BeginChangeCheck();
                 _sag = EditorGUILayout.FloatField("Sag", _sag);
@@ -63,14 +62,14 @@ namespace Dreamteck.Splines
                     SceneView.RepaintAll();
                     foreach (var key in keys)
                     {
-                        for (int i = 0; i < key.pointCount; i++)
+                        for (var i = 0; i < key.pointCount; i++)
                         {
                             ModifyPoint(key, i);
                         }
                         key.SetPoints(_editSplines[key]);
                     }
                 }
-                
+
                 if (GUILayout.Button("Apply"))
                 {
                     foreach (var key in keys)
@@ -82,34 +81,34 @@ namespace Dreamteck.Splines
             }
         }
 
-        private void ModifyPoint(SplineComputer spline, int index)
+        void ModifyPoint(SplineComputer spline, int index)
         {
             var current = _editSplines[spline][index];
-            if(index > 0)
+            if (index > 0)
             {
                 var previous = _editSplines[spline][index - 1];
-                Vector3 prevDirection = (previous.position - current.position)/3f;
-                float sagAmount = Mathf.InverseLerp(_minSagDistance, _maxSagDistance, prevDirection.magnitude) * _sag;
+                var prevDirection = (previous.position - current.position) / 3f;
+                var sagAmount = Mathf.InverseLerp(_minSagDistance, _maxSagDistance, prevDirection.magnitude) * _sag;
                 current.SetTangentPosition(current.position + prevDirection + Vector3.down * sagAmount);
             }
 
-            if(index < _editSplines[spline].Length - 1)
+            if (index < _editSplines[spline].Length - 1)
             {
                 var next = _editSplines[spline][index + 1];
-                Vector3 nextDirection = (next.position - current.position) / 3f;
-                float sagAmount = Mathf.InverseLerp(_minSagDistance, _maxSagDistance, nextDirection.magnitude) * _sag;
+                var nextDirection = (next.position - current.position) / 3f;
+                var sagAmount = Mathf.InverseLerp(_minSagDistance, _maxSagDistance, nextDirection.magnitude) * _sag;
                 current.SetTangent2Position(current.position + nextDirection + Vector3.down * sagAmount);
             }
             _editSplines[spline][index] = current;
         }
 
-        private void ConvertSelected()
+        void ConvertSelected()
         {
             _editSplines.Clear();
-            foreach(var spline in splines)
+            foreach (var spline in splines)
             {
                 var points = spline.GetPoints();
-                for (int i = 0; i < points.Length; i++)
+                for (var i = 0; i < points.Length; i++)
                 {
                     points[i].type = SplinePoint.Type.Broken;
                 }

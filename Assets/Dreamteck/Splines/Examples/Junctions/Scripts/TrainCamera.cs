@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TrainCamera : MonoBehaviour
 {
@@ -9,15 +7,15 @@ public class TrainCamera : MonoBehaviour
     public float speed = 1f;
     Transform trs;
 
-    private void Awake()
+    void Awake()
     {
         trs = transform;
     }
 
     void LateUpdate()
     {
-        Vector3 targetPos = target.position + target.right * offset.x + target.up * offset.y + target.forward * offset.z;
-        Quaternion rotation = Quaternion.LookRotation(targetPos - trs.position);
+        var targetPos = target.position + target.right * offset.x + target.up * offset.y + target.forward * offset.z;
+        var rotation = Quaternion.LookRotation(targetPos - trs.position);
         trs.rotation = Quaternion.Slerp(trs.rotation, rotation, Time.deltaTime * speed);
     }
 }

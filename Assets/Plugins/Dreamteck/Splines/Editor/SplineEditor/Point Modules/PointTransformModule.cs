@@ -1,23 +1,27 @@
+using UnityEngine;
+
 namespace Dreamteck.Splines.Editor
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-
     public class PointTransformModule : PointModule
     {
-        public enum EditSpace { World, Transform, Spline }
+        public enum EditSpace
+        {
+            World,
+            Transform,
+            Spline
+        }
+
+        bool _unapplied = true;
         public EditSpace editSpace = EditSpace.World;
-        public Vector3 scale = Vector3.one, offset = Vector3.zero;
-        protected Quaternion rotation = Quaternion.identity;
-        protected Vector3 origin = Vector3.zero;
-        protected SplinePoint[] originalPoints = new SplinePoint[0];
+        SplineSample evalResult;
+        Matrix4x4 inverseMatrix;
         protected SplinePoint[] localPoints = new SplinePoint[0];
 
-        private Matrix4x4 matrix = new Matrix4x4();
-        private Matrix4x4 inverseMatrix = new Matrix4x4();
-        private bool _unapplied = true;
-        SplineSample evalResult = new SplineSample();
+        Matrix4x4 matrix;
+        protected Vector3 origin = Vector3.zero;
+        protected SplinePoint[] originalPoints = new SplinePoint[0];
+        protected Quaternion rotation = Quaternion.identity;
+        public Vector3 scale = Vector3.one, offset = Vector3.zero;
 
         public PointTransformModule(SplineEditor editor) : base(editor)
         {
@@ -33,7 +37,7 @@ namespace Dreamteck.Splines.Editor
             matrix.SetTRS(origin, rotation, Vector3.one);
             inverseMatrix = matrix.inverse;
             localPoints = editor.GetPointsArray();
-            for (int i = 0; i < localPoints.Length; i++) InverseTransformPoint(ref localPoints[i]);
+            for (var i = 0; i < localPoints.Length; i++) InverseTransformPoint(ref localPoints[i]);
         }
 
         protected void GetRotation()
@@ -53,7 +57,10 @@ namespace Dreamteck.Splines.Editor
                         editor.evaluate((double)selectedPoints[0] / (points.Length - 1), ref evalResult);
                         rotation = evalResult.rotation;
                     }
-                    else rotation = Quaternion.identity;
+                    else
+                    {
+                        rotation = Quaternion.identity;
+                    }
                     break;
             }
         }
@@ -107,7 +114,7 @@ namespace Dreamteck.Splines.Editor
             _unapplied = false;
         }
 
-        private void CacheOriginalPoints()
+        void CacheOriginalPoints()
         {
             originalPoints = editor.GetPointsArray();
         }
@@ -137,7 +144,8 @@ namespace Dreamteck.Splines.Editor
             return inverseMatrix.MultiplyVector(direction);
         }
 
-        protected void TransformPoint(ref SplinePoint point, bool normals = true, bool tangents = true, bool size = false)
+        protected void TransformPoint(ref SplinePoint point, bool normals = true, bool tangents = true,
+            bool size = false)
         {
             if (tangents)
             {
@@ -149,27 +157,32 @@ namespace Dreamteck.Splines.Editor
             {
                 point.SetPosition(TransformPosition(point.position));
             }
-            if(normals) point.normal = TransformDirection(point.normal).normalized;
+            if (normals) point.normal = TransformDirection(point.normal).normalized;
             if (size)
             {
-                float avg = (scale.x + scale.y + scale.z) / 3f;
+                var avg = (scale.x + scale.y + scale.z) / 3f;
                 point.size *= avg;
             }
         }
 
-        protected void InverseTransformPoint(ref SplinePoint point, bool normals = true, bool tangents = true, bool size = false)
+        protected void InverseTransformPoint(ref SplinePoint point, bool normals = true, bool tangents = true,
+            bool size = false)
         {
             if (tangents)
             {
                 point.position = InverseTransformPosition(point.position);
                 point.tangent = InverseTransformPosition(point.tangent);
                 point.tangent2 = InverseTransformPosition(point.tangent2);
-            } else point.SetPosition(TransformPosition(point.position));
+            }
+            else
+            {
+                point.SetPosition(TransformPosition(point.position));
+            }
 
             if (normals) point.normal = InverseTransformDirection(point.normal).normalized;
             if (size)
             {
-                float avg = (scale.x + scale.y + scale.z) / 3f;
+                var avg = (scale.x + scale.y + scale.z) / 3f;
                 point.size /= avg;
             }
         }

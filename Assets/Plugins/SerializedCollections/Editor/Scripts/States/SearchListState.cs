@@ -1,35 +1,46 @@
-using AYellowpaper.SerializedCollections.Editor.Search;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using AYellowpaper.SerializedCollections.Editor.Search;
 using UnityEditor;
 using UnityEngine;
-using System.Linq;
-using System;
-using static AYellowpaper.SerializedCollections.Editor.SerializedDictionaryDrawer;
 
 namespace AYellowpaper.SerializedCollections.Editor.States
 {
     internal class SearchListState : ListState
     {
-        public override int ListSize => _searchResults.Count;
-        public override string NoElementsText => "No Results";
-        public bool OnlyShowMatchingValues { get; set; }
+        readonly List<SearchResultEntry> _searchResults = new();
+        HashSet<string> _foundProperties;
 
-        private string _lastSearch = string.Empty;
-        private List<SearchResultEntry> _searchResults = new List<SearchResultEntry>();
-        private HashSet<string> _foundProperties;
-        private Color _previousColor;
+        string _lastSearch = string.Empty;
+        Color _previousColor;
 
-        public SearchListState(SerializedDictionaryInstanceDrawer serializedDictionaryDrawer) : base(serializedDictionaryDrawer)
+        public SearchListState(SerializedDictionaryInstanceDrawer serializedDictionaryDrawer) : base(
+        serializedDictionaryDrawer)
         {
         }
+
+        public override int ListSize
+        {
+            get { return _searchResults.Count; }
+        }
+
+        public override string NoElementsText
+        {
+            get { return "No Results"; }
+        }
+
+        public bool OnlyShowMatchingValues { get; set; }
 
         public override void DrawElement(Rect rect, SerializedProperty property, DisplayType displayType)
         {
-            SerializedDictionaryInstanceDrawer.DrawElement(rect, property, displayType, BeforeDrawingProperty, AfterDrawingProperty);
+            SerializedDictionaryInstanceDrawer.DrawElement(rect,
+            property,
+            displayType,
+            BeforeDrawingProperty,
+            AfterDrawingProperty);
         }
 
-        private void BeforeDrawingProperty(SerializedProperty obj)
+        void BeforeDrawingProperty(SerializedProperty obj)
         {
             _previousColor = GUI.backgroundColor;
             if (_foundProperties.Contains(obj.propertyPath))
@@ -38,7 +49,7 @@ namespace AYellowpaper.SerializedCollections.Editor.States
             }
         }
 
-        private void AfterDrawingProperty(SerializedProperty obj)
+        void AfterDrawingProperty(SerializedProperty obj)
         {
             GUI.backgroundColor = _previousColor;
         }
@@ -63,7 +74,7 @@ namespace AYellowpaper.SerializedCollections.Editor.States
             return this;
         }
 
-        private void UpdateSearch()
+        void UpdateSearch()
         {
             if (_lastSearch != Drawer.SearchText)
             {
@@ -79,7 +90,8 @@ namespace AYellowpaper.SerializedCollections.Editor.States
             _searchResults.Clear();
             _searchResults.AddRange(query.ApplyToArrayProperty(Drawer.ListProperty));
 
-            _foundProperties = _searchResults.SelectMany(x => x.MatchingResults, (x, y) => y.Property.propertyPath).ToHashSet();
+            _foundProperties = _searchResults.SelectMany(x => x.MatchingResults, (x, y) => y.Property.propertyPath)
+                .ToHashSet();
         }
 
         public override SerializedProperty GetPropertyAtIndex(int index)

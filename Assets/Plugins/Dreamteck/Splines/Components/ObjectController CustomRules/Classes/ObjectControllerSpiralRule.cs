@@ -1,17 +1,27 @@
+using UnityEngine;
+
 namespace Dreamteck.Splines
 {
-    using UnityEngine;
-
     //Use the CreateAssetMenu attribute to add the object to the Create Asset context menu
     //After that, go to Assets/Create/Dreamteck/Splines/... and create the scriptable object
     [CreateAssetMenu(menuName = "Dreamteck/Splines/Object Controller Rules/Spiral Rule")]
     public class ObjectControllerSpiralRule : ObjectControllerCustomRuleBase
     {
-        [SerializeField] private bool _useSplinePercent = false;
-        [SerializeField] private float _revolve = 360f;
-        [SerializeField] private Vector2 _startSize = Vector2.one;
-        [SerializeField] private Vector2 _endSize = Vector2.one;        
-        [SerializeField] [Range(0f, 1f)] private float _offset = 0f;
+        [SerializeField]
+        bool _useSplinePercent;
+
+        [SerializeField]
+        float _revolve = 360f;
+
+        [SerializeField]
+        Vector2 _startSize = Vector2.one;
+
+        [SerializeField]
+        Vector2 _endSize = Vector2.one;
+
+        [SerializeField]
+        [Range(0f, 1f)]
+        float _offset;
 
         public bool useSplinePercent
         {
@@ -40,13 +50,14 @@ namespace Dreamteck.Splines
         public float offset
         {
             get { return _offset; }
-            set { 
+            set
+            {
                 _offset = value;
-                if(_offset > 1)
+                if (_offset > 1)
                 {
                     _offset -= Mathf.FloorToInt(_offset);
                 }
-                if(_offset < 0)
+                if (_offset < 0)
                 {
                     _offset += Mathf.FloorToInt(-_offset);
                 }
@@ -58,8 +69,8 @@ namespace Dreamteck.Splines
 
         public override Vector3 GetOffset()
         {
-            Vector3 offset = Quaternion.AngleAxis(_revolve * GetPercent(), Vector3.forward) * Vector3.up;
-            Vector2 scale = Vector2.Lerp(_startSize, _endSize, GetPercent());
+            var offset = Quaternion.AngleAxis(_revolve * GetPercent(), Vector3.forward) * Vector3.up;
+            var scale = Vector2.Lerp(_startSize, _endSize, GetPercent());
             offset.x *= scale.x;
             offset.y *= scale.y;
             return offset;
@@ -70,9 +81,9 @@ namespace Dreamteck.Splines
             return currentSample.rotation * Quaternion.AngleAxis(_revolve * -GetPercent(), Vector3.forward);
         }
 
-        private float GetPercent()
+        float GetPercent()
         {
-            float percent = _useSplinePercent ? (float)currentSample.percent : currentObjectPercent + _offset;
+            var percent = _useSplinePercent ? (float)currentSample.percent : currentObjectPercent + _offset;
             if (percent > 1)
             {
                 percent -= Mathf.FloorToInt(percent);

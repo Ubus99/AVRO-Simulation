@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Dreamteck.Splines.Editor;
 using UnityEditor;
-using Dreamteck.Splines.Editor;
 
 namespace Dreamteck.Splines.Primitives
 {
@@ -22,7 +20,7 @@ namespace Dreamteck.Splines.Primitives
         protected override void OnGUI()
         {
             base.OnGUI();
-            RoundedRectangle rect = (RoundedRectangle)primitive;
+            var rect = (RoundedRectangle)primitive;
             rect.size = EditorGUILayout.Vector2Field("Size", rect.size);
             rect.xRadius = EditorGUILayout.FloatField("X Radius", rect.xRadius);
             rect.yRadius = EditorGUILayout.FloatField("Y Radius", rect.yRadius);

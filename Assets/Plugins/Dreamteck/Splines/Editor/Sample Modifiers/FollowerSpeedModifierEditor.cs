@@ -1,17 +1,16 @@
+using UnityEditor;
+using UnityEngine;
+
 namespace Dreamteck.Splines.Editor
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-
-    using UnityEditor;
-
     public class FollowerSpeedModifierEditor : SplineSampleModifierEditor
     {
+        readonly float addTime = 0f;
         public bool allowSelection = true;
-        private float addTime = 0f;
 
-        public FollowerSpeedModifierEditor(SplineUser user, SplineUserEditor editor) : base(user, editor, "_speedModifier")
+        public FollowerSpeedModifierEditor(SplineUser user, SplineUserEditor editor) : base(user,
+        editor,
+        "_speedModifier")
         {
             title = "Speed Modifiers";
         }
@@ -34,11 +33,11 @@ namespace Dreamteck.Splines.Editor
 
         protected override void KeyGUI(SerializedProperty key)
         {
-            SerializedProperty speed = key.FindPropertyRelative("speed");
-            SerializedProperty mode = key.FindPropertyRelative("mode");
+            var speed = key.FindPropertyRelative("speed");
+            var mode = key.FindPropertyRelative("mode");
             base.KeyGUI(key);
             EditorGUILayout.PropertyField(mode);
-            string text = (mode.intValue == (int)FollowerSpeedModifier.SpeedKey.Mode.Add ? "Add" : "Multiply") + " Speed";
+            var text = (mode.intValue == (int)FollowerSpeedModifier.SpeedKey.Mode.Add ? "Add" : "Multiply") + " Speed";
             EditorGUILayout.PropertyField(speed, new GUIContent(text));
         }
     }

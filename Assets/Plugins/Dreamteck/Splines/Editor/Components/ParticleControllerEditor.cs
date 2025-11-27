@@ -1,9 +1,8 @@
+using UnityEditor;
+using UnityEngine;
+
 namespace Dreamteck.Splines.Editor
 {
-    using UnityEngine;
-    using System.Collections;
-    using UnityEditor;
-
     [CustomEditor(typeof(ParticleController))]
     [CanEditMultipleObjects]
     public class ParticleControllerEditor : SplineUserEditor
@@ -11,22 +10,22 @@ namespace Dreamteck.Splines.Editor
         protected override void BodyGUI()
         {
             base.BodyGUI();
-            ParticleController user = (ParticleController)target;
+            var user = (ParticleController)target;
 
             serializedObject.Update();
-            SerializedProperty _particleSystem = serializedObject.FindProperty("_particleSystem");
+            var _particleSystem = serializedObject.FindProperty("_particleSystem");
 
-            SerializedProperty emitPoint = serializedObject.FindProperty("emitPoint");
-            SerializedProperty offset = serializedObject.FindProperty("offset");
-            SerializedProperty volumetric = serializedObject.FindProperty("volumetric");
-            SerializedProperty pauseWhenNotVisible = serializedObject.FindProperty("pauseWhenNotVisible");
-            SerializedProperty applyRotation = serializedObject.FindProperty("apply3DRotation");
-            SerializedProperty emitFromShell = serializedObject.FindProperty("emitFromShell");
-            SerializedProperty scale = serializedObject.FindProperty("scale");
-            SerializedProperty motionType = serializedObject.FindProperty("motionType");
-            SerializedProperty wrapMode = serializedObject.FindProperty("wrapMode");
-            SerializedProperty minCycles = serializedObject.FindProperty("minCycles");
-            SerializedProperty maxCycles = serializedObject.FindProperty("maxCycles");
+            var emitPoint = serializedObject.FindProperty("emitPoint");
+            var offset = serializedObject.FindProperty("offset");
+            var volumetric = serializedObject.FindProperty("volumetric");
+            var pauseWhenNotVisible = serializedObject.FindProperty("pauseWhenNotVisible");
+            var applyRotation = serializedObject.FindProperty("apply3DRotation");
+            var emitFromShell = serializedObject.FindProperty("emitFromShell");
+            var scale = serializedObject.FindProperty("scale");
+            var motionType = serializedObject.FindProperty("motionType");
+            var wrapMode = serializedObject.FindProperty("wrapMode");
+            var minCycles = serializedObject.FindProperty("minCycles");
+            var maxCycles = serializedObject.FindProperty("maxCycles");
 
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(_particleSystem, new GUIContent("Particle System"));
@@ -46,15 +45,18 @@ namespace Dreamteck.Splines.Editor
                 EditorGUILayout.PropertyField(scale);
             }
             EditorGUILayout.PropertyField(motionType);
-            if(motionType.intValue == (int)ParticleController.MotionType.FollowForward || motionType.intValue == (int)ParticleController.MotionType.FollowBackward)
+            if (motionType.intValue == (int)ParticleController.MotionType.FollowForward ||
+                motionType.intValue == (int)ParticleController.MotionType.FollowBackward)
             {
                 EditorGUILayout.PropertyField(wrapMode);
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField("Path cycles (over " + user.particleSystemComponent.main.startLifetime.constantMax + "s.)", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(
+                "Path cycles (over " + user.particleSystemComponent.main.startLifetime.constantMax + "s.)",
+                EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(minCycles, new GUIContent("Min. Cycles"));
                 if (minCycles.floatValue < 0f) minCycles.floatValue = 0f;
                 EditorGUILayout.PropertyField(maxCycles, new GUIContent("Max. Cycles"));
-                if (maxCycles.floatValue < minCycles.floatValue) maxCycles.floatValue = minCycles.floatValue; 
+                if (maxCycles.floatValue < minCycles.floatValue) maxCycles.floatValue = minCycles.floatValue;
             }
 
             if (EditorGUI.EndChangeCheck())
@@ -64,7 +66,9 @@ namespace Dreamteck.Splines.Editor
 
             if (!Application.isPlaying)
             {
-                EditorGUILayout.HelpBox("Particles may not work in the editor preview. Play the game to see the in-game result.", MessageType.Info);
+                EditorGUILayout.HelpBox(
+                "Particles may not work in the editor preview. Play the game to see the in-game result.",
+                MessageType.Info);
             }
 
         }

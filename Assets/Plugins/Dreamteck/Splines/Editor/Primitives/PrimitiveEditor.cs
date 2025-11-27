@@ -1,19 +1,20 @@
-﻿namespace Dreamteck.Splines.Primitives
-{
-    using UnityEngine;
-    using UnityEditor;
-    using System.Collections;
-    using Dreamteck.Splines.Editor;
+﻿using System;
+using Dreamteck.Splines.Editor;
+using UnityEditor;
+using UnityEngine;
 
-    [System.Serializable]
+namespace Dreamteck.Splines.Primitives
+{
+    [Serializable]
     public class PrimitiveEditor
     {
-        [System.NonSerialized]
+        [NonSerialized]
         protected DreamteckSplinesEditor editor;
-        [System.NonSerialized]
+
+        [NonSerialized]
         public Vector3 origin = Vector3.zero;
 
-        protected SplinePrimitive primitive = new SplinePrimitive();
+        protected SplinePrimitive primitive = new();
 
         public virtual string GetName()
         {
@@ -53,11 +54,14 @@
             primitive.offset = EditorGUILayout.Vector3Field("Offset", primitive.offset);
             if (editor.is2D)
             {
-                float rot = primitive.rotation.z;
+                var rot = primitive.rotation.z;
                 rot = EditorGUILayout.FloatField("Rotation", rot);
                 primitive.rotation = new Vector3(0f, 0f, rot);
             }
-             else primitive.rotation = EditorGUILayout.Vector3Field("Rotation", primitive.rotation);
+            else
+            {
+                primitive.rotation = EditorGUILayout.Vector3Field("Rotation", primitive.rotation);
+            }
         }
     }
 }

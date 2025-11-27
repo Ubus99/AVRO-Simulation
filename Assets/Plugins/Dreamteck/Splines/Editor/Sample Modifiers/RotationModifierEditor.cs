@@ -1,16 +1,16 @@
+using UnityEditor;
+using UnityEngine;
+
 namespace Dreamteck.Splines.Editor
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEditor;
-
     public class RotationModifierEditor : SplineSampleModifierEditor
     {
+        readonly float addTime = 0f;
         public bool allowSelection = true;
-        private float addTime = 0f;
 
-        public RotationModifierEditor(SplineUser user, SplineUserEditor parent) : base(user, parent, "_rotationModifier")
+        public RotationModifierEditor(SplineUser user, SplineUserEditor parent) : base(user,
+        parent,
+        "_rotationModifier")
         {
             title = "Rotation Modifiers";
         }
@@ -33,9 +33,9 @@ namespace Dreamteck.Splines.Editor
 
         protected override void KeyGUI(SerializedProperty key)
         {
-            SerializedProperty rotation = key.FindPropertyRelative("rotation");
-            SerializedProperty target = key.FindPropertyRelative("target");
-            SerializedProperty useLookTarget = key.FindPropertyRelative("useLookTarget");
+            var rotation = key.FindPropertyRelative("rotation");
+            var target = key.FindPropertyRelative("target");
+            var useLookTarget = key.FindPropertyRelative("useLookTarget");
             base.KeyGUI(key);
             if (!useLookTarget.boolValue)
             {
@@ -51,27 +51,28 @@ namespace Dreamteck.Splines.Editor
         protected override bool KeyHandles(SerializedProperty key, bool edit)
         {
             if (!isOpen) return false;
-            bool changed = false;
-            SerializedProperty start = key.FindPropertyRelative("_featherStart");
-            SerializedProperty end = key.FindPropertyRelative("_featherEnd");
-            SerializedProperty centerStart = key.FindPropertyRelative("_centerStart");
-            SerializedProperty centerEnd = key.FindPropertyRelative("_centerEnd");
-            SerializedProperty rotation = key.FindPropertyRelative("rotation");
-            SerializedProperty target = key.FindPropertyRelative("target");
-            SerializedProperty useLookTarget = key.FindPropertyRelative("useLookTarget");
-            float position = GetPosition(start.floatValue, end.floatValue, centerStart.floatValue, centerEnd.floatValue);
-            SplineSample result = new SplineSample();
+            var changed = false;
+            var start = key.FindPropertyRelative("_featherStart");
+            var end = key.FindPropertyRelative("_featherEnd");
+            var centerStart = key.FindPropertyRelative("_centerStart");
+            var centerEnd = key.FindPropertyRelative("_centerEnd");
+            var rotation = key.FindPropertyRelative("rotation");
+            var target = key.FindPropertyRelative("target");
+            var useLookTarget = key.FindPropertyRelative("useLookTarget");
+            var position = GetPosition(start.floatValue, end.floatValue, centerStart.floatValue, centerEnd.floatValue);
+            var result = new SplineSample();
             user.spline.Evaluate(position, ref result);
             if (useLookTarget.boolValue)
             {
                 if (target.objectReferenceValue != null)
                 {
-                    Transform targetTransform = ((Transform)target.objectReferenceValue);
+                    var targetTransform = (Transform)target.objectReferenceValue;
                     Handles.DrawDottedLine(result.position, targetTransform.position, 5f);
                     if (edit)
                     {
-                        Vector3 lastPos = targetTransform.position;
-                        targetTransform.position = Handles.PositionHandle(targetTransform.position, Quaternion.identity);
+                        var lastPos = targetTransform.position;
+                        targetTransform.position =
+                            Handles.PositionHandle(targetTransform.position, Quaternion.identity);
                         if (lastPos != targetTransform.position)
                         {
                             MainPointModule.HoldInteraction();
@@ -83,13 +84,13 @@ namespace Dreamteck.Splines.Editor
             }
             else
             {
-                Quaternion directionRot = Quaternion.LookRotation(result.forward, result.up);
-                Quaternion rot = directionRot * Quaternion.Euler(rotation.vector3Value);
+                var directionRot = Quaternion.LookRotation(result.forward, result.up);
+                var rot = directionRot * Quaternion.Euler(rotation.vector3Value);
                 SplineEditorHandles.DrawArrowCap(result.position, rot, HandleUtility.GetHandleSize(result.position));
 
                 if (edit)
                 {
-                    Vector3 lastEuler = rot.eulerAngles;
+                    var lastEuler = rot.eulerAngles;
                     rot = Handles.RotationHandle(rot, result.position);
                     rot = Quaternion.Inverse(directionRot) * rot;
                     rotation.vector3Value = rot.eulerAngles;

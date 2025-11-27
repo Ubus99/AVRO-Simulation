@@ -1,20 +1,21 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace AYellowpaper.SerializedCollections.Editor.Search
 {
     public static class Matchers
     {
-        public static IEnumerable<Matcher> RegisteredMatchers => _registeredMatchers;
-
-        private static List<Matcher> _registeredMatchers = new List<Matcher>();
+        static readonly List<Matcher> _registeredMatchers = new();
 
         static Matchers()
         {
             _registeredMatchers.Add(new NumericMatcher());
             _registeredMatchers.Add(new StringMatcher());
             _registeredMatchers.Add(new EnumMatcher());
+        }
+
+        public static IEnumerable<Matcher> RegisteredMatchers
+        {
+            get { return _registeredMatchers; }
         }
 
         public static void AddMatcher(Matcher matcher)

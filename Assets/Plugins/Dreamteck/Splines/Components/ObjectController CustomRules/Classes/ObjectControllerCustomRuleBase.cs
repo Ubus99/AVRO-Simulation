@@ -1,13 +1,14 @@
+using UnityEngine;
+
 namespace Dreamteck.Splines
 {
-    using UnityEngine;
-
     public class ObjectControllerCustomRuleBase : ScriptableObject
     {
         protected ObjectController currentController;
-        protected SplineSample currentSample;
         protected int currentObjectIndex;
+        protected SplineSample currentSample;
         protected int totalObjects;
+
         protected float currentObjectPercent
         {
             get { return (float)currentObjectIndex / (totalObjects - 1); }
@@ -17,12 +18,12 @@ namespace Dreamteck.Splines
         {
             currentController = context;
             currentSample = sample;
-            this.currentObjectIndex = currentObject;
+            currentObjectIndex = currentObject;
             this.totalObjects = totalObjects;
         }
 
         /// <summary>
-        /// Implement this method to create custom positioning behaviors. The returned offset should be in local coordinates.
+        ///     Implement this method to create custom positioning behaviors. The returned offset should be in local coordinates.
         /// </summary>
         /// <returns>Vector3 offset in local coordinates</returns>
         public virtual Vector3 GetOffset()
@@ -31,7 +32,7 @@ namespace Dreamteck.Splines
         }
 
         /// <summary>
-        /// Implement this method to create custom rotation behaviors. The returned rotation is in world space
+        ///     Implement this method to create custom rotation behaviors. The returned rotation is in world space
         /// </summary>
         /// <returns>Quaternion rotation in world coordinates</returns>
         public virtual Quaternion GetRotation()
@@ -40,7 +41,7 @@ namespace Dreamteck.Splines
         }
 
         /// <summary>
-        /// Implement this method to create custom scaling behaviors.
+        ///     Implement this method to create custom scaling behaviors.
         /// </summary>
         /// <returns>Vector3 scale</returns>
         public virtual Vector3 GetScale()

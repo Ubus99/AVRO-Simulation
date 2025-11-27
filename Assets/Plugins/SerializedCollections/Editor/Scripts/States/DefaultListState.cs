@@ -1,17 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static AYellowpaper.SerializedCollections.Editor.SerializedDictionaryDrawer;
 
 namespace AYellowpaper.SerializedCollections.Editor.States
 {
     internal class DefaultListState : ListState
     {
-        public override int ListSize => Drawer.ListProperty.minArraySize;
-
-        public DefaultListState(SerializedDictionaryInstanceDrawer serializedDictionaryDrawer) : base(serializedDictionaryDrawer)
+        public DefaultListState(SerializedDictionaryInstanceDrawer serializedDictionaryDrawer) : base(
+        serializedDictionaryDrawer)
         {
+        }
+
+        public override int ListSize
+        {
+            get { return Drawer.ListProperty.minArraySize; }
         }
 
         public override void OnEnter()

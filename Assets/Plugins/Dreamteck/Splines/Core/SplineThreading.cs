@@ -1,9 +1,10 @@
+using System;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
 namespace Dreamteck.Splines
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEngine.SceneManagement;
 #if !UNITY_WSA
     using System.Threading;
 #endif
@@ -11,9 +12,11 @@ namespace Dreamteck.Splines
     public static class SplineThreading
     {
         public delegate void EmptyHandler();
+
         public static int threadCount
         {
-            get {
+            get
+            {
 #if UNITY_WSA
                 return 0;
 #else
@@ -23,11 +26,11 @@ namespace Dreamteck.Splines
             set
             {
 #if !UNITY_WSA
-                if(value > threads.Length)
+                if (value > threads.Length)
                 {
                     while (threads.Length < value)
                     {
-                        ThreadDef thread = new ThreadDef();
+                        var thread = new ThreadDef();
 #if UNITY_EDITOR
                         if (Application.isPlaying)
                         {
@@ -42,33 +45,72 @@ namespace Dreamteck.Splines
 #endif
             }
         }
+
+        public static void Run(EmptyHandler handler)
+        {
+#if !UNITY_WSA
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                handler();
+                return;
+            }
+#endif
+            for (var i = 0; i < threads.Length; i++)
+            {
+                if (!threads[i].isAlive) threads[i].Restart();
+                if (!threads[i].computing || i == threads.Length - 1)
+                {
+                    threads[i].Queue(handler);
+                    if (!threads[i].computing) threads[i].Interrupt();
+                    break;
+                }
+            }
+#endif
+        }
+
+        public static void PrewarmThreads()
+        {
+#if !UNITY_WSA
+            for (var i = 0; i < threads.Length; i++)
+            {
+                if (!threads[i].isAlive)
+                {
+                    threads[i].Restart();
+                }
+            }
+#endif
+        }
+
+        public static void Stop()
+        {
+#if !UNITY_WSA
+            for (var i = 0; i < threads.Length; i++)
+            {
+                threads[i].Abort();
+            }
+#endif
+        }
 #if !UNITY_WSA
         internal class ThreadDef
         {
-            internal class Worker
+            readonly ParameterizedThreadStart start;
+            readonly Worker worker = new();
+            internal Thread thread;
+
+            internal ThreadDef()
             {
-                internal bool computing = false;
-                internal Queue<EmptyHandler> instructions = new Queue<EmptyHandler>();
+                start = RunThread;
             }
-            internal delegate void BoolHandler(bool flag);
-            private ParameterizedThreadStart start = null;
-            internal Thread thread = null;
-            private Worker worker = new Worker();
+
             internal bool isAlive
             {
                 get { return thread != null && thread.IsAlive; }
             }
+
             internal bool computing
             {
-                get
-                {
-                    return worker.computing;
-                }
-            }
-
-            internal ThreadDef()
-            {
-                start = new ParameterizedThreadStart(RunThread);
+                get { return worker.computing; }
             }
 
             internal void Queue(EmptyHandler handler)
@@ -94,27 +136,37 @@ namespace Dreamteck.Splines
                     thread.Abort();
                 }
             }
+
+            internal class Worker
+            {
+                internal bool computing;
+                internal Queue<EmptyHandler> instructions = new();
+            }
+
+            internal delegate void BoolHandler(bool flag);
         }
+
         internal static ThreadDef[] threads = new ThreadDef[2];
-        internal static readonly object locker = new object();
+        internal static readonly object locker = new();
+
         static SplineThreading()
         {
             Application.quitting += Quitting;
-            for (int i = 0; i < threads.Length; i++)
+            for (var i = 0; i < threads.Length; i++)
             {
                 threads[i] = new ThreadDef();
             }
 
 #if UNITY_EDITOR
             PrewarmThreads();
-            UnityEditor.EditorApplication.playModeStateChanged += OnPlayStateChanged;
+            EditorApplication.playModeStateChanged += OnPlayStateChanged;
 #endif
         }
 
 #if UNITY_EDITOR
-        static void OnPlayStateChanged(UnityEditor.PlayModeStateChange state)
+        static void OnPlayStateChanged(PlayModeStateChange state)
         {
-            if (state == UnityEditor.PlayModeStateChange.ExitingPlayMode)
+            if (state == PlayModeStateChange.ExitingPlayMode)
             {
                 Quitting();
             }
@@ -128,7 +180,7 @@ namespace Dreamteck.Splines
 
         static void RunThread(object o)
         {
-            ThreadDef.Worker work = (ThreadDef.Worker)o;
+            var work = (ThreadDef.Worker)o;
             while (true)
             {
                 try
@@ -143,14 +195,14 @@ namespace Dreamteck.Splines
                     {
                         while (work.instructions.Count > 0)
                         {
-                            EmptyHandler h = work.instructions.Dequeue();
+                            var h = work.instructions.Dequeue();
                             if (h != null) h();
                         }
                     }
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    if(ex.Message != "") Debug.LogError("THREAD EXCEPTION " + ex.Message);
+                    if (ex.Message != "") Debug.LogError("THREAD EXCEPTION " + ex.Message);
                     break;
                 }
             }
@@ -158,51 +210,5 @@ namespace Dreamteck.Splines
             work.computing = false;
         }
 #endif
-
-            public static void Run(EmptyHandler handler)
-        {
-#if !UNITY_WSA
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                handler();
-                return;
-            }
-#endif
-            for (int i = 0; i < threads.Length; i++)
-            {
-                if (!threads[i].isAlive) threads[i].Restart();
-                if (!threads[i].computing || i == threads.Length - 1)
-                {
-                    threads[i].Queue(handler);
-                    if(!threads[i].computing)threads[i].Interrupt();
-                    break;
-                }
-            }
-#endif
-        }
-
-        public static void PrewarmThreads()
-        {
-#if !UNITY_WSA
-            for (int i = 0; i < threads.Length; i++)
-            {
-                if (!threads[i].isAlive)
-                {
-                    threads[i].Restart();
-                }
-            }
-#endif
-        }
-
-        public static void Stop()
-        {
-#if !UNITY_WSA
-            for (int i = 0; i < threads.Length; i++)
-            {
-                threads[i].Abort();
-            }
-#endif
-        }
     }
 }

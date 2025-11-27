@@ -1,19 +1,47 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Threading;
+
 namespace Dreamteck.Splines
 {
     [AddComponentMenu("Dreamteck/Splines/Users/Polygon Collider Generator")]
     [RequireComponent(typeof(PolygonCollider2D))]
     public class PolygonColliderGenerator : SplineUser
     {
-        public enum Type { Path, Shape }
+        public enum Type
+        {
+            Path,
+            Shape
+        }
+
+        [SerializeField]
+        [HideInInspector]
+        Type _type = Type.Path;
+
+        [SerializeField]
+        [HideInInspector]
+        float _size = 1f;
+
+        [SerializeField]
+        [HideInInspector]
+        float _offset;
+
+        [SerializeField]
+        [HideInInspector]
+        protected PolygonCollider2D polygonCollider;
+
+        [SerializeField]
+        [HideInInspector]
+        protected Vector2[] vertices = new Vector2[0];
+
+        [HideInInspector]
+        public float updateRate = 0.1f;
+
+        protected float lastUpdateTime;
+
+        bool updateCollider;
+
         public Type type
         {
-            get
-            {
-                return _type;
-            }
+            get { return _type; }
             set
             {
                 if (value != _type)
@@ -49,28 +77,6 @@ namespace Dreamteck.Splines
                 }
             }
         }
-        [SerializeField]
-        [HideInInspector]
-        private Type _type = Type.Path;
-        [SerializeField]
-        [HideInInspector]
-        private float _size = 1f;
-        [SerializeField]
-        [HideInInspector]
-        private float _offset = 0f;
-        [SerializeField]
-        [HideInInspector]
-        protected PolygonCollider2D polygonCollider;
-
-        [SerializeField]
-        [HideInInspector]
-        protected Vector2[] vertices = new Vector2[0];
-
-        [HideInInspector]
-        public float updateRate = 0.1f;
-        protected float lastUpdateTime = 0f;
-
-        private bool updateCollider = false;
 
         protected override void Awake()
         {
@@ -119,10 +125,11 @@ namespace Dreamteck.Splines
         protected override void Build()
         {
             base.Build();
-            switch(type){
+            switch (type)
+            {
                 case Type.Path:
-                GeneratePath();
-                break;
+                    GeneratePath();
+                    break;
                 case Type.Shape: GenerateShape(); break;
             }
 
@@ -132,7 +139,7 @@ namespace Dreamteck.Splines
         {
             base.PostBuild();
             if (polygonCollider == null) return;
-            for(int i = 0; i < vertices.Length; i++)
+            for (var i = 0; i < vertices.Length; i++)
             {
                 vertices[i] = transform.InverseTransformPoint(vertices[i]);
             }
@@ -145,34 +152,34 @@ namespace Dreamteck.Splines
 #endif
         }
 
-        private void GeneratePath()
+        void GeneratePath()
         {
-            int vertexCount = sampleCount * 2;
+            var vertexCount = sampleCount * 2;
             if (vertices.Length != vertexCount) vertices = new Vector2[vertexCount];
-            for (int i = 0; i < sampleCount; i++)
+            for (var i = 0; i < sampleCount; i++)
             {
                 GetSample(i, ref evalResult);
-                Vector2 right = new Vector2(-evalResult.forward.y, evalResult.forward.x).normalized * evalResult.size;
-                vertices[i] = new Vector2(evalResult.position.x, evalResult.position.y) + right * size * 0.5f + right * offset;
-                vertices[sampleCount + (sampleCount - 1) - i] = new Vector2(evalResult.position.x, evalResult.position.y) - right * size * 0.5f + right * offset;
+                var right = new Vector2(-evalResult.forward.y, evalResult.forward.x).normalized * evalResult.size;
+                vertices[i] = new Vector2(evalResult.position.x, evalResult.position.y) + right * size * 0.5f +
+                              right * offset;
+                vertices[sampleCount + (sampleCount - 1) - i] =
+                    new Vector2(evalResult.position.x, evalResult.position.y) - right * size * 0.5f + right * offset;
             }
         }
 
-        private void GenerateShape()
+        void GenerateShape()
         {
             if (vertices.Length != sampleCount) vertices = new Vector2[sampleCount];
-            for (int i = 0; i < sampleCount; i++)
+            for (var i = 0; i < sampleCount; i++)
             {
                 GetSample(i, ref evalResult);
                 vertices[i] = evalResult.position;
                 if (offset != 0f)
                 {
-                    Vector2 right = new Vector2(-evalResult.forward.y, evalResult.forward.x).normalized * evalResult.size;
+                    var right = new Vector2(-evalResult.forward.y, evalResult.forward.x).normalized * evalResult.size;
                     vertices[i] += right * offset;
                 }
             }
         }
     }
-
-  
 }

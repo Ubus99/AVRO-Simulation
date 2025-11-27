@@ -1,39 +1,96 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace Dreamteck.Splines
 {
     [AddComponentMenu("Dreamteck/Splines/Users/Object Bender")]
     public class ObjectBender : SplineUser
     {
-        public enum Axis { X, Y, Z }
-        public enum NormalMode { Spline, Auto, Custom }
-        public enum ForwardMode { Spline, Custom }
+        public enum Axis
+        {
+            X,
+            Y,
+            Z
+        }
+
+        public enum ForwardMode
+        {
+            Spline,
+            Custom
+        }
+
+        public enum NormalMode
+        {
+            Spline,
+            Auto,
+            Custom
+        }
+
+        [SerializeField]
+        [HideInInspector]
+        bool _bend;
+
+        [HideInInspector]
+        public BendProperty[] bendProperties = new BendProperty[0];
+
+        [SerializeField]
+        [HideInInspector]
+        bool _parentIsTheSpline;
+
+        [SerializeField]
+        [HideInInspector]
+        TS_Bounds bounds;
+
+        [SerializeField]
+        [HideInInspector]
+        Axis _axis = Axis.Z;
+
+        [SerializeField]
+        [HideInInspector]
+        NormalMode _normalMode = NormalMode.Auto;
+
+        [SerializeField]
+        [HideInInspector]
+        ForwardMode _forwardMode = ForwardMode.Spline;
+
+        [SerializeField]
+        [HideInInspector]
+        [FormerlySerializedAs("_upVector")]
+        Vector3 _customNormal = Vector3.up;
+
+        [SerializeField]
+        [HideInInspector]
+        Vector3 _customForward = Vector3.forward;
+
+        Quaternion bendRotation = Quaternion.identity;
+        Matrix4x4 normalMatrix;
+
         public bool bend
         {
             get { return _bend; }
             set
             {
-               if(_bend != value)
+                if (_bend != value)
                 {
                     _bend = value;
                     if (value)
                     {
                         UpdateReferences();
                         Rebuild();
-                    } else Revert();
+                    }
+                    else
+                    {
+                        Revert();
+                    }
                 }
             }
         }
 
-        [SerializeField]
-        [HideInInspector]
-        private bool _bend = false;
         public Axis axis
         {
             get { return _axis; }
@@ -45,7 +102,10 @@ namespace Dreamteck.Splines
                     UpdateReferences();
                     Rebuild();
                 }
-                else _axis = value;
+                else
+                {
+                    _axis = value;
+                }
             }
         }
 
@@ -58,7 +118,11 @@ namespace Dreamteck.Splines
                 {
                     _normalMode = value;
                     Rebuild();
-                } else _normalMode = value;
+                }
+                else
+                {
+                    _normalMode = value;
+                }
             }
         }
 
@@ -72,7 +136,10 @@ namespace Dreamteck.Splines
                     _customNormal = value;
                     Rebuild();
                 }
-                else _customNormal = value;
+                else
+                {
+                    _customNormal = value;
+                }
             }
         }
 
@@ -85,7 +152,11 @@ namespace Dreamteck.Splines
                 {
                     _forwardMode = value;
                     Rebuild();
-                } else _forwardMode = value;
+                }
+                else
+                {
+                    _forwardMode = value;
+                }
             }
         }
 
@@ -99,38 +170,14 @@ namespace Dreamteck.Splines
                     _customForward = value;
                     Rebuild();
                 }
-                else _customForward = value;
+                else
+                {
+                    _customForward = value;
+                }
             }
         }
-        [HideInInspector]
-        public BendProperty[] bendProperties = new BendProperty[0];
-        [SerializeField]
-        [HideInInspector]
-        private bool _parentIsTheSpline = false;
-        [SerializeField]
-        [HideInInspector]
-        private TS_Bounds bounds = null;
 
-        [SerializeField]
-        [HideInInspector]
-        private Axis _axis = Axis.Z;
-        [SerializeField]
-        [HideInInspector]
-        private NormalMode _normalMode = NormalMode.Auto;
-        [SerializeField]
-        [HideInInspector]
-        private ForwardMode _forwardMode = ForwardMode.Spline;
-        [SerializeField]
-        [HideInInspector]
-        [UnityEngine.Serialization.FormerlySerializedAs("_upVector")]
-        private Vector3 _customNormal = Vector3.up;
-        [SerializeField]
-        [HideInInspector]
-        private Vector3 _customForward = Vector3.forward;
-        Matrix4x4 normalMatrix = new Matrix4x4();
-        Quaternion bendRotation = Quaternion.identity;
-
-        private void GetTransformsRecursively(Transform current, ref List<Transform> transformList)
+        void GetTransformsRecursively(Transform current, ref List<Transform> transformList)
         {
             transformList.Add(current);
             foreach (Transform child in current)
@@ -139,17 +186,17 @@ namespace Dreamteck.Splines
             }
         }
 
-        private void GetObjects()
+        void GetObjects()
         {
-            List<Transform> found = new List<Transform>();
+            var found = new List<Transform>();
             GetTransformsRecursively(transform, ref found);
-            BendProperty[] newProperties = new BendProperty[found.Count];
-            for (int i = 0; i < found.Count; i++)
+            var newProperties = new BendProperty[found.Count];
+            for (var i = 0; i < found.Count; i++)
             {
                 CreateProperty(ref newProperties[i], found[i]);
             }
             bendProperties = newProperties;
-            SplineComputer splineComponent = GetComponent<SplineComputer>();
+            var splineComponent = GetComponent<SplineComputer>();
             _parentIsTheSpline = splineComponent == spline;
         }
 
@@ -161,13 +208,15 @@ namespace Dreamteck.Splines
 #if UNITY_EDITOR
         public void EditorGenerateLightmapUVs()
         {
-            for (int i = 0; i < bendProperties.Length; i++)
+            for (var i = 0; i < bendProperties.Length; i++)
             {
                 if (bendProperties[i].bendMesh)
                 {
                     if (bendProperties[i].filter == null) continue;
                     if (bendProperties[i].filter.sharedMesh == null) continue;
-                    EditorUtility.DisplayProgressBar("Generating Lightmap UVS", bendProperties[i].filter.sharedMesh.name, (float)i / (bendProperties.Length - 1));
+                    EditorUtility.DisplayProgressBar("Generating Lightmap UVS",
+                    bendProperties[i].filter.sharedMesh.name,
+                    (float)i / (bendProperties.Length - 1));
                     Unwrapping.GenerateSecondaryUVSet(bendProperties[i].filter.sharedMesh);
                 }
             }
@@ -175,10 +224,10 @@ namespace Dreamteck.Splines
         }
 #endif
 
-        private void CreateProperty(ref BendProperty property, Transform t)
+        void CreateProperty(ref BendProperty property, Transform t)
         {
             property = new BendProperty(t, t == transform); //Create a new bend property for each child
-            for (int i = 0; i < bendProperties.Length; i++)
+            for (var i = 0; i < bendProperties.Length; i++)
             {
                 //Search for properties that have the same trasform and copy their settings
                 if (bendProperties[i].transform.transform == t)
@@ -201,21 +250,21 @@ namespace Dreamteck.Splines
             }
         }
 
-        private void CalculateBounds()
+        void CalculateBounds()
         {
             if (bounds == null) bounds = new TS_Bounds(Vector3.zero, Vector3.zero);
             bounds.min = bounds.max = Vector3.zero;
-            for (int i = 0; i < bendProperties.Length; i++)
+            for (var i = 0; i < bendProperties.Length; i++)
             {
                 CalculatePropertyBounds(ref bendProperties[i]);
             }
-            for (int i = 0; i < bendProperties.Length; i++)
+            for (var i = 0; i < bendProperties.Length; i++)
             {
                 CalculatePercents(bendProperties[i]);
             }
         }
 
-        private void CalculatePropertyBounds(ref BendProperty property)
+        void CalculatePropertyBounds(ref BendProperty property)
         {
             if (!property.enabled) return;
             if (property.isParent && _parentIsTheSpline) return;
@@ -239,9 +288,9 @@ namespace Dreamteck.Splines
             }
             if (property.editMesh != null)
             {
-                for (int n = 0; n < property.editMesh.vertices.Length; n++)
+                for (var n = 0; n < property.editMesh.vertices.Length; n++)
                 {
-                    Vector3 localPos = property.transform.TransformPoint(property.editMesh.vertices[n]);
+                    var localPos = property.transform.TransformPoint(property.editMesh.vertices[n]);
                     localPos = trs.InverseTransformPoint(localPos);
                     if (localPos.x < bounds.min.x) bounds.min.x = localPos.x;
                     if (localPos.y < bounds.min.y) bounds.min.y = localPos.y;
@@ -254,9 +303,9 @@ namespace Dreamteck.Splines
 
             if (property.editColliderMesh != null)
             {
-                for (int n = 0; n < property.editColliderMesh.vertices.Length; n++)
+                for (var n = 0; n < property.editColliderMesh.vertices.Length; n++)
                 {
-                    Vector3 localPos = property.transform.TransformPoint(property.editColliderMesh.vertices[n]);
+                    var localPos = property.transform.TransformPoint(property.editColliderMesh.vertices[n]);
                     localPos = trs.InverseTransformPoint(localPos);
                     if (localPos.x < bounds.min.x) bounds.min.x = localPos.x;
                     if (localPos.y < bounds.min.y) bounds.min.y = localPos.y;
@@ -269,9 +318,9 @@ namespace Dreamteck.Splines
 
             if (property.originalSpline != null)
             {
-                for (int n = 0; n < property.originalSpline.points.Length; n++)
+                for (var n = 0; n < property.originalSpline.points.Length; n++)
                 {
-                    Vector3 localPos = trs.InverseTransformPoint(property.originalSpline.points[n].position);
+                    var localPos = trs.InverseTransformPoint(property.originalSpline.points[n].position);
                     if (localPos.x < bounds.min.x) bounds.min.x = localPos.x;
                     if (localPos.y < bounds.min.y) bounds.min.y = localPos.y;
                     if (localPos.z < bounds.min.z) bounds.min.z = localPos.z;
@@ -285,26 +334,29 @@ namespace Dreamteck.Splines
 
         public void CalculatePercents(BendProperty property)
         {
-            if (property.transform.transform != trs) property.positionPercent = GetPercentage(trs.InverseTransformPoint(property.transform.position));
+            if (property.transform.transform != trs)
+                property.positionPercent = GetPercentage(trs.InverseTransformPoint(property.transform.position));
             else property.positionPercent = GetPercentage(Vector3.zero);
             if (property.editMesh != null)
             {
-                if (property.vertexPercents.Length != property.editMesh.vertexCount) property.vertexPercents = new Vector3[property.editMesh.vertexCount];
+                if (property.vertexPercents.Length != property.editMesh.vertexCount)
+                    property.vertexPercents = new Vector3[property.editMesh.vertexCount];
                 if (property.editColliderMesh != null)
                 {
-                    if (property.colliderVertexPercents.Length != property.editMesh.vertexCount) property.colliderVertexPercents = new Vector3[property.editColliderMesh.vertexCount];
+                    if (property.colliderVertexPercents.Length != property.editMesh.vertexCount)
+                        property.colliderVertexPercents = new Vector3[property.editColliderMesh.vertexCount];
                 }
-                for (int i = 0; i < property.editMesh.vertexCount; i++)
+                for (var i = 0; i < property.editMesh.vertexCount; i++)
                 {
-                    Vector3 localVertex = property.transform.TransformPoint(property.editMesh.vertices[i]);
+                    var localVertex = property.transform.TransformPoint(property.editMesh.vertices[i]);
                     localVertex = trs.InverseTransformPoint(localVertex);
-                    property.vertexPercents[i] = GetPercentage(localVertex);   
+                    property.vertexPercents[i] = GetPercentage(localVertex);
                 }
                 if (property.editColliderMesh != null)
                 {
-                    for (int i = 0; i < property.editColliderMesh.vertexCount; i++)
+                    for (var i = 0; i < property.editColliderMesh.vertexCount; i++)
                     {
-                        Vector3 localVertex = property.transform.TransformPoint(property.editColliderMesh.vertices[i]);
+                        var localVertex = property.transform.TransformPoint(property.editColliderMesh.vertices[i]);
                         localVertex = trs.InverseTransformPoint(localVertex);
                         property.colliderVertexPercents[i] = GetPercentage(localVertex);
                     }
@@ -312,11 +364,11 @@ namespace Dreamteck.Splines
             }
             if (property.splineComputer != null)
             {
-                SplinePoint[] points = property.splineComputer.GetPoints();
+                var points = property.splineComputer.GetPoints();
                 property.splinePointPercents = new Vector3[points.Length];
                 property.primaryTangentPercents = new Vector3[points.Length];
                 property.secondaryTangentPercents = new Vector3[points.Length];
-                for (int i = 0; i < points.Length; i++)
+                for (var i = 0; i < points.Length; i++)
                 {
                     property.splinePointPercents[i] = GetPercentage(trs.InverseTransformPoint(points[i].position));
                     property.primaryTangentPercents[i] = GetPercentage(trs.InverseTransformPoint(points[i].tangent));
@@ -325,9 +377,9 @@ namespace Dreamteck.Splines
             }
         }
 
-        private void Revert()
+        void Revert()
         {
-            for (int i = 0; i < bendProperties.Length; i++)
+            for (var i = 0; i < bendProperties.Length; i++)
             {
                 bendProperties[i].Revert();
             }
@@ -342,14 +394,14 @@ namespace Dreamteck.Splines
             }
             if (_bend)
             {
-                for (int i = 0; i < bendProperties.Length; i++) bendProperties[i].Revert();
+                for (var i = 0; i < bendProperties.Length; i++) bendProperties[i].Revert();
             }
             GetObjects();
             CalculateBounds();
             if (_bend)
             {
                 Bend();
-                for (int i = 0; i < bendProperties.Length; i++)
+                for (var i = 0; i < bendProperties.Length; i++)
                 {
                     bendProperties[i].Apply(i > 0 || trs != spline.transform);
                     bendProperties[i].Update();
@@ -357,7 +409,7 @@ namespace Dreamteck.Splines
             }
         }
 
-        private void GetevalResult(Vector3 percentage)
+        void GetevalResult(Vector3 percentage)
         {
             switch (axis)
             {
@@ -371,33 +423,40 @@ namespace Dreamteck.Splines
                 case NormalMode.Custom: evalResult.up = _customNormal; break;
             }
             if (_forwardMode == ForwardMode.Custom) evalResult.forward = customForward;
-            Vector3 right = evalResult.right;
+            var right = evalResult.right;
 
-            Quaternion axisRotation = Quaternion.identity;
+            var axisRotation = Quaternion.identity;
 
             switch (axis)
             {
                 case Axis.Z:
-                    evalResult.position += right * Mathf.Lerp(bounds.min.x, bounds.max.x, percentage.x) * evalResult.size;
-                    evalResult.position += evalResult.up * Mathf.Lerp(bounds.min.y, bounds.max.y, percentage.y) * evalResult.size;
+                    evalResult.position +=
+                        right * Mathf.Lerp(bounds.min.x, bounds.max.x, percentage.x) * evalResult.size;
+                    evalResult.position += evalResult.up * Mathf.Lerp(bounds.min.y, bounds.max.y, percentage.y) *
+                                           evalResult.size;
                     break;
                 case Axis.X:
                     axisRotation = Quaternion.Euler(0f, -90f, 0f);
-                    evalResult.position += right * Mathf.Lerp(bounds.max.z, bounds.min.z, percentage.z) * evalResult.size;
-                    evalResult.position += evalResult.up * Mathf.Lerp(bounds.min.y, bounds.max.y, percentage.y) * evalResult.size;
+                    evalResult.position +=
+                        right * Mathf.Lerp(bounds.max.z, bounds.min.z, percentage.z) * evalResult.size;
+                    evalResult.position += evalResult.up * Mathf.Lerp(bounds.min.y, bounds.max.y, percentage.y) *
+                                           evalResult.size;
                     break;
                 case Axis.Y:
                     axisRotation = Quaternion.Euler(90f, 0f, 0f);
-                    evalResult.position += right * Mathf.Lerp(bounds.min.x, bounds.max.x, percentage.x) * evalResult.size;
-                    evalResult.position += evalResult.up * Mathf.Lerp(bounds.min.z, bounds.max.z, percentage.z) * evalResult.size;
+                    evalResult.position +=
+                        right * Mathf.Lerp(bounds.min.x, bounds.max.x, percentage.x) * evalResult.size;
+                    evalResult.position += evalResult.up * Mathf.Lerp(bounds.min.z, bounds.max.z, percentage.z) *
+                                           evalResult.size;
                     break;
             }
 
             bendRotation = evalResult.rotation * axisRotation;
-            normalMatrix = Matrix4x4.TRS(evalResult.position, bendRotation, Vector3.one * evalResult.size).inverse.transpose;
+            normalMatrix = Matrix4x4.TRS(evalResult.position, bendRotation, Vector3.one * evalResult.size).inverse
+                .transpose;
         }
 
-        private Vector3 GetPercentage(Vector3 point)
+        Vector3 GetPercentage(Vector3 point)
         {
             point.x = Mathf.InverseLerp(bounds.min.x, bounds.max.x, point.x);
             point.y = Mathf.InverseLerp(bounds.min.y, bounds.max.y, point.y);
@@ -411,11 +470,11 @@ namespace Dreamteck.Splines
             if (_bend) Bend();
         }
 
-        private void Bend()
+        void Bend()
         {
             if (sampleCount <= 1) return;
             if (bendProperties.Length == 0) return;
-            for (int i = 0; i < bendProperties.Length; i++)
+            for (var i = 0; i < bendProperties.Length; i++)
             {
                 BendObject(bendProperties[i]);
             }
@@ -431,10 +490,14 @@ namespace Dreamteck.Splines
             {
                 //p.transform.rotation = evalResult.rotation * axisRotation * p.originalRotation;
                 p.transform.rotation = bendRotation * (Quaternion.Inverse(p.parentRotation) * p.originalRotation);
-            } else p.transform.rotation = p.originalRotation; 
+            }
+            else
+            {
+                p.transform.rotation = p.originalRotation;
+            }
             if (p.applyScale) p.transform.scale = p.originalScale * evalResult.size;
 
-            Matrix4x4 toLocalMatrix = Matrix4x4.TRS(p.transform.position, p.transform.rotation, p.transform.scale).inverse;
+            var toLocalMatrix = Matrix4x4.TRS(p.transform.position, p.transform.rotation, p.transform.scale).inverse;
             if (p.editMesh != null)
             {
                 BendMesh(p.vertexPercents, p.normals, p.editMesh, toLocalMatrix);
@@ -449,9 +512,9 @@ namespace Dreamteck.Splines
 
             if (p.originalSpline != null && !p.isParent)
             {
-                for (int n = 0; n < p.splinePointPercents.Length; n++)
+                for (var n = 0; n < p.splinePointPercents.Length; n++)
                 {
-                    SplinePoint point = p.originalSpline.points[n];
+                    var point = p.originalSpline.points[n];
                     GetevalResult(p.splinePointPercents[n]);
                     point.position = evalResult.position;
                     GetevalResult(p.primaryTangentPercents[n]);
@@ -460,9 +523,15 @@ namespace Dreamteck.Splines
                     point.tangent2 = evalResult.position;
                     switch (axis)
                     {
-                        case Axis.X: point.normal = Quaternion.LookRotation(evalResult.forward, evalResult.up) * Quaternion.FromToRotation(Vector3.up, evalResult.up) * point.normal; break;
-                        case Axis.Y: point.normal = Quaternion.LookRotation(evalResult.forward, evalResult.up) * Quaternion.FromToRotation(Vector3.up, evalResult.up) * point.normal; break;
-                        case Axis.Z: point.normal = Quaternion.LookRotation(evalResult.forward, evalResult.up) * point.normal; break;
+                        case Axis.X:
+                            point.normal = Quaternion.LookRotation(evalResult.forward, evalResult.up) *
+                                           Quaternion.FromToRotation(Vector3.up, evalResult.up) * point.normal; break;
+                        case Axis.Y:
+                            point.normal = Quaternion.LookRotation(evalResult.forward, evalResult.up) *
+                                           Quaternion.FromToRotation(Vector3.up, evalResult.up) * point.normal; break;
+                        case Axis.Z:
+                            point.normal = Quaternion.LookRotation(evalResult.forward, evalResult.up) * point.normal;
+                            break;
                     }
                     p.destinationSpline.points[n] = point;
                 }
@@ -471,14 +540,14 @@ namespace Dreamteck.Splines
 
         void BendMesh(Vector3[] vertexPercents, Vector3[] originalNormals, TS_Mesh mesh, Matrix4x4 worldToLocalMatrix)
         {
-            if(mesh.vertexCount != vertexPercents.Length)
+            if (mesh.vertexCount != vertexPercents.Length)
             {
                 Debug.LogError("Vertex count mismatch");
                 return;
             }
-            for (int i = 0; i < mesh.vertexCount; i++)
+            for (var i = 0; i < mesh.vertexCount; i++)
             {
-                Vector3 percent = vertexPercents[i];
+                var percent = vertexPercents[i];
                 if (axis == Axis.Y) percent.z = 1f - percent.z;
                 GetevalResult(percent);
                 mesh.vertices[i] = worldToLocalMatrix.MultiplyPoint3x4(evalResult.position);
@@ -490,7 +559,7 @@ namespace Dreamteck.Splines
         {
             base.PostBuild();
             if (!_bend) return;
-            for (int i = 0; i < bendProperties.Length; i++)
+            for (var i = 0; i < bendProperties.Length; i++)
             {
                 bendProperties[i].Apply(i > 0 || trs != spline.transform);
                 bendProperties[i].Update();
@@ -500,88 +569,35 @@ namespace Dreamteck.Splines
         protected override void LateRun()
         {
             base.LateRun();
-            for (int i = 0; i < bendProperties.Length; i++)
+            for (var i = 0; i < bendProperties.Length; i++)
             {
                 bendProperties[i].Update();
             }
         }
 
 
-        [System.Serializable]
+        [Serializable]
         public class BendProperty
         {
             public bool enabled = true;
-            public bool isValid
-            {
-                get
-                {
-                    return transform != null && transform.transform != null;
-                }
-            }
             public TS_Transform transform;
             public bool applyRotation = true;
             public bool applyScale = true;
-            public bool bendMesh
-            {
-                get { return _bendMesh; }
-                set
-                {
-                    if (value != _bendMesh)
-                    {
-                        _bendMesh = value;
-                        if (value)
-                        {
-                            if (filter != null && filter.sharedMesh != null)
-                            {
-                                normals = originalMesh.normals;
-                                for (int i = 0; i < normals.Length; i++) normals[i] = transform.transform.TransformDirection(normals[i]);
-                            }
-                        } else RevertMesh();
-                    }
-                }
-            }
-            public bool generateLightmapUVs = false;
-            public bool bendCollider
-            {
-                get { return _bendCollider; }
-                set
-                {
-                    if (value != _bendCollider)
-                    {
-                        _bendCollider = value;
-                        if (value)
-                        {
-                            if (collider != null && collider.sharedMesh != null && collider.sharedMesh != originalMesh) colliderNormals = originalColliderMesh.normals;
-                        }
-                        else RevertCollider();
-                    }
-                }
-            }
-            public bool bendSpline
-            {
-                get { return _bendSpline; }
-                set
-                {
-                    _bendSpline = value;
-                    if (value)
-                    {
+            public bool generateLightmapUVs;
 
-                    }
-                }
-            }
             [SerializeField]
             [HideInInspector]
-            private bool _bendMesh = true;
-            [SerializeField]
-            [HideInInspector]
-            private bool _bendSpline = true;
-            [SerializeField]
-            [HideInInspector]
-            private bool _bendCollider = true;
+            bool _bendMesh = true;
 
-            private float colliderUpdateDue = 0f;
+            [SerializeField]
+            [HideInInspector]
+            bool _bendSpline = true;
+
+            [SerializeField]
+            [HideInInspector]
+            bool _bendCollider = true;
+
             public float colliderUpdateRate = 0.2f;
-            private bool updateCollider = false;
 
             public Vector3 originalPosition = Vector3.zero;
             public Vector3 originalScale = Vector3.one;
@@ -596,57 +612,25 @@ namespace Dreamteck.Splines
 
             [SerializeField]
             [HideInInspector]
-            private Mesh originalMesh = null;
-            [SerializeField]
-            [HideInInspector]
-            private Mesh originalColliderMesh = null;
-            private Spline _originalSpline;
+            Mesh originalMesh;
 
             [SerializeField]
             [HideInInspector]
-            private Mesh destinationMesh = null;
+            Mesh originalColliderMesh;
+
             [SerializeField]
             [HideInInspector]
-            private Mesh destinationColliderMesh = null;
+            Mesh destinationMesh;
+
+            [SerializeField]
+            [HideInInspector]
+            Mesh destinationColliderMesh;
+
             public Spline destinationSpline;
 
-            public TS_Mesh editMesh
-            {
-                get
-                {
-                    if (!bendMesh || originalMesh == null) _editMesh = null;
-                    else if (_editMesh == null && originalMesh != null) _editMesh = new TS_Mesh(originalMesh);
-                    return _editMesh;
-                }
-            }
-            public TS_Mesh editColliderMesh
-            {
-                get
-                {
-                    if (!bendCollider || originalColliderMesh == null) _editColliderMesh = null;
-                    else if (_editColliderMesh == null && originalColliderMesh != null && originalColliderMesh != originalMesh) _editColliderMesh = new TS_Mesh(originalColliderMesh);
-                    return _editColliderMesh;
-                }
-            }
-            public Spline originalSpline
-            {
-                get
-                {
-                    if (!bendSpline || splineComputer == null) _originalSpline = null;
-                    else if (_originalSpline == null && splineComputer != null) {
-                        _originalSpline = new Spline(splineComputer.type);
-                        _originalSpline.points = splineComputer.GetPoints();
-                    }
-                    return _originalSpline;
-                }
-            }
-
-            public TS_Mesh _editMesh = null;
-            public TS_Mesh _editColliderMesh = null;
-
-            public MeshFilter filter = null;
-            public MeshCollider collider = null;
-            public SplineComputer splineComputer = null;
+            public MeshFilter filter;
+            public MeshCollider collider;
+            public SplineComputer splineComputer;
 
             public Vector3[] splinePointPercents = new Vector3[0];
             public Vector3[] primaryTangentPercents = new Vector3[0];
@@ -654,11 +638,16 @@ namespace Dreamteck.Splines
 
             [SerializeField]
             [HideInInspector]
-            private bool parent = false;
+            bool parent;
 
-            public bool isParent {
-                get { return parent;  }
-            }
+            public TS_Mesh _editColliderMesh;
+
+            public TS_Mesh _editMesh;
+
+            Spline _originalSpline;
+
+            float colliderUpdateDue;
+            bool updateCollider;
 
 
             public BendProperty(Transform t, bool parent = false)
@@ -676,14 +665,16 @@ namespace Dreamteck.Splines
                 {
                     originalMesh = filter.sharedMesh;
                     normals = originalMesh.normals;
-                    for (int i = 0; i < normals.Length; i++) normals[i] = transform.transform.TransformDirection(normals[i]).normalized;
+                    for (var i = 0; i < normals.Length; i++)
+                        normals[i] = transform.transform.TransformDirection(normals[i]).normalized;
                 }
 
                 if (collider != null && collider.sharedMesh != null)
                 {
                     originalColliderMesh = collider.sharedMesh;
                     colliderNormals = originalColliderMesh.normals;
-                    for (int i = 0; i < colliderNormals.Length; i++) colliderNormals[i] = transform.transform.TransformDirection(colliderNormals[i]);
+                    for (var i = 0; i < colliderNormals.Length; i++)
+                        colliderNormals[i] = transform.transform.TransformDirection(colliderNormals[i]);
                 }
                 if (!parent) splineComputer = t.GetComponent<SplineComputer>();
                 if (splineComputer != null)
@@ -696,6 +687,114 @@ namespace Dreamteck.Splines
                 }
             }
 
+            public bool isValid
+            {
+                get { return transform != null && transform.transform != null; }
+            }
+
+            public bool bendMesh
+            {
+                get { return _bendMesh; }
+                set
+                {
+                    if (value != _bendMesh)
+                    {
+                        _bendMesh = value;
+                        if (value)
+                        {
+                            if (filter != null && filter.sharedMesh != null)
+                            {
+                                normals = originalMesh.normals;
+                                for (var i = 0; i < normals.Length; i++)
+                                    normals[i] = transform.transform.TransformDirection(normals[i]);
+                            }
+                        }
+                        else
+                        {
+                            RevertMesh();
+                        }
+                    }
+                }
+            }
+
+            public bool bendCollider
+            {
+                get { return _bendCollider; }
+                set
+                {
+                    if (value != _bendCollider)
+                    {
+                        _bendCollider = value;
+                        if (value)
+                        {
+                            if (collider != null && collider.sharedMesh != null && collider.sharedMesh != originalMesh)
+                                colliderNormals = originalColliderMesh.normals;
+                        }
+                        else
+                        {
+                            RevertCollider();
+                        }
+                    }
+                }
+            }
+
+            public bool bendSpline
+            {
+                get { return _bendSpline; }
+                set
+                {
+                    _bendSpline = value;
+                    if (value)
+                    {
+
+                    }
+                }
+            }
+
+            public TS_Mesh editMesh
+            {
+                get
+                {
+                    if (!bendMesh || originalMesh == null) _editMesh = null;
+                    else if (_editMesh == null && originalMesh != null) _editMesh = new TS_Mesh(originalMesh);
+                    return _editMesh;
+                }
+            }
+
+            public TS_Mesh editColliderMesh
+            {
+                get
+                {
+                    if (!bendCollider || originalColliderMesh == null) _editColliderMesh = null;
+                    else if (_editColliderMesh == null && originalColliderMesh != null &&
+                             originalColliderMesh != originalMesh)
+                        _editColliderMesh = new TS_Mesh(originalColliderMesh);
+                    return _editColliderMesh;
+                }
+            }
+
+            public Spline originalSpline
+            {
+                get
+                {
+                    if (!bendSpline || splineComputer == null)
+                    {
+                        _originalSpline = null;
+                    }
+                    else if (_originalSpline == null && splineComputer != null)
+                    {
+                        _originalSpline = new Spline(splineComputer.type);
+                        _originalSpline.points = splineComputer.GetPoints();
+                    }
+                    return _originalSpline;
+                }
+            }
+
+            public bool isParent
+            {
+                get { return parent; }
+            }
+
             public void Revert()
             {
                 if (!isValid) return;
@@ -705,13 +804,13 @@ namespace Dreamteck.Splines
                 if (splineComputer != null) splineComputer.SetPoints(_originalSpline.points);
             }
 
-            private void RevertMesh()
+            void RevertMesh()
             {
                 if (filter != null) filter.sharedMesh = originalMesh;
                 destinationMesh = null;
             }
 
-            private void RevertTransform()
+            void RevertTransform()
             {
 #if UNITY_EDITOR
                 if (!Application.isPlaying)
@@ -734,7 +833,7 @@ namespace Dreamteck.Splines
                 transform.Update();
             }
 
-            private void RevertCollider()
+            void RevertCollider()
             {
                 if (collider != null) collider.sharedMesh = originalColliderMesh;
                 destinationColliderMesh = null;
@@ -744,16 +843,16 @@ namespace Dreamteck.Splines
             {
                 if (!enabled) return;
                 if (!isValid) return;
-                if(applyTransform) transform.Update();
-                if (editMesh != null && editMesh.hasUpdate)  ApplyMesh();
+                if (applyTransform) transform.Update();
+                if (editMesh != null && editMesh.hasUpdate) ApplyMesh();
                 if (bendCollider && collider != null)
                 {
                     if (!updateCollider)
                     {
-                        if((editColliderMesh == null && editMesh != null) || editColliderMesh != null)
+                        if (editColliderMesh == null && editMesh != null || editColliderMesh != null)
                         {
                             updateCollider = true;
-                            if(Application.isPlaying) colliderUpdateDue = Time.time + colliderUpdateRate;
+                            if (Application.isPlaying) colliderUpdateDue = Time.time + colliderUpdateRate;
                         }
                     }
                 }
@@ -769,7 +868,7 @@ namespace Dreamteck.Splines
                 }
             }
 
-            private void ApplyMesh()
+            void ApplyMesh()
             {
                 if (filter == null) return;
                 MeshUtility.CalculateTangents(editMesh);
@@ -784,10 +883,14 @@ namespace Dreamteck.Splines
                 filter.sharedMesh = destinationMesh;
             }
 
-            private void ApplyCollider()
+            void ApplyCollider()
             {
                 if (collider == null) return;
-                if (originalColliderMesh == originalMesh) collider.sharedMesh = filter.sharedMesh; //if the collider has the same mesh as the filter - just copy it
+                if (originalColliderMesh == originalMesh)
+                {
+                    collider.sharedMesh =
+                        filter.sharedMesh; //if the collider has the same mesh as the filter - just copy it
+                }
                 else
                 {
                     MeshUtility.CalculateTangents(editColliderMesh);
@@ -802,7 +905,7 @@ namespace Dreamteck.Splines
                 }
             }
 
-            private void ApplySpline()
+            void ApplySpline()
             {
                 if (destinationSpline == null) return;
                 splineComputer.SetPoints(destinationSpline.points);

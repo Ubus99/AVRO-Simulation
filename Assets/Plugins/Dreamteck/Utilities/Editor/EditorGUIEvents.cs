@@ -1,35 +1,35 @@
 using UnityEngine;
-using UnityEditor;
 
 namespace Dreamteck
 {
     public class EditorGUIEvents
     {
-        public bool mouseLeft = false;
-        public bool mouseRight = false;
-        public bool mouseLeftDown = false;
-        public bool mouseRightDown = false;
-        public bool mouseLeftUp = false;
-        public bool mouseRightUp = false;
-        public bool control = false;
-        public bool shift = false;
-        public bool alt = false;
-        public bool enterDown = false;
-        public bool v = false;
-        public Vector2 mousPos = Vector2.zero;
+        public delegate void CommandHandler(string command);
+
+        public delegate void EmptyHandler();
+
+        public delegate void KeyCodeHandler(KeyCode code);
+
+        public delegate void MouseHandler(int button);
+
+        public bool alt;
+        public bool control;
+        public bool enterDown;
         public Vector2 lastClickPoint = Vector2.zero;
+        public bool mouseLeft;
+        public bool mouseLeftDown;
+        public bool mouseLeftUp;
+        public bool mouseRight;
+        public bool mouseRightDown;
+        public bool mouseRightUp;
+        public Vector2 mousPos = Vector2.zero;
+        public bool shift;
+        public bool v;
+
         public Vector2 mouseClickDelta
         {
-            get
-            {
-                return Event.current.mousePosition - lastClickPoint;
-            }
+            get { return Event.current.mousePosition - lastClickPoint; }
         }
-
-        public delegate void CommandHandler(string command);
-        public delegate void KeyCodeHandler(KeyCode code);
-        public delegate void MouseHandler(int button);
-        public delegate void EmptyHandler();
 
         public event CommandHandler onCommand;
         public event KeyCodeHandler onkeyDown;

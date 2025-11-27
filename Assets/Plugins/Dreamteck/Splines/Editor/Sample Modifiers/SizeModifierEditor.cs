@@ -1,15 +1,12 @@
+using UnityEditor;
+using UnityEngine;
+
 namespace Dreamteck.Splines.Editor
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-
-    using UnityEditor;
-
     public class SizeModifierEditor : SplineSampleModifierEditor
     {
+        readonly float addTime = 0f;
         public bool allowSelection = true;
-        private float addTime = 0f;
 
         public SizeModifierEditor(SplineUser user, SplineUserEditor editor) : base(user, editor, "_sizeModifier")
         {
@@ -34,7 +31,7 @@ namespace Dreamteck.Splines.Editor
 
         protected override void KeyGUI(SerializedProperty key)
         {
-            SerializedProperty size = key.FindPropertyRelative("size");
+            var size = key.FindPropertyRelative("size");
             base.KeyGUI(key);
             EditorGUILayout.PropertyField(size);
         }

@@ -1,14 +1,11 @@
+using UnityEditor;
+using UnityEngine;
+
 namespace Dreamteck.Splines.Editor
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-
-    using UnityEditor;
-
     public class ColorModifierEditor : SplineSampleModifierEditor
     {
-        private float addTime = 0f;
+        readonly float addTime = 0f;
 
         public ColorModifierEditor(SplineUser user, SplineUserEditor editor) : base(user, editor, "_colorModifier")
         {
@@ -33,8 +30,8 @@ namespace Dreamteck.Splines.Editor
 
         protected override void KeyGUI(SerializedProperty key)
         {
-            SerializedProperty color = key.FindPropertyRelative("color");
-            SerializedProperty blendMode = key.FindPropertyRelative("blendMode");
+            var color = key.FindPropertyRelative("color");
+            var blendMode = key.FindPropertyRelative("blendMode");
             base.KeyGUI(key);
             EditorGUILayout.PropertyField(color);
             EditorGUILayout.PropertyField(blendMode);

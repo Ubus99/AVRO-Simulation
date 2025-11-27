@@ -1,13 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Dreamteck.Splines.Editor;
 using UnityEditor;
-using Dreamteck.Splines.Editor;
 
 namespace Dreamteck.Splines.Primitives
 {
     public class SpiralEditor : PrimitiveEditor
     {
-
         public override string GetName()
         {
             return "Spiral";
@@ -22,7 +19,7 @@ namespace Dreamteck.Splines.Primitives
         protected override void OnGUI()
         {
             base.OnGUI();
-            Spiral spiral = (Spiral)primitive;
+            var spiral = (Spiral)primitive;
             spiral.clockwise = EditorGUILayout.Toggle("Clockwise", spiral.clockwise);
             spiral.curve = EditorGUILayout.CurveField("Radius Interpolation", spiral.curve);
             spiral.startRadius = EditorGUILayout.FloatField("Start Radius", spiral.startRadius);
@@ -30,6 +27,5 @@ namespace Dreamteck.Splines.Primitives
             spiral.stretch = EditorGUILayout.FloatField("Stretch", spiral.stretch);
             spiral.iterations = EditorGUILayout.IntField("Iterations", spiral.iterations);
         }
-
     }
 }

@@ -1,15 +1,14 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
 
 namespace Dreamteck.Splines
 {
     public class SplineTool
     {
-        protected List<SplineComputer> splines = new List<SplineComputer>();
-        protected bool promptSave = false;
-        protected EditorWindow windowInstance = null;
+        protected bool promptSave;
+        protected List<SplineComputer> splines = new();
+        protected EditorWindow windowInstance;
 
         public virtual string GetName()
         {
@@ -24,10 +23,10 @@ namespace Dreamteck.Splines
 
         public virtual void Close()
         {
-            if(promptSave) ClosingDialog();
+            if (promptSave) ClosingDialog();
         }
 
-        private void ClosingDialog()
+        void ClosingDialog()
         {
             if (EditorUtility.DisplayDialog("Unsaved Changes", ClosingDialogText(), "Yes", "No")) Save();
             else Cancel();
@@ -58,9 +57,9 @@ namespace Dreamteck.Splines
             //EditorGUILayout.LabelField("Spline User", EditorStyles.boldLabel);
 
             EditorGUILayout.LabelField("Selected Splines", EditorStyles.boldLabel);
-            for (int i = 0; i < splines.Count; i++)
+            for (var i = 0; i < splines.Count; i++)
             {
-                SplineComputer lastComputer = splines[i];
+                var lastComputer = splines[i];
                 splines[i] = (SplineComputer)EditorGUILayout.ObjectField(splines[i], typeof(SplineComputer), true);
                 if (splines[i] == null)
                 {
@@ -71,7 +70,7 @@ namespace Dreamteck.Splines
                 }
                 if (lastComputer != splines[i])
                 {
-                    for (int j = 0; j < splines.Count; j++)
+                    for (var j = 0; j < splines.Count; j++)
                     {
                         if (j == i) continue;
                         if (splines[j] == splines[i])
@@ -84,9 +83,9 @@ namespace Dreamteck.Splines
             }
             SplineComputer newComp = null;
             newComp = (SplineComputer)EditorGUILayout.ObjectField(newComp, typeof(SplineComputer), true);
-            if(newComp != null)
+            if (newComp != null)
             {
-                for (int i = 0; i < splines.Count; i++)
+                for (var i = 0; i < splines.Count; i++)
                 {
                     if (splines[i] == newComp)
                     {
@@ -147,7 +146,7 @@ namespace Dreamteck.Splines
 
         protected virtual void Rebuild()
         {
-            
+
         }
 
         protected void Repaint()
@@ -158,7 +157,7 @@ namespace Dreamteck.Splines
         protected void GetSplines()
         {
             splines.Clear();
-            for (int i = 0; i < Selection.gameObjects.Length; i++)
+            for (var i = 0; i < Selection.gameObjects.Length; i++)
             {
                 splines.Add(Selection.gameObjects[i].GetComponent<SplineComputer>());
             }
@@ -186,23 +185,22 @@ namespace Dreamteck.Splines
 
         protected void SaveFloat(string name, float value)
         {
-             EditorPrefs.SetFloat(GetPrefix() + "_" + name, value);
+            EditorPrefs.SetFloat(GetPrefix() + "_" + name, value);
         }
 
         protected void SaveString(string name, string value)
         {
-             EditorPrefs.SetString(GetPrefix() + "_" + name, value);
+            EditorPrefs.SetString(GetPrefix() + "_" + name, value);
         }
 
         protected void SaveBool(string name, bool value)
         {
-             EditorPrefs.SetBool(GetPrefix() + "_" + name, value);
+            EditorPrefs.SetBool(GetPrefix() + "_" + name, value);
         }
 
         protected void SaveInt(string name, int value)
         {
-             EditorPrefs.SetInt(GetPrefix() + "_" + name, value);
+            EditorPrefs.SetInt(GetPrefix() + "_" + name, value);
         }
     }
-
 }

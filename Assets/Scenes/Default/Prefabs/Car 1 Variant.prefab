@@ -179,13 +179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 598e68924c9f6324bbfd049d3bae754c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Dreamteck.Splines::Dreamteck.Splines.SplineComputer
-  editorDrawPivot: 1
-  editorPathColor: {r: 1, g: 1, b: 1, a: 1}
-  editorAlwaysDraw: 1
-  editorDrawThickness: 0
-  editorBillboardThickness: 1
-  isNewlyCreated: 0
-  editorUpdateMode: 0
   multithreaded: 0
   updateMode: 0
   triggerGroups: []
@@ -218,6 +211,13 @@ MonoBehaviour:
   - {fileID: 3150443079643339640}
   _rawSamples: []
   _nodes: []
+  editorDrawPivot: 1
+  editorPathColor: {r: 1, g: 1, b: 1, a: 1}
+  editorAlwaysDraw: 1
+  editorDrawThickness: 0
+  editorBillboardThickness: 1
+  isNewlyCreated: 0
+  editorUpdateMode: 0
 --- !u!114 &3774737485629760273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -883,6 +883,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car 1 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 4929018535775754, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.75
@@ -1089,6 +1093,7 @@ MonoBehaviour:
   navMeshFollower: {fileID: 3005226245268660024}
   topDownCamera: {fileID: 828266717418472045}
   povCamera: {fileID: 3388885306685606077}
+  errorFlag: 0
 --- !u!1 &2174069641190503141 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1207575144611004, guid: ed7795f4883cb97468521311f1be4e22, type: 3}

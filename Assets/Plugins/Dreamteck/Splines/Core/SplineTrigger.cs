@@ -1,13 +1,15 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
 namespace Dreamteck.Splines
 {
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEngine.Events;
-
-    [System.Serializable]
-    public class TriggerGroup{
+    [Serializable]
+    public class TriggerGroup
+    {
 #if UNITY_EDITOR
-        public bool open = false;
+        public bool open;
 #endif
 
         public bool enabled = true;
@@ -17,7 +19,7 @@ namespace Dreamteck.Splines
 
         public void Check(double start, double end, SplineUser user = null)
         {
-            for (int i = 0; i < triggers.Length; i++)
+            for (var i = 0; i < triggers.Length; i++)
             {
                 if (triggers[i] == null)
                 {
@@ -33,22 +35,22 @@ namespace Dreamteck.Splines
 
         public void Reset()
         {
-            for (int i = 0; i < triggers.Length; i++) triggers[i].Reset();
+            for (var i = 0; i < triggers.Length; i++) triggers[i].Reset();
         }
 
         /// <summary>
-        /// Returns all triggers within the specified range
+        ///     Returns all triggers within the specified range
         /// </summary>
         public List<SplineTrigger> GetTriggers(double from, double to)
         {
-            List<SplineTrigger> triggerList = new List<SplineTrigger>();
-            for (int i = 0; i < triggers.Length; i++)
+            var triggerList = new List<SplineTrigger>();
+            for (var i = 0; i < triggers.Length; i++)
             {
                 if (triggers[i] == null)
                 {
                     continue;
                 }
-                if(triggers[i].position >= from  && triggers[i].position <= to)
+                if (triggers[i].position >= from && triggers[i].position <= to)
                 {
                     triggerList.Add(triggers[i]);
                 }
@@ -57,7 +59,7 @@ namespace Dreamteck.Splines
         }
 
         /// <summary>
-        /// Creates a new trigger inside the group
+        ///     Creates a new trigger inside the group
         /// </summary>
         public SplineTrigger AddTrigger(double position, SplineTrigger.Type type)
         {
@@ -65,11 +67,11 @@ namespace Dreamteck.Splines
         }
 
         /// <summary>
-        /// Creates a new trigger inside the group
+        ///     Creates a new trigger inside the group
         /// </summary>
         public SplineTrigger AddTrigger(double position, SplineTrigger.Type type, string name, Color color)
         {
-            SplineTrigger newTrigger = new SplineTrigger(type);
+            var newTrigger = new SplineTrigger(type);
             newTrigger.position = position;
             newTrigger.color = color;
             newTrigger.name = name;
@@ -78,7 +80,7 @@ namespace Dreamteck.Splines
         }
 
         /// <summary>
-        /// Removes the trigger at the given index from the group
+        ///     Removes the trigger at the given index from the group
         /// </summary>
         public void RemoveTrigger(int index)
         {
@@ -86,24 +88,37 @@ namespace Dreamteck.Splines
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class SplineTrigger
     {
+        public enum Type
+        {
+            Double,
+            Forward,
+            Backward
+        }
+
         public string name = "Trigger";
-        public enum Type { Double, Forward, Backward}
+
         [SerializeField]
         public Type type = Type.Double;
-        public bool workOnce = false;
-        private bool worked = false;
+
+        public bool workOnce;
+
         [Range(0f, 1f)]
         public double position = 0.5;
+
         [SerializeField]
         public bool enabled = true;
+
         [SerializeField]
         public Color color = Color.white;
+
         [SerializeField]
         [HideInInspector]
-        public TriggerEvent onCross = new TriggerEvent();
+        public TriggerEvent onCross = new();
+
+        bool worked;
 
         public SplineTrigger(Type t)
         {
@@ -113,7 +128,7 @@ namespace Dreamteck.Splines
         }
 
         /// <summary>
-        /// Add a new UnityAction to the trigger
+        ///     Add a new UnityAction to the trigger
         /// </summary>
         /// <param name="action"></param>
         public void AddListener(UnityAction<SplineUser> action)
@@ -123,7 +138,7 @@ namespace Dreamteck.Splines
 
         public void AddListener(UnityAction action)
         {
-            UnityAction<SplineUser> addAction = new UnityAction<SplineUser>((user) => { action.Invoke(); });
+            var addAction = new UnityAction<SplineUser>(user => { action.Invoke(); });
             onCross.AddListener(addAction);
         }
 
@@ -146,10 +161,12 @@ namespace Dreamteck.Splines
         {
             if (!enabled) return false;
             if (workOnce && worked) return false;
-            bool passed = false;
+            var passed = false;
             switch (type)
             {
-                case Type.Double: passed = (previousPercent <= position && currentPercent >= position) || (currentPercent <= position && previousPercent >= position); break;
+                case Type.Double:
+                    passed = previousPercent <= position && currentPercent >= position ||
+                             currentPercent <= position && previousPercent >= position; break;
                 case Type.Forward: passed = previousPercent <= position && currentPercent >= position; break;
                 case Type.Backward: passed = currentPercent <= position && previousPercent >= position; break;
             }
@@ -165,9 +182,9 @@ namespace Dreamteck.Splines
             onCross.Invoke(user);
         }
 
-        [System.Serializable]
+        [Serializable]
         public class TriggerEvent : UnityEvent<SplineUser>
-        { 
+        {
         }
     }
 }

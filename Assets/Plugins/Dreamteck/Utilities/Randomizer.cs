@@ -1,33 +1,33 @@
+using UnityEngine;
+using Random = System.Random;
+
 namespace Dreamteck.Utilities
 {
-    using UnityEngine;
-
     public class Randomizer
     {
-        private int _seed;
-        private System.Random _random;
-
-        public System.Random random => _random;
+        readonly int _seed;
 
         public Randomizer(int seed)
         {
             _seed = seed;
-            _random = new System.Random(_seed);
+            random = new Random(_seed);
         }
+
+        public Random random { get; private set; }
 
         public float Random01()
         {
-            return (float)_random.NextDouble();
+            return (float)random.NextDouble();
         }
 
         public float Random(float min, float max)
         {
-            return (float)DMath.Lerp(min, max, _random.NextDouble());
+            return (float)DMath.Lerp(min, max, random.NextDouble());
         }
 
         public int Random(int min, int max)
         {
-            return (int)DMath.Lerp(min, max, _random.NextDouble());
+            return (int)DMath.Lerp(min, max, random.NextDouble());
         }
 
         public Vector2 RandomVector2(float min, float max)
@@ -62,12 +62,12 @@ namespace Dreamteck.Utilities
 
         public void Reset()
         {
-            _random = new System.Random(_seed);
+            random = new Random(_seed);
         }
 
         public void Reset(int seed)
         {
-            _random = new System.Random(seed);
+            random = new Random(seed);
         }
     }
 }

@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace AYellowpaper.SerializedCollections
@@ -9,7 +8,7 @@ namespace AYellowpaper.SerializedCollections
         [SerializedDictionary("ID", "Person")]
         public SerializedDictionary<int, Person> People;
 
-        [System.Serializable]
+        [Serializable]
         public class Person
         {
             public string FirstName;

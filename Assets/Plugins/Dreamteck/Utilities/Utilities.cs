@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Dreamteck.Utilities
 {
@@ -14,14 +14,15 @@ namespace Dreamteck.Utilities
 
         public static void Shuffle<T>(this IList<T> list)
         {
-            int n = list.Count;
+            var n = list.Count;
             while (n > 1)
             {
                 n--;
-                int k = UnityEngine.Random.Range(0, n + 1);
+                var k = Random.Range(0, n + 1);
                 list.Swap(k, n);
             }
         }
+
         public static void RemoveAtUnsorted<T>(this List<T> list, int i)
         {
             var last = list.Count - 1;
@@ -31,14 +32,14 @@ namespace Dreamteck.Utilities
 
         public static T PopLast<T>(this IList<T> list)
         {
-            T last = list[list.Count - 1];
+            var last = list[list.Count - 1];
             list.RemoveAt(list.Count - 1);
             return last;
         }
 
         public static void Swap<T>(this IList<T> list, int left, int right)
         {
-            T value = list[left];
+            var value = list[left];
             list[left] = list[right];
             list[right] = value;
         }
@@ -62,8 +63,8 @@ namespace Dreamteck.Utilities
         {
             if (list.Count > 0)
             {
-                int index = UnityEngine.Random.Range(0, list.Count);
-                T element = list[index];
+                var index = Random.Range(0, list.Count);
+                var element = list[index];
                 list.RemoveAt(index);
                 return element;
             }
@@ -74,7 +75,7 @@ namespace Dreamteck.Utilities
         public static bool HasCommandLineArgument(string name)
         {
             var args = Environment.GetCommandLineArgs();
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 if (args[i] == name)
                 {

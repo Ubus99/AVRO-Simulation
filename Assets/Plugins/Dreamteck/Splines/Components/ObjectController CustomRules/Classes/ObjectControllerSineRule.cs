@@ -1,19 +1,33 @@
+using UnityEngine;
+
 namespace Dreamteck.Splines
 {
-    using UnityEngine;
-
     //Use the CreateAssetMenu attribute to add the object to the Create Asset context menu
     //After that, go to Assets/Create/Dreamteck/Splines/... and create the scriptable object
     [CreateAssetMenu(menuName = "Dreamteck/Splines/Object Controller Rules/Sine Rule")]
     public class ObjectControllerSineRule : ObjectControllerCustomRuleBase
     {
-        [SerializeField] private bool _useSplinePercent = false;
-        [SerializeField] private float _frequency = 1f;
-        [SerializeField] private float _amplitude = 1f;
-        [SerializeField] private float _angle = 0f;
-        [SerializeField] private float _minScale = 1f;
-        [SerializeField] private float _maxScale = 1f;
-        [SerializeField] [Range(0f, 1f)] private float _offset = 0f;
+        [SerializeField]
+        bool _useSplinePercent;
+
+        [SerializeField]
+        float _frequency = 1f;
+
+        [SerializeField]
+        float _amplitude = 1f;
+
+        [SerializeField]
+        float _angle;
+
+        [SerializeField]
+        float _minScale = 1f;
+
+        [SerializeField]
+        float _maxScale = 1f;
+
+        [SerializeField]
+        [Range(0f, 1f)]
+        float _offset;
 
         public bool useSplinePercent
         {
@@ -54,13 +68,14 @@ namespace Dreamteck.Splines
         public float offset
         {
             get { return _offset; }
-            set { 
+            set
+            {
                 _offset = value;
-                if(_offset > 1)
+                if (_offset > 1)
                 {
                     _offset -= Mathf.FloorToInt(_offset);
                 }
-                if(_offset < 0)
+                if (_offset < 0)
                 {
                     _offset += Mathf.FloorToInt(-_offset);
                 }
@@ -72,7 +87,7 @@ namespace Dreamteck.Splines
 
         public override Vector3 GetOffset()
         {
-            float sin = GetSine();
+            var sin = GetSine();
             return Quaternion.AngleAxis(_angle, Vector3.forward) * Vector3.up * sin * _amplitude;
         }
 
@@ -81,10 +96,10 @@ namespace Dreamteck.Splines
             return Vector3.Lerp(Vector3.one * _minScale, Vector3.one * _maxScale, GetSine());
         }
 
-        private float GetSine()
+        float GetSine()
         {
-            float objectPercent = _useSplinePercent ? (float)currentSample.percent : currentObjectPercent;
-            return Mathf.Sin((Mathf.PI * _offset) + objectPercent * Mathf.PI * _frequency);
+            var objectPercent = _useSplinePercent ? (float)currentSample.percent : currentObjectPercent;
+            return Mathf.Sin(Mathf.PI * _offset + objectPercent * Mathf.PI * _frequency);
         }
     }
 }

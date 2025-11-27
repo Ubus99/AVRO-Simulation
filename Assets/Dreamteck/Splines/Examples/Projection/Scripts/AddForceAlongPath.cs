@@ -1,14 +1,12 @@
+using UnityEngine;
+
 namespace Dreamteck.Splines.Examples
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-
     public class AddForceAlongPath : MonoBehaviour
     {
         public float force = 10f;
-        Rigidbody rb;
         SplineProjector projector;
+        Rigidbody rb;
 
         void Start()
         {

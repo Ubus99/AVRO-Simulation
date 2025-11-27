@@ -1,5 +1,4 @@
-﻿using System;
-using car_logic;
+﻿using car_logic;
 using Gameplay;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ namespace Scenes.Default.Scripts.Missions
         {
 
         }
-        
+
         protected override void Setup()
         {
             //throw new NotImplementedException();

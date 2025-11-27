@@ -9,25 +9,27 @@ namespace car_logic
     public class ADSV_AI : BaseStateMachine<States>
     {
         [Header("Movement")]
-        public CarFollower navMeshFollower;
+        public CarFollower navigationProvider;
 
         [Header("Cameras")]
         public Camera topDownCamera;
 
         public Camera povCamera;
+
+        bool _errorFlag;
         float _previousSpeed;
 
-        public CarAI CarAI { private set; get; }
+        public CarAI carAI { private set; get; }
 
         void Awake()
         {
-            navMeshFollower = GetComponent<CarFollower>();
-            CarAI = GetComponent<CarAI>();
+            navigationProvider = GetComponent<CarFollower>();
+            carAI = GetComponent<CarAI>();
         }
 
         void Start()
         {
-            if (ServiceLocator.Instance.TryGet<GameManager>(out var gameManager) && CarAI)
+            if (ServiceLocator.Instance.TryGet<GameManager>(out var gameManager) && carAI)
                 gameManager.RegisterCar(this);
         }
 
@@ -43,30 +45,49 @@ namespace car_logic
                 case States.Initializing:
                     BaseUpdate();
                     PrintState();
-                    _previousSpeed = navMeshFollower.GetTargetSpeed();
+                    _previousSpeed = navigationProvider.GetTargetSpeed();
                     State = States.NoCommand;
                     break;
                 case States.NoCommand:
                     BaseUpdate();
                     PrintState();
-                    navMeshFollower.SetTargetSpeed(0);
+                    navigationProvider.SetTargetSpeed(0);
                     State = States.Driving;
                     break;
                 case States.Driving:
                     BaseUpdate();
                     PrintState();
-                    navMeshFollower.SetTargetSpeed(_previousSpeed);
+                    navigationProvider.SetTargetSpeed(_previousSpeed);
+                    DetectErrors();
                     break;
                 case States.ErrorDetected:
-                    BaseUpdate();
                     DoErrorDetected();
                     break;
                 case States.WaitingForAid:
-                    BaseUpdate();
-                    PrintState();
+                    DoWaitingForAid();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+
+
+        public string GetState()
+        {
+            return State.ToString();
+        }
+
+        public void TriggerError()
+        {
+            _errorFlag = true;
+        }
+
+        void DetectErrors()
+        {
+            if (_errorFlag)
+            {
+                State = States.ErrorDetected;
+                Debug.Log($"{gameObject.name}: Error detected");
             }
         }
 
@@ -75,13 +96,26 @@ namespace car_logic
             if (StateChanged)
             {
                 PrintEntryState();
-                _previousSpeed = navMeshFollower.GetTargetSpeed();
-                navMeshFollower.SetTargetSpeed(0);
+                _previousSpeed = navigationProvider.GetTargetSpeed();
+                navigationProvider.SetTargetSpeed(0);
+            }
+            BaseUpdate();
+            PrintState();
+
+            State = States.WaitingForAid;
+        }
+
+        void DoWaitingForAid()
+        {
+            if (StateChanged)
+            {
+                PrintEntryState();
             }
             BaseUpdate();
             PrintState();
         }
     }
+
 
     public enum States
     {

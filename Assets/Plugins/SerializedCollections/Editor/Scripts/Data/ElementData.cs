@@ -1,23 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 namespace AYellowpaper.SerializedCollections.Editor.Data
 {
-    [System.Serializable]
+    [Serializable]
     internal class ElementData
     {
         [SerializeField]
-        private bool _isListToggleActive = false;
-
-        public ElementSettings Settings { get; }
-        public bool ShowAsList => Settings.HasListDrawerToggle && IsListToggleActive;
-        public bool IsListToggleActive { get => _isListToggleActive; set => _isListToggleActive = value; }
-        public DisplayType EffectiveDisplayType => ShowAsList ? DisplayType.List : Settings.DisplayType;
+        bool _isListToggleActive;
 
         public ElementData(ElementSettings elementSettings)
         {
             Settings = elementSettings;
+        }
+
+        public ElementSettings Settings { get; }
+
+        public bool ShowAsList
+        {
+            get { return Settings.HasListDrawerToggle && IsListToggleActive; }
+        }
+
+        public bool IsListToggleActive
+        {
+            get { return _isListToggleActive; }
+            set { _isListToggleActive = value; }
+        }
+
+        public DisplayType EffectiveDisplayType
+        {
+            get { return ShowAsList ? DisplayType.List : Settings.DisplayType; }
         }
     }
 }

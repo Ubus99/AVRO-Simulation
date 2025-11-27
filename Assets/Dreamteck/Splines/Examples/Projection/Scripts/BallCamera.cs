@@ -1,9 +1,7 @@
-﻿namespace Dreamteck.Splines.Examples
-{
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
+﻿using UnityEngine;
 
+namespace Dreamteck.Splines.Examples
+{
     public class BallCamera : MonoBehaviour
     {
         public Rigidbody rb;
@@ -15,7 +13,7 @@
 
         Transform trs;
 
-        private void Awake()
+        void Awake()
         {
             trs = transform;
             trs.position = rb.position + projector.result.rotation * offset;
@@ -24,8 +22,8 @@
 
         void FixedUpdate()
         {
-            Vector3 idealPosition = rb.position + trs.rotation * offset;
-            Quaternion idealRotation = projector.result.rotation * Quaternion.Euler(rotationOffset);
+            var idealPosition = rb.position + trs.rotation * offset;
+            var idealRotation = projector.result.rotation * Quaternion.Euler(rotationOffset);
             trs.position = Vector3.Lerp(trs.position, idealPosition, Time.deltaTime * positionSpeed);
             trs.rotation = Quaternion.Slerp(trs.rotation, idealRotation, Time.deltaTime * rotationSpeed);
         }

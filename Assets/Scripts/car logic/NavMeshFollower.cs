@@ -32,7 +32,7 @@ namespace Streets
             if (prog >= 1) prog -= 1;
 
             var pos = _projector.EvaluatePosition(prog);
-            
+
             _targetPosition = pos;
             _agent.destination = pos;
         }

@@ -1,15 +1,115 @@
 using UnityEngine;
-using System.Collections;
-using System.Threading;
+using UnityEngine.Rendering;
 #if UNITY_EDITOR
 using UnityEditor;
-#endif 
+#endif
 
 namespace Dreamteck.Splines
 {
     public class MeshGenerator : SplineUser
     {
+        public enum NormalMethod
+        {
+            Recalculate,
+            SplineNormals
+        }
+
+        public enum UVMode
+        {
+            Clip,
+            UniformClip,
+            Clamp,
+            UniformClamp
+        }
+
         protected const int UNITY_16_VERTEX_LIMIT = 65535;
+        protected static Vector2 __uvs = Vector2.zero;
+
+        [SerializeField]
+        [HideInInspector]
+        bool _baked;
+
+        [SerializeField]
+        [HideInInspector]
+        bool _markDynamic = true;
+
+        [SerializeField]
+        [HideInInspector]
+        float _size = 1f;
+
+        [SerializeField]
+        [HideInInspector]
+        Color _color = Color.white;
+
+        [SerializeField]
+        [HideInInspector]
+        Vector3 _offset = Vector3.zero;
+
+        [SerializeField]
+        [HideInInspector]
+        NormalMethod _normalMethod = NormalMethod.SplineNormals;
+
+        [SerializeField]
+        [HideInInspector]
+        bool _calculateTangents = true;
+
+        [SerializeField]
+        [HideInInspector]
+        bool _useSplineSize = true;
+
+        [SerializeField]
+        [HideInInspector]
+        bool _useSplineColor = true;
+
+        [SerializeField]
+        [HideInInspector]
+        [Range(-360f, 360f)]
+        float _rotation;
+
+        [SerializeField]
+        [HideInInspector]
+        bool _flipFaces;
+
+        [SerializeField]
+        [HideInInspector]
+        bool _doubleSided;
+
+        [SerializeField]
+        [HideInInspector]
+        UVMode _uvMode = UVMode.Clip;
+
+        [SerializeField]
+        [HideInInspector]
+        Vector2 _uvScale = Vector2.one;
+
+        [SerializeField]
+        [HideInInspector]
+        Vector2 _uvOffset = Vector2.zero;
+
+        [SerializeField]
+        [HideInInspector]
+        float _uvRotation;
+
+        [SerializeField]
+        [HideInInspector]
+        IndexFormat _meshIndexFormat = IndexFormat.UInt16;
+
+        [SerializeField]
+        [HideInInspector]
+        Mesh _bakedMesh;
+
+        [HideInInspector]
+        public float colliderUpdateRate = 0.2f;
+
+        protected float _lastUpdateTime;
+        protected Mesh _mesh;
+        protected bool _updateCollider;
+
+        protected float _vDist;
+
+        protected MeshFilter filter;
+        protected MeshCollider meshCollider;
+        protected MeshRenderer meshRenderer;
 
         public float size
         {
@@ -20,7 +120,11 @@ namespace Dreamteck.Splines
                 {
                     _size = value;
                     Rebuild();
-                } else _size = value;
+                }
+                else
+                {
+                    _size = value;
+                }
             }
         }
 
@@ -193,7 +297,7 @@ namespace Dreamteck.Splines
             }
         }
 
-        public UnityEngine.Rendering.IndexFormat meshIndexFormat
+        public IndexFormat meshIndexFormat
         {
             get { return _meshIndexFormat; }
             set
@@ -209,10 +313,7 @@ namespace Dreamteck.Splines
 
         public bool baked
         {
-            get
-            {
-                return _baked;
-            }
+            get { return _baked; }
         }
 
         public bool markDynamic
@@ -229,123 +330,12 @@ namespace Dreamteck.Splines
             }
         }
 
-        public enum UVMode { Clip, UniformClip, Clamp, UniformClamp }
-        public enum NormalMethod { Recalculate, SplineNormals }
-        [SerializeField]
-        [HideInInspector]
-        private bool _baked = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool _markDynamic = true;
-        [SerializeField]
-        [HideInInspector]
-        private float _size = 1f;
-        [SerializeField]
-        [HideInInspector]
-        private Color _color = Color.white;
-        [SerializeField]
-        [HideInInspector]
-        private Vector3 _offset = Vector3.zero;
-        [SerializeField]
-        [HideInInspector]
-        private NormalMethod _normalMethod = NormalMethod.SplineNormals;
-        [SerializeField]
-        [HideInInspector]
-        private bool _calculateTangents = true;
-        [SerializeField]
-        [HideInInspector]
-        private bool _useSplineSize = true;
-        [SerializeField]
-        [HideInInspector]
-        private bool _useSplineColor = true;
-        [SerializeField]
-        [HideInInspector]
-        [Range(-360f, 360f)]
-        private float _rotation = 0f;
-        [SerializeField]
-        [HideInInspector]
-        private bool _flipFaces = false;
-        [SerializeField]
-        [HideInInspector]
-        private bool _doubleSided = false;
-        [SerializeField]
-        [HideInInspector]
-        private UVMode _uvMode = UVMode.Clip;
-        [SerializeField]
-        [HideInInspector]
-        private Vector2 _uvScale = Vector2.one;
-        [SerializeField]
-        [HideInInspector]
-        private Vector2 _uvOffset = Vector2.zero;
-        [SerializeField]
-        [HideInInspector]
-        private float _uvRotation = 0f;
-        [SerializeField]
-        [HideInInspector]
-        private UnityEngine.Rendering.IndexFormat _meshIndexFormat = UnityEngine.Rendering.IndexFormat.UInt16;
-        [SerializeField]
-        [HideInInspector]
-        private Mesh _bakedMesh;
+        protected virtual string meshName
+        {
+            get { return "Mesh"; }
+        }
 
-        [HideInInspector]
-        public float colliderUpdateRate = 0.2f;
-        protected bool _updateCollider = false;
-        protected float _lastUpdateTime = 0f;
-
-        protected float _vDist = 0f;
-        protected static Vector2 __uvs = Vector2.zero;
-
-        protected virtual string meshName => "Mesh";
         protected TS_Mesh _tsMesh { get; private set; }
-        protected Mesh _mesh;
-
-        protected MeshFilter filter;
-        protected MeshRenderer meshRenderer;
-        protected MeshCollider meshCollider;
-
-#if UNITY_EDITOR
-
-        public void Bake(bool makeStatic, bool lightmapUV)
-        {
-            if (_mesh == null) return;
-            gameObject.isStatic = false;
-            UnityEditor.MeshUtility.Optimize(_mesh);
-            if (spline != null)
-            {
-                spline.Unsubscribe(this);
-            }
-            filter = GetComponent<MeshFilter>();
-            meshRenderer = GetComponent<MeshRenderer>();
-            filter.hideFlags = meshRenderer.hideFlags = HideFlags.None;
-            _bakedMesh = Instantiate(_mesh);
-            _bakedMesh.name = meshName + " - Baked";
-            if (lightmapUV)
-            {
-                Unwrapping.GenerateSecondaryUVSet(_bakedMesh);
-            }
-            filter.sharedMesh = _bakedMesh;
-            _mesh = null;
-            gameObject.isStatic = makeStatic; 
-            _baked = true;
-        }
-
-        public void Unbake()
-        {
-            gameObject.isStatic = false; 
-            _baked = false;
-            DestroyImmediate(_bakedMesh);
-            _bakedMesh = null;
-            CreateMesh();
-            spline.Subscribe(this);
-            Rebuild();
-        }
-
-        public override void EditorAwake()
-        {
-            GetComponents();
-            base.EditorAwake();
-        }
-#endif
 
 
         protected override void Awake()
@@ -359,8 +349,8 @@ namespace Dreamteck.Splines
             base.Reset();
             GetComponents();
 #if UNITY_EDITOR
-            bool materialFound = false;
-            for (int i = 0; i < meshRenderer.sharedMaterials.Length; i++)
+            var materialFound = false;
+            for (var i = 0; i < meshRenderer.sharedMaterials.Length; i++)
             {
                 if (meshRenderer.sharedMaterials[i] != null)
                 {
@@ -368,11 +358,31 @@ namespace Dreamteck.Splines
                     break;
                 }
             }
-            if (!materialFound) meshRenderer.sharedMaterial = AssetDatabase.GetBuiltinExtraResource<Material>("Default-Diffuse.mat");
+            if (!materialFound)
+                meshRenderer.sharedMaterial = AssetDatabase.GetBuiltinExtraResource<Material>("Default-Diffuse.mat");
 #endif
         }
 
-        private void GetComponents()
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            var filter = GetComponent<MeshFilter>();
+            var rend = GetComponent<MeshRenderer>();
+            if (filter != null) filter.hideFlags = HideFlags.None;
+            if (rend != null) rend.hideFlags = HideFlags.None;
+        }
+
+        void GetComponents()
         {
             filter = GetComponent<MeshFilter>();
             meshRenderer = GetComponent<MeshRenderer>();
@@ -389,25 +399,6 @@ namespace Dreamteck.Splines
         {
             if (_baked) return;
             base.RebuildImmediate();
-        }
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            MeshFilter filter = GetComponent<MeshFilter>();
-            MeshRenderer rend = GetComponent<MeshRenderer>();
-            if (filter != null)  filter.hideFlags = HideFlags.None;
-            if (rend != null)  rend.hideFlags = HideFlags.None;
         }
 
 
@@ -447,7 +438,8 @@ namespace Dreamteck.Splines
             if (sampleCount > 1)
             {
                 BuildMesh();
-            } else
+            }
+            else
             {
                 ClearMesh();
             }
@@ -470,7 +462,7 @@ namespace Dreamteck.Splines
             //Logic for mesh generation, automatically called in the Build method
         }
 
-        protected virtual void WriteMesh() 
+        protected virtual void WriteMesh()
         {
             MeshUtility.TransformMesh(_tsMesh, trs.worldToLocalMatrix);
             if (_doubleSided)
@@ -487,9 +479,12 @@ namespace Dreamteck.Splines
                 MeshUtility.CalculateTangents(_tsMesh);
             }
 
-            if (_meshIndexFormat == UnityEngine.Rendering.IndexFormat.UInt16 && _tsMesh.vertexCount > UNITY_16_VERTEX_LIMIT)
+            if (_meshIndexFormat == IndexFormat.UInt16 && _tsMesh.vertexCount > UNITY_16_VERTEX_LIMIT)
             {
-                Debug.LogError("WARNING: The generated mesh for " + name + " exceeds the maximum vertex count for standard meshes in Unity (" + UNITY_16_VERTEX_LIMIT + "). To create bigger meshes, set the Index Format inside the Vertices foldout to 32.");
+                Debug.LogError("WARNING: The generated mesh for " + name +
+                               " exceeds the maximum vertex count for standard meshes in Unity (" +
+                               UNITY_16_VERTEX_LIMIT +
+                               "). To create bigger meshes, set the Index Format inside the Vertices foldout to 32.");
             }
 
             _tsMesh.indexFormat = _meshIndexFormat;
@@ -515,11 +510,11 @@ namespace Dreamteck.Splines
 
         protected virtual void AllocateMesh(int vertexCount, int trisCount)
         {
-            if(trisCount < 0)
+            if (trisCount < 0)
             {
                 trisCount = 0;
             }
-            if(vertexCount < 0)
+            if (vertexCount < 0)
             {
                 vertexCount = 0;
             }
@@ -554,8 +549,8 @@ namespace Dreamteck.Splines
         protected void AddUVDistance(int sampleIndex)
         {
             if (sampleIndex == 0) return;
-            SplineSample current = new SplineSample();
-            SplineSample last = new SplineSample();
+            var current = new SplineSample();
+            var last = new SplineSample();
             GetSampleRaw(sampleIndex, ref current);
             GetSampleRaw(sampleIndex - 1, ref last);
             _vDist += Vector3.Distance(current.position, last.position);
@@ -566,8 +561,8 @@ namespace Dreamteck.Splines
             __uvs.x = u * _uvScale.x - _uvOffset.x;
             switch (uvMode)
             {
-                case UVMode.Clip:  __uvs.y = CalculateUVClip(percent); break;
-                case UVMode.Clamp: __uvs.y = CalculateUVClamp(percent);  break;
+                case UVMode.Clip: __uvs.y = CalculateUVClip(percent); break;
+                case UVMode.Clamp: __uvs.y = CalculateUVClamp(percent); break;
                 case UVMode.UniformClamp: __uvs.y = CalculateUVUniformClamp(_vDist); break;
                 default: __uvs.y = CalculateUVUniformClip(_vDist); break;
             }
@@ -595,7 +590,7 @@ namespace Dreamteck.Splines
 
         protected float GetBaseSize(SplineSample sample)
         {
-            return _useSplineSize? sample.size: 1f;
+            return _useSplineSize ? sample.size : 1f;
         }
 
         protected Color GetBaseColor(SplineSample sample)
@@ -616,12 +611,12 @@ namespace Dreamteck.Splines
             }
         }
 
-        private void RefreshMesh()
+        void RefreshMesh()
         {
             if (!Application.isPlaying)
             {
                 DestroyImmediate(_mesh);
-            } 
+            }
             else
             {
                 Destroy(_mesh);
@@ -631,7 +626,49 @@ namespace Dreamteck.Splines
             _tsMesh = null;
             CreateMesh();
         }
-    }
 
-  
+#if UNITY_EDITOR
+
+        public void Bake(bool makeStatic, bool lightmapUV)
+        {
+            if (_mesh == null) return;
+            gameObject.isStatic = false;
+            UnityEditor.MeshUtility.Optimize(_mesh);
+            if (spline != null)
+            {
+                spline.Unsubscribe(this);
+            }
+            filter = GetComponent<MeshFilter>();
+            meshRenderer = GetComponent<MeshRenderer>();
+            filter.hideFlags = meshRenderer.hideFlags = HideFlags.None;
+            _bakedMesh = Instantiate(_mesh);
+            _bakedMesh.name = meshName + " - Baked";
+            if (lightmapUV)
+            {
+                Unwrapping.GenerateSecondaryUVSet(_bakedMesh);
+            }
+            filter.sharedMesh = _bakedMesh;
+            _mesh = null;
+            gameObject.isStatic = makeStatic;
+            _baked = true;
+        }
+
+        public void Unbake()
+        {
+            gameObject.isStatic = false;
+            _baked = false;
+            DestroyImmediate(_bakedMesh);
+            _bakedMesh = null;
+            CreateMesh();
+            spline.Subscribe(this);
+            Rebuild();
+        }
+
+        public override void EditorAwake()
+        {
+            GetComponents();
+            base.EditorAwake();
+        }
+#endif
+    }
 }

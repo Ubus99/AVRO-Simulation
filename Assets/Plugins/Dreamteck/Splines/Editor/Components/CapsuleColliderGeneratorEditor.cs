@@ -1,8 +1,7 @@
+using UnityEditor;
+
 namespace Dreamteck.Splines.Editor
 {
-    using UnityEngine;
-    using UnityEditor;
-
     [CustomEditor(typeof(CapsuleColliderGenerator), true)]
     [CanEditMultipleObjects]
     public class CapsuleColliderGeneratorEditor : SplineUserEditor
@@ -15,20 +14,21 @@ namespace Dreamteck.Splines.Editor
         protected override void BodyGUI()
         {
             base.BodyGUI();
-            CapsuleColliderGenerator generator = (CapsuleColliderGenerator)target;
-            SerializedProperty directionProperty = serializedObject.FindProperty("_direction");
-            SerializedProperty heightProperty = serializedObject.FindProperty("_height");
-            SerializedProperty radiusProperty = serializedObject.FindProperty("_radius");
-            SerializedProperty overlapCapsProperty = serializedObject.FindProperty("_overlapCaps");
+            var generator = (CapsuleColliderGenerator)target;
+            var directionProperty = serializedObject.FindProperty("_direction");
+            var heightProperty = serializedObject.FindProperty("_height");
+            var radiusProperty = serializedObject.FindProperty("_radius");
+            var overlapCapsProperty = serializedObject.FindProperty("_overlapCaps");
 
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(directionProperty);
-            CapsuleColliderGenerator.CapsuleColliderZDirection direction = (CapsuleColliderGenerator.CapsuleColliderZDirection)directionProperty.intValue;
-            if(direction == CapsuleColliderGenerator.CapsuleColliderZDirection.Z)
+            var direction = (CapsuleColliderGenerator.CapsuleColliderZDirection)directionProperty.intValue;
+            if (direction == CapsuleColliderGenerator.CapsuleColliderZDirection.Z)
             {
                 EditorGUILayout.PropertyField(radiusProperty);
                 EditorGUILayout.PropertyField(overlapCapsProperty);
-            } else
+            }
+            else
             {
                 EditorGUILayout.PropertyField(heightProperty);
             }

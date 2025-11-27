@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AYellowpaper.SerializedCollections
 {
     public class SerializedDictionarySample : MonoBehaviour
     {
-        [SerializedDictionary("Element Type", "Description")]
-        public SerializedDictionary<ElementType, string> ElementDescriptions;
-        
         public enum ElementType
         {
             Fire,
@@ -16,5 +11,8 @@ namespace AYellowpaper.SerializedCollections
             Earth,
             Water
         }
+
+        [SerializedDictionary("Element Type", "Description")]
+        public SerializedDictionary<ElementType, string> ElementDescriptions;
     }
 }

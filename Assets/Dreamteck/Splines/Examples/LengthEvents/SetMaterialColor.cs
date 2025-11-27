@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Dreamteck.Splines.Examples
 {
@@ -8,7 +7,7 @@ namespace Dreamteck.Splines.Examples
         public Color[] colors;
         SplineRenderer rend;
 
-        private void Start()
+        void Start()
         {
             rend = GetComponent<SplineRenderer>();
         }
@@ -18,6 +17,5 @@ namespace Dreamteck.Splines.Examples
             if (!Application.isPlaying) return;
             rend.color = colors[index];
         }
-
     }
 }

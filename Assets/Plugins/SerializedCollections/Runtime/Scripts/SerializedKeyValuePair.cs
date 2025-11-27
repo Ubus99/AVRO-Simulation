@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 namespace AYellowpaper.SerializedCollections
 {
-    [System.Serializable]
+    [Serializable]
     public struct SerializedKeyValuePair<TKey, TValue>
     {
         public TKey Key;

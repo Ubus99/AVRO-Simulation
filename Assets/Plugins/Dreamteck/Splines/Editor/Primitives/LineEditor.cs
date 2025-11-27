@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Dreamteck.Splines.Editor;
 using UnityEditor;
-using Dreamteck.Splines.Editor;
 
 namespace Dreamteck.Splines.Primitives
 {
@@ -21,7 +19,7 @@ namespace Dreamteck.Splines.Primitives
         protected override void OnGUI()
         {
             base.OnGUI();
-            Line line = (Line)primitive;
+            var line = (Line)primitive;
             line.length = EditorGUILayout.FloatField("Length", line.length);
             line.mirror = EditorGUILayout.Toggle("Mirror", line.mirror);
             line.rotation = EditorGUILayout.Vector3Field("Rotation", line.rotation);

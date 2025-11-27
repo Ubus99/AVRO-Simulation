@@ -1,24 +1,19 @@
-﻿namespace Dreamteck.Splines.Editor
-{
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEditor;
+﻿using UnityEditor;
+using UnityEngine;
 
+namespace Dreamteck.Splines.Editor
+{
     public class EditorModule
     {
+        protected SceneView _currentSceneView;
         protected string prefPrefix = "";
 
-        private bool _changed = false;
-
-        public bool hasChanged { get { return _changed; } }
-
-        protected SceneView _currentSceneView;
+        public bool hasChanged { get; private set; }
 
 
         protected void RegisterChange()
         {
-            _changed = true;
+            hasChanged = true;
         }
 
         public virtual void Select()
@@ -38,7 +33,7 @@
 
         public void DrawScene()
         {
-            _changed = false;
+            hasChanged = false;
             OnDrawScene();
         }
 
@@ -48,7 +43,7 @@
 
         public void DrawInspector()
         {
-            _changed = false;
+            hasChanged = false;
             OnDrawInspector();
         }
 
@@ -134,12 +129,12 @@
 
         internal static GUIContent IconContent(string title, string iconName, string description)
         {
-            GUIContent content = new GUIContent(title, description);
+            var content = new GUIContent(title, description);
             if (EditorGUIUtility.isProSkin)
             {
                 iconName += "_dark";
             }
-            Texture2D tex = ResourceUtility.EditorLoadTexture("Splines/Editor/Icons", iconName);
+            var tex = ResourceUtility.EditorLoadTexture("Splines/Editor/Icons", iconName);
             if (tex != null)
             {
                 content.image = tex;

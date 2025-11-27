@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Dreamteck.Splines.Primitives
 {
@@ -19,10 +17,10 @@ namespace Dreamteck.Splines.Primitives
             base.Generate();
             closed = true;
             CreatePoints(sides, SplinePoint.Type.SmoothMirrored);
-            for (int i = 0; i < sides; i++)
+            for (var i = 0; i < sides; i++)
             {
-                float percent = (float)i / sides;
-                Vector3 pos = Quaternion.AngleAxis(360f * percent, Vector3.forward) * Vector3.up * radius;
+                var percent = (float)i / sides;
+                var pos = Quaternion.AngleAxis(360f * percent, Vector3.forward) * Vector3.up * radius;
                 points[i].SetPosition(pos);
             }
         }

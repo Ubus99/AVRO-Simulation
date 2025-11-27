@@ -5,9 +5,17 @@ namespace AYellowpaper.SerializedCollections.Editor.Search
 {
     public class SearchQuery
     {
+        readonly IEnumerable<Matcher> _matchers;
+        string _text;
+
+        public SearchQuery(IEnumerable<Matcher> matchers)
+        {
+            _matchers = matchers;
+        }
+
         public string SearchString
         {
-            get => _text;
+            get { return _text; }
             set
             {
                 if (_text == value)
@@ -19,14 +27,6 @@ namespace AYellowpaper.SerializedCollections.Editor.Search
             }
         }
 
-        private IEnumerable<Matcher> _matchers;
-        private string _text;
-
-        public SearchQuery(IEnumerable<Matcher> matchers)
-        {
-            _matchers = matchers;
-        }
-
         public List<PropertySearchResult> ApplyToProperty(SerializedProperty property)
         {
             TryGetMatchingProperties(property.Copy(), out var properties);
@@ -35,8 +35,8 @@ namespace AYellowpaper.SerializedCollections.Editor.Search
 
         public IEnumerable<SearchResultEntry> ApplyToArrayProperty(SerializedProperty property)
         {
-            int arrayCount = property.arraySize;
-            for (int i = 0; i < arrayCount; i++)
+            var arrayCount = property.arraySize;
+            for (var i = 0; i < arrayCount; i++)
             {
                 var prop = property.GetArrayElementAtIndex(i);
                 if (TryGetMatchingProperties(prop.Copy(), out var properties))
@@ -44,7 +44,7 @@ namespace AYellowpaper.SerializedCollections.Editor.Search
             }
         }
 
-        private bool TryGetMatchingProperties(SerializedProperty property, out List<PropertySearchResult> matchingProperties)
+        bool TryGetMatchingProperties(SerializedProperty property, out List<PropertySearchResult> matchingProperties)
         {
             matchingProperties = null;
             foreach (var child in SCEditorUtility.GetChildren(property, true))
@@ -54,7 +54,7 @@ namespace AYellowpaper.SerializedCollections.Editor.Search
                     if (matcher.IsMatch(child))
                     {
                         if (matchingProperties == null)
-                            matchingProperties = new();
+                            matchingProperties = new List<PropertySearchResult>();
                         matchingProperties.Add(new PropertySearchResult(child.Copy()));
                     }
                 }

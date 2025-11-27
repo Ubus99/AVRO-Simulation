@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Dreamteck.Splines.Primitives
@@ -20,7 +18,7 @@ namespace Dreamteck.Splines.Primitives
             base.Generate();
             closed = true;
             CreatePoints(8, SplinePoint.Type.Broken);
-            Vector2 edgeSize = size - new Vector2(xRadius, yRadius) * 2f;
+            var edgeSize = size - new Vector2(xRadius, yRadius) * 2f;
             points[0].SetPosition(Vector3.up / 2f * edgeSize.y + Vector3.left / 2f * size.x);
             points[1].SetPosition(Vector3.up / 2f * size.y + Vector3.left / 2f * edgeSize.x);
             points[2].SetPosition(Vector3.up / 2f * size.y + Vector3.right / 2f * edgeSize.x);
@@ -30,8 +28,8 @@ namespace Dreamteck.Splines.Primitives
             points[6].SetPosition(Vector3.down / 2f * size.y + Vector3.left / 2f * edgeSize.x);
             points[7].SetPosition(Vector3.down / 2f * edgeSize.y + Vector3.left / 2f * size.x);
 
-            float xRad = 2f * (Mathf.Sqrt(2f) - 1f) / 3f * xRadius * 2f;
-            float yRad = 2f * (Mathf.Sqrt(2f) - 1f) / 3f * yRadius * 2f;
+            var xRad = 2f * (Mathf.Sqrt(2f) - 1f) / 3f * xRadius * 2f;
+            var yRad = 2f * (Mathf.Sqrt(2f) - 1f) / 3f * yRadius * 2f;
             points[0].SetTangent2Position(points[0].position + Vector3.up * yRad);
             points[1].SetTangentPosition(points[1].position + Vector3.left * xRad);
             points[2].SetTangent2Position(points[2].position + Vector3.right * xRad);

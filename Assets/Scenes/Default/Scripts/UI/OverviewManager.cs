@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using car_logic;
+using Scenes.Default.Scripts.UI;
 using UI;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Scenes.Scripts.UI
@@ -11,8 +12,8 @@ namespace Scenes.Scripts.UI
     public class OverviewManager : MonoBehaviour
     {
         public CarTopView imagePrefab;
-        readonly List<Camera> _cameras = new();
         readonly List<RenderTexture> _renderTextures = new();
+        readonly List<ADSV_AI> _trackedVehicles = new();
         readonly List<CarTopView> _views = new();
         bool _dirty;
         DynamicGrid _gridLayout;
@@ -63,30 +64,15 @@ namespace Scenes.Scripts.UI
             _dirty = true;
         }
 
-        public void AddCameras(IEnumerable<Camera> cameras)
+        public void RegisterVehicle(IEnumerable<ADSV_AI> cameras)
         {
-            _cameras.AddRange(cameras);
+            _trackedVehicles.AddRange(cameras);
             _dirty = true;
         }
 
-        public void AddCamera(Camera cam)
+        public void RegisterVehicle(ADSV_AI cam)
         {
-            _cameras.Add(cam);
-            _dirty = true;
-        }
-
-        public void AddCameras(IEnumerable<CinemachineBrain> brains)
-        {
-            foreach (var brain in brains)
-            {
-                _cameras.Add(brain.OutputCamera);
-            }
-            _dirty = true;
-        }
-
-        public void AddCamera(CinemachineBrain brain)
-        {
-            _cameras.Add(brain.OutputCamera);
+            _trackedVehicles.Add(cam);
             _dirty = true;
         }
 
@@ -99,21 +85,22 @@ namespace Scenes.Scripts.UI
             }
             _views.Clear();
 
-            foreach (var c in _cameras)
+            foreach (var v in _trackedVehicles)
             {
                 var cellSize = _gridLayout.CellSize;
                 var t = new RenderTexture(cellSize.x, cellSize.y, 16, RenderTextureFormat.ARGB32)
                 {
-                    name = c.name + "_texture",
+                    name = v.name + "_texture",
                     antiAliasing = 4
                 };
-                c.targetTexture = t;
+                v.topDownCamera.targetTexture = t;
 
                 var view = Instantiate(imagePrefab, transform);
                 view.transform.SetParent(transform);
                 view.transform.localScale = Vector3.one;
                 view.image.texture = t;
                 view.OnClicked += HandleViewClicked;
+                view.ADS = v;
                 _views.Add(view);
                 _renderTextures.Add(t);
             }

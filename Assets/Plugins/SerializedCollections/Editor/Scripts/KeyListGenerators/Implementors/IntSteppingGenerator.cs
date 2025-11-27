@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AYellowpaper.SerializedCollections.KeysGenerators
@@ -9,15 +8,18 @@ namespace AYellowpaper.SerializedCollections.KeysGenerators
     public class IntSteppingGenerator : KeyListGenerator
     {
         [SerializeField]
-        private int _startIndex = 0;
+        int _startIndex;
+
         [SerializeField]
-        private int _stepDistance = 10;
-        [SerializeField, Min(0)]
-        private int _stepCount = 1;
+        int _stepDistance = 10;
+
+        [SerializeField]
+        [Min(0)]
+        int _stepCount = 1;
 
         public override IEnumerable GetKeys(Type type)
         {
-            for (int i = 0; i <= _stepCount; i++)
+            for (var i = 0; i <= _stepCount; i++)
             {
                 yield return _startIndex + i * _stepDistance;
             }

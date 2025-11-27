@@ -9,27 +9,38 @@ namespace AYellowpaper.SerializedCollections.KeysGenerators
     public class KeyListGeneratorSelectorWindow : EditorWindow
     {
         [SerializeField]
-        private int _selectedIndex;
+        int _selectedIndex;
+
         [SerializeField]
-        private ModificationType _modificationType;
+        ModificationType _modificationType;
 
-        private KeyListGenerator _generator;
-        private UnityEditor.Editor _editor;
-        private List<KeyListGeneratorData> _generatorsData;
-        private Type _targetType;
-        private int _undoStart;
-        private Dictionary<Type, KeyListGenerator> _keysGenerators = new Dictionary<Type, KeyListGenerator>();
-        private string _detailsText;
+        readonly Dictionary<Type, KeyListGenerator> _keysGenerators = new();
+        string _detailsText;
+        UnityEditor.Editor _editor;
 
-        public event Action<KeyListGenerator, ModificationType> OnApply;
+        KeyListGenerator _generator;
+        List<KeyListGeneratorData> _generatorsData;
+        Type _targetType;
+        int _undoStart;
 
-        private void OnEnable()
+        void OnEnable()
         {
-            VisualTreeAsset document = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Plugins/SerializedCollections/Editor/Assets/KeysGeneratorSelectorWindow.uxml");
+            var document = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
+            "Assets/Plugins/SerializedCollections/Editor/Assets/KeysGeneratorSelectorWindow.uxml");
             var element = document.CloneTree();
             element.style.height = new StyleLength(new Length(100, LengthUnit.Percent));
             rootVisualElement.Add(element);
         }
+
+        void OnDestroy()
+        {
+            Undo.undoRedoPerformed -= HandleUndoCallback;
+            Undo.RevertAllDownToGroup(_undoStart);
+            foreach (var keyGenerator in _keysGenerators)
+                DestroyImmediate(keyGenerator.Value);
+        }
+
+        public event Action<KeyListGenerator, ModificationType> OnApply;
 
         public void Initialize(IEnumerable<KeyListGeneratorData> generatorsData, Type type)
         {
@@ -59,7 +70,7 @@ namespace AYellowpaper.SerializedCollections.KeysGenerators
             radioButtonGroup.AddToClassList("sc-radio-button-group");
             generatorsContent.Add(radioButtonGroup);
 
-            for (int i = 0; i < _generatorsData.Count; i++)
+            for (var i = 0; i < _generatorsData.Count; i++)
             {
                 var generatorData = _generatorsData[i];
 
@@ -73,14 +84,14 @@ namespace AYellowpaper.SerializedCollections.KeysGenerators
             }
         }
 
-        private void ApplyButtonClicked()
+        void ApplyButtonClicked()
         {
             OnApply?.Invoke(_editor.target as KeyListGenerator, _modificationType);
             OnApply = null;
             Close();
         }
 
-        private void EditorGUIHandler()
+        void EditorGUIHandler()
         {
             EditorGUI.BeginChangeCheck();
             _editor.OnInspectorGUI();
@@ -90,14 +101,14 @@ namespace AYellowpaper.SerializedCollections.KeysGenerators
             }
         }
 
-        private void InitializeModificationToggle(RadioButton obj)
+        void InitializeModificationToggle(RadioButton obj)
         {
             if ((ModificationType)obj.userData == _modificationType)
                 obj.value = true;
             obj.RegisterValueChangedCallback(OnModificationToggleClicked);
         }
 
-        private void OnModificationToggleClicked(ChangeEvent<bool> evt)
+        void OnModificationToggleClicked(ChangeEvent<bool> evt)
         {
             if (!evt.newValue)
                 return;
@@ -106,10 +117,10 @@ namespace AYellowpaper.SerializedCollections.KeysGenerators
             _modificationType = modificationType;
         }
 
-        private void UpdateDetailsText()
+        void UpdateDetailsText()
         {
             var enumerable = _generator.GetKeys(_targetType);
-            int count = 0;
+            var count = 0;
             var enumerator = enumerable.GetEnumerator();
             while (enumerator.MoveNext())
             {
@@ -125,15 +136,7 @@ namespace AYellowpaper.SerializedCollections.KeysGenerators
             rootVisualElement.Q<Label>(name = "generated-count-label").text = _detailsText;
         }
 
-        private void OnDestroy()
-        {
-            Undo.undoRedoPerformed -= HandleUndoCallback;
-            Undo.RevertAllDownToGroup(_undoStart);
-            foreach (var keyGenerator in _keysGenerators)
-                DestroyImmediate(keyGenerator.Value);
-        }
-
-        private void OnGeneratorClicked(ChangeEvent<bool> evt)
+        void OnGeneratorClicked(ChangeEvent<bool> evt)
         {
             if (!evt.newValue)
                 return;
@@ -141,20 +144,20 @@ namespace AYellowpaper.SerializedCollections.KeysGenerators
             SetGeneratorIndex((int)(evt.target as VisualElement).userData);
         }
 
-        private void HandleUndoCallback()
+        void HandleUndoCallback()
         {
             UpdateGeneratorAndEditorIfNeeded();
             Repaint();
         }
 
-        private void SetGeneratorIndex(int index)
+        void SetGeneratorIndex(int index)
         {
             Undo.RecordObject(this, "Change Window");
             _selectedIndex = index;
             UpdateGeneratorAndEditorIfNeeded();
         }
 
-        private void UpdateGeneratorAndEditorIfNeeded()
+        void UpdateGeneratorAndEditorIfNeeded()
         {
             var targetType = _generatorsData[_selectedIndex].GeneratorType;
             if (_generator != null && _generator.GetType() == targetType)
@@ -168,7 +171,7 @@ namespace AYellowpaper.SerializedCollections.KeysGenerators
             UpdateDetailsText();
         }
 
-        private KeyListGenerator GetOrCreateKeysGenerator(Type type)
+        KeyListGenerator GetOrCreateKeysGenerator(Type type)
         {
             if (!_keysGenerators.ContainsKey(type))
             {

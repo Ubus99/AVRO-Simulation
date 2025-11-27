@@ -1,17 +1,16 @@
+using UnityEditor;
+using UnityEngine;
+
 namespace Dreamteck.Splines.Editor
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-
-    using UnityEditor;
-
     public class MeshScaleModifierEditor : SplineSampleModifierEditor
     {
+        readonly float addTime = 0f;
         public bool allowSelection = true;
-        private float addTime = 0f;
 
-        public MeshScaleModifierEditor(MeshGenerator user, SplineUserEditor editor, int channelIndex) : base(user, editor, "_channels/["+channelIndex+"]/_scaleModifier")
+        public MeshScaleModifierEditor(MeshGenerator user, SplineUserEditor editor, int channelIndex) : base(user,
+        editor,
+        "_channels/[" + channelIndex + "]/_scaleModifier")
         {
             title = "Scale Modifiers";
         }
@@ -35,7 +34,7 @@ namespace Dreamteck.Splines.Editor
 
         protected override void KeyGUI(SerializedProperty key)
         {
-            SerializedProperty scale = key.FindPropertyRelative("scale");
+            var scale = key.FindPropertyRelative("scale");
             base.KeyGUI(key);
             EditorGUILayout.PropertyField(scale);
         }
