@@ -35,7 +35,7 @@ namespace Scenes.Default.Scripts.UI
             if (!outline) return;
 
             outline.effectColor = selected ? selectedColor : defaultColor;
-            text.text = ADS.GetState();
+            text.text = ADS ? ADS.GetState() : "";
         }
 
         public void OnPointerClick(PointerEventData eventData)

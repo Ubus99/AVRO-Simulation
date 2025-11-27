@@ -28,7 +28,7 @@ namespace UI
         }
 
         // Update is called once per frame
-        void Update()
+        void LateUpdate()
         {
             var childCount = transform.childCount;
             if (_lastChildren != childCount)

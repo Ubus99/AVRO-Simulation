@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -513,7 +513,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 64
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
@@ -1090,10 +1090,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ebb9d3b5b74845ad6427202e486ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::car_logic.ADSV_AI
-  navMeshFollower: {fileID: 3005226245268660024}
+  navigationProvider: {fileID: 0}
   topDownCamera: {fileID: 828266717418472045}
   povCamera: {fileID: 3388885306685606077}
-  errorFlag: 0
 --- !u!1 &2174069641190503141 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1207575144611004, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
