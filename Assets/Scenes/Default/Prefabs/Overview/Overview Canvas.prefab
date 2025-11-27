@@ -856,6 +856,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chevron
       objectReference: {fileID: 0}
+    - target: {fileID: 1623732513273410420, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623732513273410420, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623732513273410420, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623732513273410420, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623732513273410420, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 24.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623732513273410420, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -24.005
+      objectReference: {fileID: 0}
     - target: {fileID: 6554979252453201152, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
