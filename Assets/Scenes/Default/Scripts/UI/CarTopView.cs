@@ -23,12 +23,6 @@ namespace Scenes.Default.Scripts.UI
 
         public Color defaultColor = Color.white;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-
-        }
-
         // Update is called once per frame
         void LateUpdate()
         {
@@ -41,9 +35,18 @@ namespace Scenes.Default.Scripts.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             selected = !selected;
-            OnClicked?.Invoke(this, EventArgs.Empty);
+            switch (selected)
+            {
+                case true:
+                    OnTwiceClicked?.Invoke(this, EventArgs.Empty);
+                    break;
+                case false:
+                    OnClicked?.Invoke(this, EventArgs.Empty);
+                    break;
+            }
         }
 
         public event EventHandler OnClicked;
+        public event EventHandler OnTwiceClicked;
     }
 }
