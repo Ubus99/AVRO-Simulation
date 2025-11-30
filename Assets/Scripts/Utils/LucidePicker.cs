@@ -19,7 +19,7 @@ namespace Utils
         {
             if (!_text)
             {
-                Debug.LogWarning("unable to find TextMeshProUGUI on button");
+                Debug.LogWarning($"unable to find TextMeshProUGUI on {gameObject.name}");
                 return;
             }
             if (!int.TryParse(iconID.TrimStart(Trim), out var sanitizedIconID)) return;
