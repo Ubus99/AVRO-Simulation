@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-public class ServiceLocator : AbstractSingleton<ServiceLocator>
+namespace Utils
 {
-    readonly ConcurrentDictionary<Type, object> _services = new();
-
-    public bool TryRegister<T>(object service)
+    public class ServiceLocator : AbstractSingleton<ServiceLocator>
     {
-        return _services.TryAdd(typeof(T), service);
-    }
+        readonly ConcurrentDictionary<Type, object> _services = new();
 
-    public bool TryGet<T>(out T service)
-    {
-        var s = _services.TryGetValue(typeof(T), out var r);
-        service = (T)r;
-        return s;
+        public bool TryRegister<T>(object service)
+        {
+            return _services.TryAdd(typeof(T), service);
+        }
+
+        public bool TryGet<T>(out T service)
+        {
+            var s = _services.TryGetValue(typeof(T), out var r);
+            service = (T)r;
+            return s;
+        }
     }
 }

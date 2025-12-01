@@ -5,6 +5,7 @@ using car_logic;
 using Scenes.Default.Scripts.UI;
 using UI;
 using UnityEngine;
+using Utils;
 
 namespace Scenes.Scripts.UI
 {

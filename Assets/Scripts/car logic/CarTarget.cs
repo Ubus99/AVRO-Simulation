@@ -2,6 +2,7 @@
 using Dreamteck.Splines;
 using Streets;
 using UnityEngine;
+using Utils;
 
 namespace car_logic
 {
@@ -14,60 +15,69 @@ namespace car_logic
         bool _junctionError;
         bool _recursionLock;
 
-        public SplineFollower SplineFollower { get; private set; }
-        public float Distance { get; private set; }
+        public SplineFollower splineFollower { get; private set; }
+        public float distance { get; private set; }
 
         void Awake()
         {
-            SplineFollower = GetComponent<SplineFollower>();
-            SplineFollower.loopSamples = true;
+            splineFollower = GetComponent<SplineFollower>();
+            splineFollower.loopSamples = true;
         }
 
         void Update()
         {
             if (!follower) return;
+            if (!splineFollower.spline)
+                if (ServiceLocator.Instance.TryGet<StreetManager>(out var streetManager))
+                {
+                    var (sc, ss) = streetManager.ClosestSpline(transform.position);
+                    splineFollower.spline = sc;
+                    splineFollower.SetPercent(ss.percent);
+                    splineFollower.RebuildImmediate();
+                }
+
             var posDif = transform.position - follower.position;
-            Distance = posDif.magnitude;
+            distance = posDif.magnitude;
 
             var a = Vector3.Angle(follower.forward, posDif);
             if (Mathf.Abs(a) > 90)
             {
-                SplineFollower.followSpeed = pull;
+                splineFollower.followSpeed = pull;
             }
             else
             {
-                if (Distance < maxDistance)
-                    SplineFollower.followSpeed = pull * (1 - Mathf.Clamp01(Distance / maxDistance));
+                if (distance < maxDistance)
+                    splineFollower.followSpeed = pull * (1 - Mathf.Clamp01(distance / maxDistance));
                 else
-                    SplineFollower.followSpeed = 0;
+                    splineFollower.followSpeed = 0;
             }
 
             if (_junctionError)
             {
                 //handle target reaching end without triggering node
                 Debug.LogWarning("End reached without calling node. this should not happen");
-                var p = SplineFollower.spline.pointCount;
-                var n = SplineFollower.spline.GetNode(p - 1);
+                var p = splineFollower.spline.pointCount;
+                var n = splineFollower.spline.GetNode(p - 1);
                 OnNodePassed(n, p);
             }
         }
 
         void OnEnable()
         {
-            SplineFollower.onNode += OnNodePassed;
-            SplineFollower.onEndReached += OnEndReached;
+            splineFollower.onNode += OnNodePassed;
+            splineFollower.onEndReached += OnEndReached;
         }
 
         void OnDisable()
         {
-            SplineFollower.onNode -= OnNodePassed;
-            SplineFollower.onEndReached -= OnEndReached;
+            splineFollower.onNode -= OnNodePassed;
+            splineFollower.onEndReached -= OnEndReached;
         }
 
         public double GetFollowerPercent()
         {
             var result = new SplineSample();
-            SplineFollower.Project(follower.position, ref result);
+            splineFollower.Project(follower.position, ref result);
             return result.percent;
         }
 
@@ -92,15 +102,15 @@ namespace car_logic
 
         void SwitchSpline(Node.Connection to, int idx)
         {
-            if (_recursionLock || SplineFollower.spline == to.spline)
+            if (_recursionLock || splineFollower.spline == to.spline)
                 return;
 
             _recursionLock = true;
             //Set the spline to the tracer
-            SplineFollower.spline = to.spline;
-            SplineFollower.RebuildImmediate();
-            var startPercent = SplineFollower.ClipPercent(to.spline.GetPointPercent(to.pointIndex));
-            SplineFollower.SetPercent(startPercent);
+            splineFollower.spline = to.spline;
+            splineFollower.RebuildImmediate();
+            var startPercent = splineFollower.ClipPercent(to.spline.GetPointPercent(to.pointIndex));
+            splineFollower.SetPercent(startPercent);
             _junctionError = false;
             _recursionLock = false;
         }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using car_logic;
 using Scenes.Scripts.UI;
 using UnityEngine;
+using Utils;
 
 namespace Gameplay
 {

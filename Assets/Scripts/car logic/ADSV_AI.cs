@@ -2,14 +2,15 @@
 using Gameplay;
 using Streets;
 using UnityEngine;
+using Utils;
 
 namespace car_logic
 {
-    [RequireComponent(typeof(CarFollower))]
+    [RequireComponent(typeof(CarSplineFollower))]
     public class ADSV_AI : BaseStateMachine<States>
     {
         [Header("Movement")]
-        public CarFollower navigationProvider;
+        public CarSplineFollower navigationProvider;
 
         [Header("Cameras")]
         public Camera topDownCamera;
@@ -23,7 +24,7 @@ namespace car_logic
 
         void Awake()
         {
-            navigationProvider = GetComponent<CarFollower>();
+            navigationProvider = GetComponent<CarSplineFollower>();
             carAI = GetComponent<CarAI>();
         }
 
