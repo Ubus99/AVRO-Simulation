@@ -1076,6 +1076,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Streets.CarFollower
   visualize: 1
+  targetPrefab: {fileID: 7009411929461673028, guid: f22ab5f85d327fc4a89810557099bbc5, type: 3}
   target: {fileID: 0}
   baseSpeed: 0
 --- !u!114 &7842990661033774574

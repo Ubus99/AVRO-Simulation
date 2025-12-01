@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Dreamteck.Splines;
 using UnityEngine;
 using Utils;
@@ -14,9 +13,8 @@ namespace Streets
         void Awake()
         {
             _splines.Clear();
-            foreach (var sc in streets.Select(street =>
-                         GetComponentInChildren<SplineComputer>()).Where(sc => sc))
-                _splines.Add(sc);
+            foreach (var street in streets)
+                _splines.AddRange(street.GetComponentsInChildren<SplineComputer>());
 
 
             ServiceLocator.Instance.TryRegister<StreetManager>(this);
@@ -27,7 +25,7 @@ namespace Streets
             SplineComputer minSpline = null;
             var minSample = new SplineSample();
             var minDistance = float.MaxValue;
-            
+
             foreach (var sc in _splines)
             {
                 var ss = sc.Project(point);

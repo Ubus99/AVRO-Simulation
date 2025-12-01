@@ -7,6 +7,7 @@ namespace car_logic
     public class CarSplineFollower : MonoBehaviour
     {
         public bool visualize = true;
+        public CarTarget targetPrefab;
         public CarTarget target;
         public float baseSpeed;
         CarAI _agent;
@@ -17,6 +18,13 @@ namespace car_logic
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Awake()
         {
+            if (!targetPrefab)
+            {
+                Debug.LogError("No target prefab assigned!");
+            }
+            target = Instantiate(targetPrefab, transform.position + transform.forward, Quaternion.identity);
+            target.name = $"{gameObject.name}_Target";
+
             _agent = GetComponent<CarAI>();
             _agent.CustomDestination = target.transform;
 
@@ -24,6 +32,7 @@ namespace car_logic
 
             baseSpeed = _agent.MaxRPM;
             target.follower = transform;
+
         }
 
         void Update()
