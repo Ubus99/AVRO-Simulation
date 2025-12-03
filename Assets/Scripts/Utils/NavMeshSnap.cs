@@ -30,6 +30,8 @@ namespace Scripts
 #if UNITY_EDITOR
         private void Update()
         {
+            if (!Application.isEditor || Application.isPlaying) return;
+
             switch (_mode)
             {
                 case Mode.Spline:
