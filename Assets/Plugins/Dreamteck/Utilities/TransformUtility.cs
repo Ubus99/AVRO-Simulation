@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Dreamteck
@@ -36,14 +33,12 @@ namespace Dreamteck
             }
         }
 
-        public static void MergeBoundsRecursively(this Transform rootParent, Transform tr, ref Bounds bounds, string nameToIgnore = null)
+        public static void MergeBoundsRecursively(this Transform rootParent, Transform tr, ref Bounds bounds,
+            string nameToIgnore = null)
         {
             foreach (Transform child in tr)
             {
-                if (!string.IsNullOrEmpty(nameToIgnore) && child.name == nameToIgnore)
-                {
-                    continue;
-                }
+                if (!string.IsNullOrEmpty(nameToIgnore) && child.name == nameToIgnore) continue;
 
                 rootParent.MergeBoundsRecursively(child, ref bounds);
 
@@ -55,6 +50,7 @@ namespace Dreamteck
                     Debug.LogError("MESH FILTER " + meshFilter.name + " IS MISSING A MESH");
                     continue;
                 }
+
                 var min = child.TransformPoint(meshFilter.sharedMesh.bounds.min);
                 var max = child.TransformPoint(meshFilter.sharedMesh.bounds.max);
 
@@ -65,21 +61,19 @@ namespace Dreamteck
 
         public static void DestroyChildren(this Transform src)
         {
-            int count = src.childCount;
-            for (int i = 0; i < count; i++)
-            {
-                UnityEngine.Object.Destroy(src.GetChild(i).gameObject);
-            }
+            var count = src.childCount;
+            for (var i = 0; i < count; i++) Object.Destroy(src.GetChild(i).gameObject);
         }
 
         public static bool IsParent(Transform child, Transform parent)
         {
-            Transform current = child;
-            while(current.parent != null)
+            var current = child;
+            while (current.parent != null)
             {
                 current = current.parent;
                 if (current == parent) return true;
             }
+
             return false;
         }
     }

@@ -8,35 +8,25 @@ namespace Dreamteck.Splines
     [AddComponentMenu("Dreamteck/Splines/Users/Path Generator")]
     public class PathGenerator : MeshGenerator
     {
-        [SerializeField]
-        [HideInInspector]
-        int _slices = 1;
+        [SerializeField] [HideInInspector] private int _slices = 1;
 
         [SerializeField]
         [HideInInspector]
         [Tooltip(
-        "This will inflate sample sizes based on the angle between two samples in order to preserve geometry width")]
-        bool _compensateCorners;
+            "This will inflate sample sizes based on the angle between two samples in order to preserve geometry width")]
+        private bool _compensateCorners;
 
-        [SerializeField]
-        [HideInInspector]
-        bool _useShapeCurve;
+        [SerializeField] [HideInInspector] private bool _useShapeCurve;
 
-        [SerializeField]
-        [HideInInspector]
-        AnimationCurve _shape;
+        [SerializeField] [HideInInspector] private AnimationCurve _shape;
 
-        [SerializeField]
-        [HideInInspector]
-        AnimationCurve _lastShape;
+        [SerializeField] [HideInInspector] private AnimationCurve _lastShape;
 
-        [SerializeField]
-        [HideInInspector]
-        float _shapeExposure = 1f;
+        [SerializeField] [HideInInspector] private float _shapeExposure = 1f;
 
         public int slices
         {
-            get { return _slices; }
+            get => _slices;
             set
             {
                 if (value != _slices)
@@ -50,7 +40,7 @@ namespace Dreamteck.Splines
 
         public bool useShapeCurve
         {
-            get { return _useShapeCurve; }
+            get => _useShapeCurve;
             set
             {
                 if (value != _useShapeCurve)
@@ -66,6 +56,7 @@ namespace Dreamteck.Splines
                     {
                         _shape = null;
                     }
+
                     Rebuild();
                 }
             }
@@ -73,7 +64,7 @@ namespace Dreamteck.Splines
 
         public bool compensateCorners
         {
-            get { return _compensateCorners; }
+            get => _compensateCorners;
             set
             {
                 if (value != _compensateCorners)
@@ -86,7 +77,7 @@ namespace Dreamteck.Splines
 
         public float shapeExposure
         {
-            get { return _shapeExposure; }
+            get => _shapeExposure;
             set
             {
                 if (spline != null && value != _shapeExposure)
@@ -99,19 +90,15 @@ namespace Dreamteck.Splines
 
         public AnimationCurve shape
         {
-            get { return _shape; }
+            get => _shape;
             set
             {
                 if (_lastShape == null) _lastShape = new AnimationCurve();
                 var keyChange = false;
                 if (value.keys.Length != _lastShape.keys.Length)
-                {
                     keyChange = true;
-                }
                 else
-                {
                     for (var i = 0; i < value.keys.Length; i++)
-                    {
                         if (value.keys[i].inTangent != _lastShape.keys[i].inTangent ||
                             value.keys[i].outTangent != _lastShape.keys[i].outTangent ||
                             value.keys[i].time != _lastShape.keys[i].time || value.keys[i].value != value.keys[i].value)
@@ -119,22 +106,17 @@ namespace Dreamteck.Splines
                             keyChange = true;
                             break;
                         }
-                    }
-                }
+
                 if (keyChange) Rebuild();
                 _lastShape.keys = new Keyframe[value.keys.Length];
                 value.keys.CopyTo(_lastShape.keys, 0);
                 _lastShape.preWrapMode = value.preWrapMode;
                 _lastShape.postWrapMode = value.postWrapMode;
                 _shape = value;
-
             }
         }
 
-        protected override string meshName
-        {
-            get { return "Path"; }
-        }
+        protected override string meshName => "Path";
 
 
         protected override void Reset()
@@ -151,7 +133,7 @@ namespace Dreamteck.Splines
         }
 
 
-        void GenerateVertices()
+        private void GenerateVertices()
         {
             var vertexCount = (_slices + 1) * sampleCount;
             AllocateMesh(vertexCount, _slices * (sampleCount - 1) * 6);
@@ -163,13 +145,9 @@ namespace Dreamteck.Splines
             for (var i = 0; i < sampleCount; i++)
             {
                 if (_compensateCorners)
-                {
                     GetSampleWithAngleCompensation(i, ref evalResult);
-                }
                 else
-                {
                     GetSample(i, ref evalResult);
-                }
 
                 var center = Vector3.zero;
                 try
@@ -181,13 +159,12 @@ namespace Dreamteck.Splines
                     Debug.Log(ex.Message + " for i = " + i);
                     return;
                 }
+
                 var right = evalResult.right;
                 var resultSize = GetBaseSize(evalResult);
                 if (hasOffset)
-                {
                     center += offset.x * resultSize * right + offset.y * resultSize * evalResult.up +
                               offset.z * resultSize * evalResult.forward;
-                }
                 var fullSize = size * resultSize;
                 var lastVertPos = Vector3.zero;
                 var rot = Quaternion.AngleAxis(rotation, evalResult.forward);
@@ -239,6 +216,7 @@ namespace Dreamteck.Splines
                         _tsMesh.normals[vertexIndex] = evalResult.up;
                         if (rotation != 0f) _tsMesh.normals[vertexIndex] = rot * _tsMesh.normals[vertexIndex];
                     }
+
                     _tsMesh.colors[vertexIndex] = vertexColor;
                     lastVertPos = _tsMesh.vertices[vertexIndex];
                     vertexIndex++;

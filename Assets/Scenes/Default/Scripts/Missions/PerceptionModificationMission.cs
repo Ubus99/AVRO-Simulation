@@ -9,9 +9,8 @@ namespace Scenes.Default.Scripts.Missions
         public GameObject obstacle;
         public ADSV_AI car;
 
-        void Update()
+        private void Update()
         {
-
         }
 
         protected override void Setup()
