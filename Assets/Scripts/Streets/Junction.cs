@@ -33,24 +33,24 @@ namespace Streets
     public class Junction : MonoBehaviour
     {
         public SerializedDictionary<Node.Connection, JunctionData> connections = new();
-        private readonly Dictionary<Node.Connection, JunctionData> _exits = new();
+        readonly Dictionary<Node.Connection, JunctionData> _exits = new();
 
-        private Node _node;
+        Node _node;
 
-        private void Start()
+        void Start()
         {
             _node = GetComponent<Node>();
             RebuildNodeLinks();
             UpdateJunction();
         }
 
-        private void OnValidate()
+        void OnValidate()
         {
             RebuildNodeLinks();
             UpdateJunction();
         }
 
-        private void RebuildNodeLinks()
+        void RebuildNodeLinks()
         {
             if (!_node) return;
 
@@ -64,7 +64,7 @@ namespace Streets
             }
         }
 
-        private void UpdateJunction()
+        void UpdateJunction()
         {
             if (!_node) return;
 
@@ -81,7 +81,7 @@ namespace Streets
                     connIn.Remove(conn);
             }
 
-            foreach (var c in connIn) connections.Add(c, new JunctionData());
+            foreach (var c in connIn) connections.TryAdd(c, new JunctionData());
 
             // assign connection type
             for (var i = 0; i < connections.Count; i++)

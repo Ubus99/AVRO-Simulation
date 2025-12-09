@@ -1206,7 +1206,7 @@ GameObject:
   - component: {fileID: 4517182459380501699}
   m_Layer: 0
   m_Name: Street 1A
-  m_TagString: Untagged
+  m_TagString: Street
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1690,7 +1690,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0030511748, y: 0.99994326, z: 0.010251439}
+      normal: {x: 0.003051171, y: 0.99994326, z: 0.010251443}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -1701,7 +1701,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0030511748, y: 0.99994326, z: 0.010251439}
+      normal: {x: 0.003051171, y: 0.99994326, z: 0.010251443}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -1712,7 +1712,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0030511748, y: 0.99994326, z: 0.010251439}
+      normal: {x: 0.003051171, y: 0.99994326, z: 0.010251443}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -2399,7 +2399,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0072505996, y: 0.999973, z: 0.0011559334}
+      normal: {x: 0.007250592, y: 0.999973, z: 0.0011559334}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -2410,7 +2410,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0072505996, y: 0.999973, z: 0.0011559334}
+      normal: {x: 0.007250592, y: 0.999973, z: 0.0011559334}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -2421,7 +2421,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0072505996, y: 0.999973, z: 0.0011559334}
+      normal: {x: 0.007250592, y: 0.999973, z: 0.0011559334}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -4126,7 +4126,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.00000002957741, y: 0.99851155, z: 0.054540776}
+      normal: {x: 0.000000029703795, y: 0.99851155, z: 0.054540776}
       size: 1
       tangent: {x: 0, y: 5.7049003, z: 0.31161353}
       tangent2: {x: 0, y: -5.7049007, z: -0.31161353}
@@ -4137,7 +4137,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.00000002957741, y: 0.99851155, z: 0.054540776}
+      normal: {x: 0.000000029703795, y: 0.99851155, z: 0.054540776}
       size: 1
       tangent: {x: 0, y: 5.7049003, z: 0.31161353}
       tangent2: {x: 0, y: -5.7049007, z: -0.31161353}
@@ -4148,7 +4148,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.00000002957741, y: 0.99851155, z: 0.054540776}
+      normal: {x: 0.000000029703795, y: 0.99851155, z: 0.054540776}
       size: 1
       tangent: {x: 0, y: 5.7049003, z: 0.31161353}
       tangent2: {x: 0, y: -5.7049007, z: -0.31161353}
@@ -4916,7 +4916,7 @@ GameObject:
   - component: {fileID: 3262663744092836564}
   m_Layer: 0
   m_Name: Street 3B
-  m_TagString: Untagged
+  m_TagString: Street
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5081,7 +5081,7 @@ MonoBehaviour:
     - _type: 0
       position: {x: -5.0513005, y: 0.0034343326, z: -0.76909924}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: -0.000000028962573, y: 1, z: 0.000036802227}
+      normal: {x: -0.000000029181471, y: 1, z: 0.0000368023}
       size: 1
       tangent: {x: -5.0513005, y: 5.716841, z: -0.76888895}
       tangent2: {x: -5.0513005, y: -5.709972, z: -0.76930904}
@@ -5095,7 +5095,7 @@ MonoBehaviour:
     - _type: 0
       position: {x: 15.338022, y: -0.093684964, z: 20.636517}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: -0.10319919, y: 0.98866445, z: -0.10912693}
+      normal: {x: -0.10319919, y: 0.988668, z: -0.10912693}
       size: 1
       tangent: {x: 15.338022, y: -0.093684964, z: 20.636517}
       tangent2: {x: 15.338022, y: -0.093684964, z: 20.636517}
@@ -6567,7 +6567,7 @@ GameObject:
   - component: {fileID: 4003416025614059558}
   m_Layer: 0
   m_Name: Street 3A
-  m_TagString: Untagged
+  m_TagString: Street
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6819,7 +6819,7 @@ GameObject:
   - component: {fileID: 3309956030252207959}
   m_Layer: 0
   m_Name: Street 2B
-  m_TagString: Untagged
+  m_TagString: Street
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6947,7 +6947,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 3.4773745e-10, y: 0.99986154, z: 0.016639672}
+      normal: {x: 4.0540138e-10, y: 0.99986154, z: 0.016639672}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -6958,7 +6958,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 3.4773745e-10, y: 0.99986154, z: 0.016639672}
+      normal: {x: 4.0540138e-10, y: 0.99986154, z: 0.016639672}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -9235,7 +9235,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0000000045729394, y: 0.999974, z: -0.007207292}
+      normal: {x: 0.0000000045765773, y: 0.999974, z: -0.0072072926}
       size: 1
       tangent: {x: -0.12550388, y: 5.703688, z: -0.09706435}
       tangent2: {x: 0.12550388, y: -5.703687, z: 0.09706434}
@@ -9246,7 +9246,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0000000045729394, y: 0.999974, z: -0.007207292}
+      normal: {x: 0.0000000045765773, y: 0.999974, z: -0.0072072926}
       size: 1
       tangent: {x: -0.12550388, y: 5.703688, z: -0.09706435}
       tangent2: {x: 0.12550388, y: -5.703687, z: 0.09706434}
@@ -9845,7 +9845,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: -5.8175165e-10, y: 1, z: -0.00007723585}
+      normal: {x: -5.889436e-10, y: 1, z: -0.000077235854}
       size: 1
       tangent: {x: -5.70318, y: -0.31162438, z: -0.14010477}
       tangent2: {x: -5.7031646, y: -0.3116239, z: -0.14010477}
@@ -9856,7 +9856,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: -5.8175165e-10, y: 1, z: -0.00007723585}
+      normal: {x: -5.889436e-10, y: 1, z: -0.000077235854}
       size: 1
       tangent: {x: -5.70318, y: -0.31162438, z: -0.14010477}
       tangent2: {x: -5.7031646, y: -0.3116239, z: -0.14010477}
@@ -9960,7 +9960,7 @@ MonoBehaviour:
     - _type: 0
       position: {x: -31.29969, y: 0.0056518437, z: 23.199879}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: -0.00000022157181, y: 0.99998885, z: -0.005203715}
+      normal: {x: -0.00000022340356, y: 0.99998885, z: -0.0052037514}
       size: 1
       tangent: {x: -31.161676, y: -7.7148485, z: 23.459644}
       tangent2: {x: -31.437706, y: 7.726008, z: 22.94014}
@@ -9974,7 +9974,7 @@ MonoBehaviour:
     - _type: 0
       position: {x: -57.061447, y: 0.028248979, z: 47.600628}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.10121995, y: 0.9892274, z: 0.10585799}
+      normal: {x: 0.101221, y: 0.9892274, z: 0.10585877}
       size: 1
       tangent: {x: -57.061447, y: 0.028248979, z: 47.600628}
       tangent2: {x: -57.061447, y: 0.028248979, z: 47.600628}
@@ -10154,7 +10154,7 @@ GameObject:
   - component: {fileID: 1855398892922974482}
   m_Layer: 0
   m_Name: Street 2A
-  m_TagString: Untagged
+  m_TagString: Street
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10308,7 +10308,7 @@ MonoBehaviour:
       color: {r: 1, g: 1, b: 1, a: 1}
       normal: {x: -0.004913032, y: 0.99997663, z: -0.005234799}
       size: 1
-      tangent: {x: 0.17554559, y: -7.719721, z: 0.2602502}
+      tangent: {x: 0.17554559, y: -7.7197213, z: 0.2602502}
       tangent2: {x: -0.17554532, y: 7.719578, z: -0.26023424}
   - invertTangents: 0
     _pointIndex: 8
@@ -10319,7 +10319,7 @@ MonoBehaviour:
       color: {r: 1, g: 1, b: 1, a: 1}
       normal: {x: -0.004913032, y: 0.99997663, z: -0.005234799}
       size: 1
-      tangent: {x: 0.17554559, y: -7.719721, z: 0.2602502}
+      tangent: {x: 0.17554559, y: -7.7197213, z: 0.2602502}
       tangent2: {x: -0.17554532, y: 7.719578, z: -0.26023424}
   _transformSize: 1
   _transformNormals: 1
@@ -11512,7 +11512,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 1.6517943e-10, y: 0.9999637, z: -0.00852127}
+      normal: {x: 2.0647928e-10, y: 0.9999637, z: -0.008521272}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -11523,7 +11523,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 1.6517943e-10, y: 0.9999637, z: -0.00852127}
+      normal: {x: 2.0647928e-10, y: 0.9999637, z: -0.008521272}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -11585,7 +11585,7 @@ GameObject:
   - component: {fileID: 3013149787851518776}
   m_Layer: 0
   m_Name: Street 1B
-  m_TagString: Untagged
+  m_TagString: Street
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11898,7 +11898,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0009873975, y: 0.99999684, z: -0.0015886842}
+      normal: {x: 0.0009873972, y: 0.99999684, z: -0.0015886838}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -11909,7 +11909,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0009873975, y: 0.99999684, z: -0.0015886842}
+      normal: {x: 0.0009873972, y: 0.99999684, z: -0.0015886838}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -12741,7 +12741,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0070722797, y: 0.9998894, z: -0.013570269}
+      normal: {x: 0.007072281, y: 0.9998894, z: -0.0135702705}
       size: 1
       tangent: {x: 0.0000000015648993, y: -0.000000015970079, z: -0.0000019072813}
       tangent2: {x: 0.0000000015648993, y: -0.000000015970079, z: -0.0000019072813}
@@ -12752,7 +12752,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0070722797, y: 0.9998894, z: -0.013570269}
+      normal: {x: 0.007072281, y: 0.9998894, z: -0.0135702705}
       size: 1
       tangent: {x: 0.0000000015648993, y: -0.000000015970079, z: -0.0000019072813}
       tangent2: {x: 0.0000000015648993, y: -0.000000015970079, z: -0.0000019072813}
@@ -13083,7 +13083,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 707984012028183233}
-  - component: {fileID: 2146786268066216407}
   m_Layer: 0
   m_Name: Streets
   m_TagString: Untagged
@@ -13112,25 +13111,6 @@ Transform:
   - {fileID: 3262663744092836564}
   m_Father: {fileID: 3221545386616974843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2146786268066216407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7514350641698875092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f35d841a9e8e4c24db46e0b0cc3afd36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  streets:
-  - {fileID: 547413931243981481}
-  - {fileID: 7038636604978645126}
-  - {fileID: 6235191013184281408}
-  - {fileID: 4405794131822060877}
-  - {fileID: 3916367904807290149}
-  - {fileID: 2780840551210002116}
 --- !u!1 &7531678392086172145
 GameObject:
   m_ObjectHideFlags: 0
@@ -13185,7 +13165,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0012500994, y: 0.99999034, z: -0.0041728467}
+      normal: {x: 0.001250118, y: 0.99999034, z: -0.0041728467}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -13196,7 +13176,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0012500994, y: 0.99999034, z: -0.0041728467}
+      normal: {x: 0.001250118, y: 0.99999034, z: -0.0041728467}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -13207,7 +13187,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0012500994, y: 0.99999034, z: -0.0041728467}
+      normal: {x: 0.001250118, y: 0.99999034, z: -0.0041728467}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -13901,7 +13881,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0005286825, y: 0.9998513, z: 0.017205156}
+      normal: {x: 0.00052868295, y: 0.9998513, z: 0.017205156}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -13912,7 +13892,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0005286825, y: 0.9998513, z: 0.017205156}
+      normal: {x: 0.00052868295, y: 0.9998513, z: 0.017205156}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -14017,7 +13997,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0036239917, y: 0.99999654, z: 0.00009802356}
+      normal: {x: 0.0036239945, y: 0.99999654, z: 0.00009801984}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -14028,7 +14008,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0036239917, y: 0.99999654, z: 0.00009802356}
+      normal: {x: 0.0036239945, y: 0.99999654, z: 0.00009801984}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -14039,7 +14019,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0036239917, y: 0.99999654, z: 0.00009802356}
+      normal: {x: 0.0036239945, y: 0.99999654, z: 0.00009801984}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -14711,7 +14691,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: -5.090749e-11, y: 0.9998419, z: -0.017778253}
+      normal: {x: -5.8175378e-11, y: 0.9998419, z: -0.017778253}
       size: 1
       tangent: {x: 3.502311e-11, y: -4.812779, z: 0.085576326}
       tangent2: {x: -3.5023116e-11, y: 4.81278, z: -0.08557634}
@@ -14722,7 +14702,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: -5.090749e-11, y: 0.9998419, z: -0.017778253}
+      normal: {x: -5.8175378e-11, y: 0.9998419, z: -0.017778253}
       size: 1
       tangent: {x: 3.502311e-11, y: -4.812779, z: 0.085576326}
       tangent2: {x: -3.5023116e-11, y: 4.81278, z: -0.08557634}
@@ -15599,7 +15579,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0022411575, y: 0.999947, z: 0.008898295}
+      normal: {x: 0.0022411519, y: 0.9999469, z: 0.008898303}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -15610,7 +15590,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0022411575, y: 0.999947, z: 0.008898295}
+      normal: {x: 0.0022411519, y: 0.9999469, z: 0.008898303}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}
@@ -15621,7 +15601,7 @@ MonoBehaviour:
       _type: 0
       position: {x: 0, y: 0, z: 0}
       color: {r: 1, g: 1, b: 1, a: 1}
-      normal: {x: 0.0022411575, y: 0.999947, z: 0.008898295}
+      normal: {x: 0.0022411519, y: 0.9999469, z: 0.008898303}
       size: 1
       tangent: {x: 0, y: 0, z: 0}
       tangent2: {x: 0, y: 0, z: 0}

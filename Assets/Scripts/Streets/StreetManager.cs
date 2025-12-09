@@ -7,17 +7,29 @@ namespace Streets
 {
     public class StreetManager : MonoBehaviour
     {
-        public List<GameObject> streets = new();
         readonly List<SplineComputer> _splines = new();
+
+        bool _dirty;
 
         void Awake()
         {
             _splines.Clear();
-            foreach (var street in streets)
-                _splines.AddRange(street.GetComponentsInChildren<SplineComputer>());
-
-
             ServiceLocator.Instance.TryRegister<StreetManager>(this);
+            _dirty = true;
+        }
+
+        void Update()
+        {
+            if (!_dirty) return;
+            
+            _splines.Clear();
+            var streets = GameObject.FindGameObjectsWithTag("Street");
+            foreach (var go in streets)
+            {
+                _splines.AddRange(go.GetComponentsInChildren<SplineComputer>());
+            }
+            
+            _dirty = false;
         }
 
         public (SplineComputer, SplineSample) ClosestSpline(Vector3 point)
