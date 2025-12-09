@@ -17,6 +17,7 @@ namespace Utils
 
         void OnValidate()
         {
+            _text = GetComponentInChildren<TextMeshProUGUI>();
             if (!_text)
             {
                 Debug.LogWarning($"unable to find TextMeshProUGUI on {gameObject.name}");
