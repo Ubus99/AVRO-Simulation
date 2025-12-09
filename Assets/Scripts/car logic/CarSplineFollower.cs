@@ -64,5 +64,12 @@ namespace car_logic
         {
             _agent.MaxRPM = Mathf.RoundToInt(speed);
         }
+
+        public void SetTargetLocation(Vector3 position)
+        {
+            var sample = new SplineSample();
+            target.splineFollower.Project(position, ref sample);
+            target.splineFollower.SetPercent(sample.percent);
+        }
     }
 }

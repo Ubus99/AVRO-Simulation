@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Scenes.Default.Scripts.UI
+namespace Scenes.Scripts.UI
 {
     public class CarTopView : MonoBehaviour, IPointerClickHandler
     {

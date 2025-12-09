@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace car_logic
 {
@@ -8,55 +7,55 @@ namespace car_logic
     {
         float _lastMsgMillis;
         T _state;
-        protected bool StateChanged { get; private set; }
-        T PreviousState { get; set; }
+        protected bool stateChanged { get; private set; }
+        T previousState { get; set; }
 
-        protected void BaseUpdate()
+        public T state
         {
-            StateChanged = false;
-        }
-
-        protected T State
-        {
-            set
+            protected set
             {
-                if (!value.Equals(PreviousState))
+                if (!value.Equals(previousState))
                 {
-                    StateChanged = true;
+                    stateChanged = true;
                 }
-                PreviousState = _state;
+                previousState = _state;
                 _state = value;
             }
             get { return _state; }
         }
 
+        protected void BaseUpdate()
+        {
+            stateChanged = false;
+        }
+
         protected void PrintState()
         {
             var t = Time.realtimeSinceStartup;
-            if (t - _lastMsgMillis < 1 && !StateChanged)
+            if (t - _lastMsgMillis < 1 && !stateChanged)
                 return;
 
-            Debug.Log($"car in {State.ToString()} state");
+            Debug.Log($"car in {state.ToString()} state");
             _lastMsgMillis = t;
         }
 
         protected void PrintEntryState()
         {
             var t = Time.realtimeSinceStartup;
-            if (t - _lastMsgMillis < 1 && !StateChanged)
+            if (t - _lastMsgMillis < 1 && !stateChanged)
                 return;
 
-            Debug.Log($"car entering {State.ToString()} state");
+            Debug.Log($"car entering {state.ToString()} state");
             _lastMsgMillis = t;
         }
 
         protected void PrintExitState()
         {
             var t = Time.realtimeSinceStartup;
-            if (t - _lastMsgMillis < 1 && !StateChanged)
+            if (t - _lastMsgMillis < 1 && !stateChanged)
                 return;
 
-            Debug.Log($"car exiting {State.ToString()} state");
+            Debug.Log($"car exiting {state.ToString()} state");
             _lastMsgMillis = t;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using car_logic;
 using UnityEngine;
 
 namespace Gameplay
@@ -6,8 +7,9 @@ namespace Gameplay
     [Serializable]
     public abstract class Mission : MonoBehaviour
     {
+        public ADSV_AI car;
         protected bool Active;
-        public bool Completed { get; protected set; }
+        public bool completed { get; protected set; }
 
         void Awake()
         {
@@ -40,5 +42,10 @@ namespace Gameplay
         }
 
         protected abstract void CleanUp();
+        
+        public void SetCar(ADSV_AI car)
+        {
+            this.car = car;
+        }
     }
 }

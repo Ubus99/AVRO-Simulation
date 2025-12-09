@@ -5,18 +5,18 @@ using UnityEngine;
 namespace Gameplay
 {
     [ExecuteInEditMode]
-    public class SceneLoader : MonoBehaviour
+    public class PrefabGrid : MonoBehaviour
     {
         public GameObject scenePrefab;
         public Vector2Int grid;
         public float gridSize = 100;
+        public bool dirty;
 
         readonly List<GameObject> _instances = new();
-        bool _dirty;
 
         void Update()
         {
-            if (!_dirty)
+            if (!dirty)
                 return;
 
             for (var i = transform.childCount - 1; i >= 0; i--)
@@ -38,12 +38,7 @@ namespace Gameplay
                 _instances.Add(scene);
             }
 
-            _dirty = false;
-        }
-
-        void OnValidate()
-        {
-            _dirty = true;
+            dirty = false;
         }
     }
 }

@@ -41,19 +41,19 @@ namespace car_logic
 
         void FixedUpdate()
         {
-            switch (State)
+            switch (state)
             {
                 case States.Initializing:
                     BaseUpdate();
                     PrintState();
                     _previousSpeed = navigationProvider.GetTargetSpeed();
-                    State = States.NoCommand;
+                    state = States.NoCommand;
                     break;
                 case States.NoCommand:
                     BaseUpdate();
                     PrintState();
                     navigationProvider.SetTargetSpeed(0);
-                    State = States.Driving;
+                    state = States.Driving;
                     break;
                 case States.Driving:
                     BaseUpdate();
@@ -75,7 +75,7 @@ namespace car_logic
 
         public string GetState()
         {
-            return State.ToString();
+            return state.ToString();
         }
 
         public void TriggerError()
@@ -87,14 +87,14 @@ namespace car_logic
         {
             if (_errorFlag)
             {
-                State = States.ErrorDetected;
+                state = States.ErrorDetected;
                 Debug.Log($"{gameObject.name}: Error detected");
             }
         }
 
         void DoErrorDetected()
         {
-            if (StateChanged)
+            if (stateChanged)
             {
                 PrintEntryState();
                 _previousSpeed = navigationProvider.GetTargetSpeed();
@@ -103,12 +103,12 @@ namespace car_logic
             BaseUpdate();
             PrintState();
 
-            State = States.WaitingForAid;
+            state = States.WaitingForAid;
         }
 
         void DoWaitingForAid()
         {
-            if (StateChanged)
+            if (stateChanged)
             {
                 PrintEntryState();
             }

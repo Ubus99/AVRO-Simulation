@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using car_logic;
-using Scenes.Default.Scripts.UI;
 using UI;
 using UnityEngine;
 using Utils;

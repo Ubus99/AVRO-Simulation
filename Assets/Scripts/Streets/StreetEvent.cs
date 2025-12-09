@@ -1,4 +1,5 @@
 using car_logic;
+using Gameplay;
 using UnityEngine;
 
 namespace Streets
@@ -7,6 +8,7 @@ namespace Streets
     [RequireComponent(typeof(Collider))]
     public class StreetEvent : MonoBehaviour
     {
+        public Mission parent;
         Collider _trigger;
 
         void OnDrawGizmos()
@@ -22,6 +24,7 @@ namespace Streets
             {
                 case "Player":
                     var car = other.GetComponentInParent<ADSV_AI>();
+                    parent.SetCar(car);
                     car.TriggerError();
                     break;
                 default:
