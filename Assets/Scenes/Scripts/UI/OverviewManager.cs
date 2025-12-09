@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using car_logic;
 using UI;
 using UnityEngine;
@@ -11,8 +10,12 @@ namespace Scenes.Scripts.UI
     [RequireComponent(typeof(DynamicGrid))]
     public class OverviewManager : MonoBehaviour
     {
+        public delegate void FocusChangeDelegate(ADSV_AI activeVehicle);
+
         public CarTopView imagePrefab;
-        readonly List<RenderTexture> _renderTextures = new();
+        public ADSV_AI selectedVehicle;
+
+        readonly Dictionary<Texture, ADSV_AI> _renderTextures = new();
         readonly List<ADSV_AI> _trackedVehicles = new();
         readonly List<CarTopView> _views = new();
         bool _dirty;
@@ -59,6 +62,8 @@ namespace Scenes.Scripts.UI
             MarkDirty();
         }
 
+        public event FocusChangeDelegate OnFocusChange;
+
         void MarkDirty()
         {
             _dirty = true;
@@ -70,9 +75,9 @@ namespace Scenes.Scripts.UI
             _dirty = true;
         }
 
-        public void RegisterVehicle(ADSV_AI cam)
+        public void RegisterVehicle(ADSV_AI vehicle)
         {
-            _trackedVehicles.Add(cam);
+            _trackedVehicles.Add(vehicle);
             _dirty = true;
         }
 
@@ -102,15 +107,20 @@ namespace Scenes.Scripts.UI
                 view.OnClicked += HandleViewClicked;
                 view.ADS = v;
                 _views.Add(view);
-                _renderTextures.Add(t);
+                _renderTextures.Add(t, v);
             }
         }
 
         void HandleViewClicked(object sender, EventArgs e)
         {
-            foreach (var ctw in _views.Where(ctw => ctw != (CarTopView)sender))
+            foreach (var ctw in _views)
             {
-                ctw.selected = false;
+                ctw.selected = ctw == (CarTopView)sender;
+                if (ctw.selected)
+                {
+                    selectedVehicle = ctw.ADS;
+                }
+                OnFocusChange?.Invoke(selectedVehicle);
             }
         }
     }

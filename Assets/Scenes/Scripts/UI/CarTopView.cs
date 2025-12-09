@@ -34,7 +34,6 @@ namespace Scenes.Scripts.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            selected = !selected;
             switch (selected)
             {
                 case true:
