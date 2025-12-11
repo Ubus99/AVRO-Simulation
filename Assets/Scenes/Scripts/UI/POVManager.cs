@@ -28,7 +28,7 @@ namespace Scenes.Scripts.UI
 
         public void AssignCamera(Camera cam)
         {
-            videoFeed.UpdateFeed(cam);
+            videoFeed.SetCamera(cam);
         }
     }
 }

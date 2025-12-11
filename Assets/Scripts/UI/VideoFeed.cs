@@ -4,65 +4,105 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    [RequireComponent(typeof(RawImage))]
-    public class VideoFeed : MonoBehaviour, IPointerClickHandler
+    [ExecuteAlways]
+    public class VideoFeed : UIBehaviour, ICanvasElement, IPointerClickHandler
     {
-        Camera _camera;
-        RawImage _image;
-        Ray _ray;
+        [SerializeField]
+        Camera feedCamera;
+        Canvas _canvas;
+        bool _dirty;
+        RectTransform _rectTransform;
 
-        void Awake()
+        protected override void Awake()
         {
-            _image = GetComponent<RawImage>();
+            _canvas = GetComponentInParent<Canvas>();
+            _rectTransform = GetComponent<RectTransform>();
         }
 
-        void OnDrawGizmos()
+        void Update()
         {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawRay(_ray.origin, _ray.direction * 10);
+            if (!_dirty) return;
+            UpdateCamera();
+            _dirty = false;
         }
 
-        void OnRectTransformDimensionsChange()
+        protected override void OnRectTransformDimensionsChange()
         {
-            UpdateFeed();
+            base.OnRectTransformDimensionsChange();
+            _dirty = true;
+        }
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+            _dirty = true;
+        }
+
+        public void Rebuild(CanvasUpdate executing)
+        {
+        }
+
+        public void LayoutComplete()
+        {
+            _dirty = true;
+        }
+
+        public void GraphicUpdateComplete()
+        {
+            _dirty = true;
+        }
+
+        void UpdateCamera()
+        {
+            if (!(feedCamera && _rectTransform && _canvas)) return;
+            feedCamera.targetDisplay = _canvas.targetDisplay;
+
+            var rect = ToScreenRect(_rectTransform, _canvas);
+
+            feedCamera.pixelRect = rect;
+            Debug.Log($"{name} updated {rect}");
+        }
+
+        static Rect ToScreenRect(RectTransform rectTransform, Canvas canvas, Camera cam = null)
+        {
+            if (canvas && canvas.renderMode == RenderMode.ScreenSpaceCamera)
+            {
+                cam = canvas.worldCamera;
+            }
+
+            var worldCorners = new Vector3[4];
+            rectTransform.GetWorldCorners(worldCorners);
+
+            var min = RectTransformUtility.WorldToScreenPoint(cam, worldCorners[0]);
+            var max = min;
+
+            for (var i = 1; i < 4; i++)
+            {
+                var sp = RectTransformUtility.WorldToScreenPoint(cam, worldCorners[i]);
+                min = Vector2.Min(min, sp);
+                max = Vector2.Max(max, sp);
+            }
+
+            var width = Mathf.Max(0f, max.x - min.x);
+            var height = Mathf.Max(0f, max.y - min.y);
+
+            return new Rect(min.x, min.y, width, height);
+        }
+
+        public void SetCamera(Camera cam)
+        {
+            if (feedCamera)
+            {
+                feedCamera.enabled = false;
+            }
+            feedCamera = cam;
+            cam.enabled = true;
+            _dirty = true;
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                _image.rectTransform,
-                eventData.position,
-                eventData.pressEventCamera,
-                out var localPoint)) return;
-
-            var uv = localPoint / _image.rectTransform.rect.size + Vector2.one / 2;
-            var ray = _camera.ViewportPointToRay(new Vector3(uv.x, uv.y, 0));
-            _ray = ray;
-            if (Physics.Raycast(ray, out var hit))
-            {
-                Debug.Log(hit.collider.gameObject.name);
-            }
-        }
-
-        public void UpdateFeed(Camera camera)
-        {
-            _camera = camera;
-            UpdateFeed();
-        }
-
-        public void UpdateFeed()
-        {
-            var size = Vector2Int.RoundToInt(_image.rectTransform.rect.size);
-            if (_camera)
-            {
-                var tex = new RenderTexture(size.x, size.y, 16, RenderTextureFormat.ARGB32);
-                _image.texture = tex;
-                _camera.targetTexture = tex;
-            }
-            else
-            {
-                _image.texture = null;
-            }
+            throw new System.NotImplementedException();
         }
     }
 }
