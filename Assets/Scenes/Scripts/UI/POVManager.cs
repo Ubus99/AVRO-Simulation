@@ -12,6 +12,7 @@ namespace Scenes.Scripts.UI
         void Awake()
         {
             ServiceLocator.Instance.TryRegister<POVManager>(this);
+            menu.SetActive(false);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,14 +22,21 @@ namespace Scenes.Scripts.UI
             overviewManager.OnFocusChange += vehicle => AssignCamera(vehicle.povCamera);
         }
 
-        public void OpenAt(Vector2 pos)
+        void AssignCamera(Camera cam)
         {
+            videoFeed.SetCamera(cam);
+        }
+
+        public void OnObstacleClicked(IPlayerClickable playerClickable, Vector2 pos)
+        {
+            menu.SetActive(true);
             menu.transform.position = pos;
         }
 
-        public void AssignCamera(Camera cam)
+        public void OnObstacleMissed(Vector2 pos)
         {
-            videoFeed.SetCamera(cam);
+            menu.SetActive(false);
+            menu.transform.position = pos;
         }
     }
 }

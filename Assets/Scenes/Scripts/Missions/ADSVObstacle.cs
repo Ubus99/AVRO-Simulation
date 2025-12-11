@@ -1,14 +1,13 @@
 using Scenes.Scripts.UI;
+using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utils;
 
 namespace Scenes.Scripts.Missions
 {
-    public class ADSVObstacle : MonoBehaviour
+    public class ADSVObstacle : MonoBehaviour, IPlayerClickable
     {
-        public InputActionReference pointAction;
-        public InputActionReference selectAction;
         POVManager _manager;
 
         InputAction _pointAction;
@@ -17,16 +16,10 @@ namespace Scenes.Scripts.Missions
         void Start()
         {
             ServiceLocator.Instance.TryGet(out _manager);
-            _pointAction = pointAction.action;
-            _selectAction = selectAction.action;
         }
 
-        void Update()
+        public void ClickOn(object source, Vector2 position)
         {
-            if (!(_selectAction.IsPressed() && _manager))
-                return;
-            var pos = _pointAction.ReadValue<Vector2>();
-            _manager.OpenAt(pos);
         }
     }
 }

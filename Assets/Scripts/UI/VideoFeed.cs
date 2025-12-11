@@ -1,14 +1,22 @@
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UI
 {
     [ExecuteAlways]
-    public class VideoFeed : UIBehaviour, ICanvasElement, IPointerClickHandler
+    [RequireComponent(typeof(CanvasRenderer))]
+    public class VideoFeed : Graphic, IPointerClickHandler
     {
         [SerializeField]
         Camera feedCamera;
+
+        public UnityEvent<IPlayerClickable, Vector2> onClick;
+        public UnityEvent<Vector2> onMiss;
+        Color _baseColor;
+
         Canvas _canvas;
         bool _dirty;
         RectTransform _rectTransform;
@@ -17,6 +25,7 @@ namespace UI
         {
             _canvas = GetComponentInParent<Canvas>();
             _rectTransform = GetComponent<RectTransform>();
+            _baseColor = color;
         }
 
         void Update()
@@ -38,17 +47,50 @@ namespace UI
             _dirty = true;
         }
 
-        public void Rebuild(CanvasUpdate executing)
+        public void OnPointerClick(PointerEventData eventData)
         {
+            var ray = feedCamera.ScreenPointToRay(eventData.position);
+            var hits = Physics.RaycastAll(ray);
+            if (hits.Length > 0)
+            {
+                Debug.DrawLine(ray.origin, hits[0].point);
+
+                if (!hits.Any(hit => hit.collider.TryGetComponent(out IPlayerClickable _)))
+                {
+                    onMiss?.Invoke(eventData.position);
+                }
+                else
+                {
+                    foreach (var hit in hits)
+                    {
+                        if (!hit.collider.TryGetComponent(out IPlayerClickable clickable))
+                            continue;
+
+                        onClick?.Invoke(clickable, eventData.position);
+                    }
+                }
+            }
+            else
+            {
+                Debug.DrawRay(ray.origin, ray.direction * 10, Color.red);
+            }
+
         }
 
-        public void LayoutComplete()
+        public override void Rebuild(CanvasUpdate executing)
         {
+            base.Rebuild(executing);
+        }
+
+        public override void LayoutComplete()
+        {
+            base.LayoutComplete();
             _dirty = true;
         }
 
-        public void GraphicUpdateComplete()
+        public override void GraphicUpdateComplete()
         {
+            base.GraphicUpdateComplete();
             _dirty = true;
         }
 
@@ -60,7 +102,6 @@ namespace UI
             var rect = ToScreenRect(_rectTransform, _canvas);
 
             feedCamera.pixelRect = rect;
-            Debug.Log($"{name} updated {rect}");
         }
 
         static Rect ToScreenRect(RectTransform rectTransform, Canvas canvas, Camera cam = null)
@@ -93,16 +134,21 @@ namespace UI
         {
             if (feedCamera)
             {
-                feedCamera.enabled = false;
+                feedCamera.gameObject.SetActive(false);
             }
-            feedCamera = cam;
-            cam.enabled = true;
-            _dirty = true;
-        }
 
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            throw new System.NotImplementedException();
+            if (cam)
+            {
+                feedCamera = cam;
+                cam.gameObject.SetActive(true);
+                color = new Color(1, 1, 1, 0);
+            }
+            else
+            {
+                color = _baseColor;
+            }
+
+            _dirty = true;
         }
     }
 }

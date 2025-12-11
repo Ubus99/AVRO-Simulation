@@ -523,6 +523,7 @@ GameObject:
   - component: {fileID: 7788931851400832828}
   - component: {fileID: 1433581357817443895}
   - component: {fileID: 1008840536470809504}
+  - component: {fileID: 5633684980775127315}
   m_Layer: 5
   m_Name: LiveView
   m_TagString: Untagged
@@ -562,7 +563,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c2ea0de54a6d054fbf3f34cf5fe5f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI.VideoFeed
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   feedCamera: {fileID: 6624670450893377544}
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5664718020078386554}
+        m_TargetAssemblyTypeName: Scenes.Scripts.UI.POVManager, Assembly-CSharp
+        m_MethodName: OnObstacleClicked
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onMiss:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5664718020078386554}
+        m_TargetAssemblyTypeName: Scenes.Scripts.UI.POVManager, Assembly-CSharp
+        m_MethodName: OnObstacleMissed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1008840536470809504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,6 +618,14 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!222 &5633684980775127315
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4342245058659999261}
+  m_CullTransparentMesh: 1
 --- !u!1 &7428418797837234110
 GameObject:
   m_ObjectHideFlags: 0
