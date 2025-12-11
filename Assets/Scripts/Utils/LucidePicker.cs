@@ -7,7 +7,10 @@ namespace Utils
     public class LucidePicker : MonoBehaviour
     {
         static readonly char[] Trim = { '&', '#' };
+
         public string iconID;
+        public Color textColor = Color.black;
+
         TextMeshProUGUI _text;
 
         void Awake()
@@ -27,6 +30,7 @@ namespace Utils
             sanitizedIconID += 0; //offset
             var unicode = sanitizedIconID.ToString("X");
             _text.text = $"\\u{unicode}";
+            _text.color = textColor;
         }
     }
 }
