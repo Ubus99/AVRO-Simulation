@@ -120,8 +120,8 @@ namespace Scenes.Scripts.UI
                 {
                     selectedVehicle = ctw.ADS;
                 }
-                OnFocusChange?.Invoke(selectedVehicle);
             }
+            OnFocusChange?.Invoke(selectedVehicle);
         }
     }
 }
