@@ -13,6 +13,7 @@ namespace Scenes.Scripts.UI
         public TextMeshProUGUI titleText;
         public GameObject buttonLeft;
         public GameObject buttonRight;
+        //public ListItem itemPrefab;
 
         void OnValidate()
         {
