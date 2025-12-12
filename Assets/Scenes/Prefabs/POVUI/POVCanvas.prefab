@@ -457,6 +457,7 @@ MonoBehaviour:
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   feedCamera: {fileID: 6624670450893377544}
+  sphereCastRadius: 0.2
   onClick:
     m_PersistentCalls:
       m_Calls:
@@ -1031,9 +1032,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0.19305557
-    y: 0.05928226
+    y: 0.059242062
     width: 0.6138889
-    height: 0.8814355
+    height: 0.88151586
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60

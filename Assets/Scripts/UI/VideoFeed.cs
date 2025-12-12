@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -13,10 +12,12 @@ namespace UI
         [SerializeField]
         Camera feedCamera;
 
+        public float sphereCastRadius = 0.2f;
         public UnityEvent<IPlayerClickable, Vector2> onClick;
         public UnityEvent<Vector2> onMiss;
-        Color _baseColor;
+        readonly RaycastHit[] _hits = new RaycastHit[32];
 
+        Color _baseColor;
         Canvas _canvas;
         bool _dirty;
         RectTransform _rectTransform;
@@ -50,24 +51,23 @@ namespace UI
         public void OnPointerClick(PointerEventData eventData)
         {
             var ray = feedCamera.ScreenPointToRay(eventData.position);
-            var hits = Physics.RaycastAll(ray);
-            if (hits.Length > 0)
+            var size = Physics.SphereCastNonAlloc(ray, sphereCastRadius, _hits);
+            if (size > 0)
             {
-                Debug.DrawLine(ray.origin, hits[0].point);
+                Debug.DrawLine(ray.origin, _hits[0].point);
 
-                if (!hits.Any(hit => hit.collider.TryGetComponent(out IPlayerClickable _)))
+                IPlayerClickable target = null;
+                for (var i = 0; i < size; i++)
                 {
-                    onMiss?.Invoke(eventData.position);
+                    if (_hits[i].collider.TryGetComponent(out target)) break;
+                }
+                if (target != null)
+                {
+                    onClick?.Invoke(target, eventData.position);
                 }
                 else
                 {
-                    foreach (var hit in hits)
-                    {
-                        if (!hit.collider.TryGetComponent(out IPlayerClickable clickable))
-                            continue;
-
-                        onClick?.Invoke(clickable, eventData.position);
-                    }
+                    onMiss?.Invoke(eventData.position);
                 }
             }
             else
