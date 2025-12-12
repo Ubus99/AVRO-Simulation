@@ -210,8 +210,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 48
   m_MinHeight: 48
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
+  m_PreferredWidth: 48
+  m_PreferredHeight: 48
   m_FlexibleWidth: 0
   m_FlexibleHeight: 0
   m_LayoutPriority: 1

@@ -292,6 +292,7 @@ MonoBehaviour:
   rightButton: {fileID: 2953115830098595727}
   title: {fileID: 7538257635679857575}
   label: {fileID: 7882140544784805934}
+  selectable: 1
   showLeftButton: 1
   showRightButton: 1
   showLabel: 0
@@ -725,6 +726,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1924215402304526661, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: m_MinHeight
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924215402304526661, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: m_PreferredWidth
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924215402304526661, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: m_PreferredHeight
       value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
