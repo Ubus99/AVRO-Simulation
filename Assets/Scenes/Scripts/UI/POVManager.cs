@@ -1,6 +1,5 @@
 using UI;
 using UnityEngine;
-using UnityEngine.UI;
 using Utils;
 
 namespace Scenes.Scripts.UI
@@ -9,11 +8,13 @@ namespace Scenes.Scripts.UI
     {
         public GameObject menu;
         public VideoFeed videoFeed;
+        Canvas _canvas;
 
         RectTransform _menuInstance;
 
         void Awake()
         {
+            _canvas = GetComponentInParent<Canvas>();
             ServiceLocator.Instance.TryRegister<POVManager>(this);
         }
 
@@ -39,9 +40,9 @@ namespace Scenes.Scripts.UI
                 _menuInstance = go.GetComponent<RectTransform>();
                 _menuInstance.gameObject.SetActive(true);
             }
-            
-            screenPos.y *= -1; // flip coordinate system
-            GUIUtils.PlaceIn(_menuInstance, screenPos, container, false);
+
+
+            GUIUtils.PlaceAt(_menuInstance, screenPos, _canvas, container, false);
         }
 
         public void OnObstacleMissed(Vector2 pos)

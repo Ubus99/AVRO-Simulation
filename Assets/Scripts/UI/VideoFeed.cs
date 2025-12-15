@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Button = UnityEngine.UIElements.Button;
 
 namespace UI
 {
@@ -50,11 +51,11 @@ namespace UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            var ray = feedCamera.ScreenPointToRay(eventData.position);
+            var ray = feedCamera.ScreenPointToRay(eventData.pressPosition);
             var size = Physics.SphereCastNonAlloc(ray, sphereCastRadius, _hits);
             if (size > 0)
             {
-                Debug.DrawLine(ray.origin, _hits[0].point);
+                Debug.DrawLine(ray.origin, _hits[0].point, Color.red, 1);
 
                 IPlayerClickable target = null;
                 for (var i = 0; i < size; i++)
@@ -63,11 +64,13 @@ namespace UI
                 }
                 if (target != null)
                 {
-                    onClick?.Invoke(target, eventData.position);
+                    Debug.Log($"Hit Target at {eventData.pressPosition}");
+                    onClick?.Invoke(target, eventData.pressPosition);
                 }
                 else
                 {
-                    onMiss?.Invoke(eventData.position);
+                    Debug.Log($"No Target at {eventData.pressPosition}");
+                    onMiss?.Invoke(eventData.pressPosition);
                 }
             }
             else
