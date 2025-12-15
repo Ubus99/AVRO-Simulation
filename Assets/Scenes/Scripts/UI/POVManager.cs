@@ -31,50 +31,17 @@ namespace Scenes.Scripts.UI
 
         public void OnObstacleClicked(IPlayerClickable playerClickable, Vector2 screenPos)
         {
-            var panel = videoFeed.rectTransform;
+            var container = videoFeed.rectTransform;
 
             if (!_menuInstance)
             {
-                var go = Instantiate(menu, videoFeed.transform, false);
+                var go = Instantiate(menu);
                 _menuInstance = go.GetComponent<RectTransform>();
                 _menuInstance.gameObject.SetActive(true);
             }
-
-            var canvas = videoFeed.canvas;
-            Camera cam = null;
-            if (canvas != null && canvas.renderMode == RenderMode.ScreenSpaceCamera)
-                cam = canvas.worldCamera;
-
-            // parent already set by Instantiate(..., videoFeed.transform, false) — ensure layout is up-to-date
-            LayoutRebuilder.ForceRebuildLayoutImmediate(_menuInstance);
-
-            // convert screen -> panel-local (returns point relative to panel.pivot)
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(panel, screenPos, cam, out var localPoint);
-
-            // clamp to panel so popup stays fully inside
-            const bool clampToPanel = true;
-            if (clampToPanel)
-            {
-                var panelSize = panel.rect.size;
-                var popupSize = _menuInstance.rect.size;
-
-                var min = -panelSize * panel.pivot + Vector2.Scale(popupSize, _menuInstance.pivot);
-                var max = panelSize * (Vector2.one - panel.pivot) -
-                          Vector2.Scale(popupSize, Vector2.one - _menuInstance.pivot);
-
-                localPoint.x = Mathf.Clamp(localPoint.x, min.x, max.x);
-                localPoint.y = Mathf.Clamp(localPoint.y, min.y, max.y);
-            }
-
-            // apply position: anchoredPosition if fixed anchors, otherwise localPosition for stretched anchors
-            if (_menuInstance.anchorMin == _menuInstance.anchorMax)
-            {
-                _menuInstance.anchoredPosition = localPoint;
-            }
-            else
-            {
-                _menuInstance.localPosition = new Vector3(localPoint.x, localPoint.y, _menuInstance.localPosition.z);
-            }
+            
+            screenPos.y *= -1; // flip coordinate system
+            GUIUtils.PlaceIn(_menuInstance, screenPos, container, false);
         }
 
         public void OnObstacleMissed(Vector2 pos)
