@@ -5,12 +5,12 @@ using Utils;
 
 namespace car_logic
 {
-    [RequireComponent(typeof(CarSplineFollower))]
+    [RequireComponent(typeof(SplineNavigationProvider))]
     public class ADSV_AI : BaseStateMachine<States>
     {
         [Header("Movement")]
         [SerializeField]
-        CarSplineFollower navigationProvider;
+        SplineNavigationProvider navigationProvider;
 
         [Header("Cameras")]
         public Camera topDownCamera;
@@ -24,7 +24,7 @@ namespace car_logic
 
         void Awake()
         {
-            navigationProvider = GetComponent<CarSplineFollower>();
+            navigationProvider = GetComponent<SplineNavigationProvider>();
             carAI = GetComponent<CarAI>();
         }
 
@@ -36,10 +36,22 @@ namespace car_logic
 
         void Update()
         {
+            // hack
             topDownCamera.transform.LookAt(transform.position, Vector3.forward);
         }
 
         void FixedUpdate()
+        {
+            UpdateStateMachine();
+        }
+
+        void OnDestroy()
+        {
+            if (ServiceLocator.Instance.TryGet<GameManager>(out var gameManager) && carAI)
+                gameManager.DeregisterCar(this);
+        }
+
+        void UpdateStateMachine()
         {
             switch (state)
             {

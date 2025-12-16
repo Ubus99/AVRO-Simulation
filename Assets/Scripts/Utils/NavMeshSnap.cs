@@ -17,10 +17,10 @@ namespace Scripts
         public Vector3 offset;
 
         public Mode _mode = Mode.Point;
-        private SplineComputer _spline;
-        private Transform _target;
+        SplineComputer _spline;
+        Transform _target;
 
-        private void Start()
+        void Start()
         {
             if (TryGetComponent(out _spline))
                 _mode = Mode.Spline;
@@ -28,7 +28,7 @@ namespace Scripts
         }
 
 #if UNITY_EDITOR
-        private void Update()
+        void Update()
         {
             if (!Application.isEditor || Application.isPlaying) return;
 
@@ -48,28 +48,35 @@ namespace Scripts
         }
 #endif
 
-        private void UpdateSpline()
+        void UpdateSpline()
         {
             var points = _spline.GetPoints();
             for (var i = 0; i < points.Length; i++)
                 if (NavMesh.SamplePosition(
-                        points[i].position,
-                        out var hit,
-                        100.0f,
-                        NavMesh.AllAreas))
+                    points[i].position,
+                    out var hit,
+                    100.0f,
+                    NavMesh.AllAreas))
+                {
                     points[i].SetPosition(hit.position + offset);
+                    points[i].normal = hit.normal;
+                }
 
             _spline.SetPoints(points);
         }
 
-        private void UpdatePoint()
+        void UpdatePoint()
         {
             if (NavMesh.SamplePosition(
-                    transform.position,
-                    out var hit,
-                    100.0f,
-                    NavMesh.AllAreas))
+                transform.position,
+                out var hit,
+                100.0f,
+                NavMesh.AllAreas))
+            {
                 transform.position = hit.position + offset;
+                transform.rotation.SetLookRotation(transform.forward, hit.normal);
+            }
+
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace car_logic
 {
     [RequireComponent(typeof(CarAI))]
-    public class CarSplineFollower : MonoBehaviour
+    public class SplineNavigationProvider : MonoBehaviour
     {
         public bool visualize = true;
         public CarTarget targetPrefab;

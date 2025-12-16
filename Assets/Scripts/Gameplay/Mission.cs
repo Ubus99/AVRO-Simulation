@@ -31,9 +31,14 @@ namespace Gameplay
         public void Activate()
         {
             Setup();
-            CarInstance = Instantiate(carPrefab, startPoint);
+            SpawnCar();
             OnActivated?.Invoke(this, EventArgs.Empty);
             Active = true;
+        }
+
+        void SpawnCar()
+        {
+            CarInstance = Instantiate(carPrefab, startPoint.position + Vector3.up, startPoint.rotation);
         }
 
         protected abstract void Setup();
@@ -41,7 +46,7 @@ namespace Gameplay
         public void Deactivate()
         {
             CleanUp();
-            Destroy(CarInstance.gameObject);
+            if (CarInstance) Destroy(CarInstance.gameObject);
             OnDeactivated?.Invoke(this, EventArgs.Empty);
             Active = false;
         }

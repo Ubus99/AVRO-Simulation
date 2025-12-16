@@ -10,11 +10,6 @@ namespace Scenes.Scripts.Missions
         public StreetEvent trigger;
         public GameObject obstacle;
 
-        void Start()
-        {
-            Activate();
-        }
-
         void Update()
         {
             if (!CarInstance) return;

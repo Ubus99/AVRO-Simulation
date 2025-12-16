@@ -59,7 +59,7 @@ namespace Gameplay
             var activeMissions = missionControllers.Count(controller => controller.inProgress);
             for (var i = 0; i < concurrentMissions - activeMissions; i++)
             {
-                missionControllers.First(controller => !controller.inProgress).TryActivateMission();
+                missionControllers.FirstOrDefault(controller => !controller.inProgress, null)?.TryActivateMission();
             }
         }
 
