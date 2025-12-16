@@ -7188,6 +7188,126 @@ MonoBehaviour:
       Value:
         type: 2
         priority: 0.5
+--- !u!1 &4517131328486957309
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4191754122788541081}
+  - component: {fileID: 5476719964292342207}
+  - component: {fileID: 3529628953830997996}
+  - component: {fileID: 4560134741273150664}
+  m_Layer: 0
+  m_Name: Node Entry3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4191754122788541081
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4517131328486957309}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0046599866, y: 0.7112821, z: -0, w: 0.7028913}
+  m_LocalPosition: {x: -28.946884, y: 5.704239, z: -184.00633}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3032868461359681369}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5476719964292342207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4517131328486957309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a212c074803b6824cae48ffa7abb84cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Dreamteck.Splines::Dreamteck.Splines.Node
+  type: 0
+  connections:
+  - invertTangents: 0
+    _pointIndex: 11
+    _computer: {fileID: 5164333268941162812}
+    point:
+      _type: 0
+      position: {x: 0, y: 0, z: 0}
+      color: {r: 1, g: 1, b: 1, a: 1}
+      normal: {x: 0, y: 0, z: 0}
+      size: 1
+      tangent: {x: -0.037874915, y: -5.7131586, z: 0.037428115}
+      tangent2: {x: 0.037874922, y: 5.7131596, z: -0.037428122}
+  _transformSize: 1
+  _transformNormals: 1
+  _transformTangents: 1
+--- !u!114 &3529628953830997996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4517131328486957309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5aee9fe5e2d4b90ab6bc2bddcc62c15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Streets.Junction
+  connections:
+    _serializedList:
+    - Key:
+        invertTangents: 0
+        _pointIndex: 11
+        _computer: {fileID: 5164333268941162812}
+        point:
+          _type: 0
+          position: {x: 0, y: 0, z: 0}
+          color: {r: 1, g: 1, b: 1, a: 1}
+          normal: {x: 0, y: 0, z: 0}
+          size: 1
+          tangent: {x: -0.037874974, y: -5.7131677, z: 0.037428174}
+          tangent2: {x: 0.03787499, y: 5.71317, z: -0.03742819}
+      Value:
+        type: 2
+        priority: 1e-45
+    - Key:
+        invertTangents: 0
+        _pointIndex: 2
+        _computer: {fileID: 6458896263183018106}
+        point:
+          _type: 0
+          position: {x: 0, y: 0, z: 0}
+          color: {r: 1, g: 1, b: 1, a: 1}
+          normal: {x: 0, y: 0, z: 0}
+          size: 1
+          tangent: {x: -0.037874974, y: -5.7131677, z: 0.037428174}
+          tangent2: {x: 0.03787499, y: 5.71317, z: -0.03742819}
+      Value:
+        type: 2
+        priority: 1e-45
+--- !u!114 &4560134741273150664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4517131328486957309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8bff4fdb7584e7e8dd0dc4d7166fc9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.NavMeshSnap
+  offset: {x: 0, y: 0, z: 0}
+  _mode: 1
 --- !u!1 &4553214005534388539
 GameObject:
   m_ObjectHideFlags: 0
@@ -10356,6 +10476,137 @@ Transform:
   - {fileID: 3578006554104951397}
   m_Father: {fileID: 707984012028183233}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6333727405999325940
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4952992141599555512}
+  - component: {fileID: 3429147095761471673}
+  - component: {fileID: 6769063588384490753}
+  - component: {fileID: 3352862602013572780}
+  m_Layer: 0
+  m_Name: Node Exit3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4952992141599555512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6333727405999325940}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.006759055, y: 0.7072221, z: -0, w: 0.7069592}
+  m_LocalPosition: {x: -58.630287, y: 5.7065396, z: -184.24823}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3032868461359681369}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3429147095761471673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6333727405999325940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a212c074803b6824cae48ffa7abb84cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Dreamteck.Splines::Dreamteck.Splines.Node
+  type: 0
+  connections:
+  - invertTangents: 0
+    _pointIndex: 11
+    _computer: {fileID: 5164333268941162812}
+    point:
+      _type: 0
+      position: {x: 0, y: 0, z: 0}
+      color: {r: 1, g: 1, b: 1, a: 1}
+      normal: {x: 0, y: 0, z: 0}
+      size: 1
+      tangent: {x: 0, y: 0, z: 0}
+      tangent2: {x: 0, y: 0, z: 0}
+  - invertTangents: 0
+    _pointIndex: 0
+    _computer: {fileID: 5458424929134134953}
+    point:
+      _type: 0
+      position: {x: 0, y: 0, z: 0}
+      color: {r: 1, g: 1, b: 1, a: 1}
+      normal: {x: 0, y: 0, z: 0}
+      size: 1
+      tangent: {x: 0, y: 0, z: 0}
+      tangent2: {x: 0, y: 0, z: 0}
+  _transformSize: 1
+  _transformNormals: 1
+  _transformTangents: 1
+--- !u!114 &6769063588384490753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6333727405999325940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8bff4fdb7584e7e8dd0dc4d7166fc9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.NavMeshSnap
+  offset: {x: 0, y: 0, z: 0}
+  _mode: 1
+--- !u!114 &3352862602013572780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6333727405999325940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5aee9fe5e2d4b90ab6bc2bddcc62c15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Streets.Junction
+  connections:
+    _serializedList:
+    - Key:
+        invertTangents: 0
+        _pointIndex: 11
+        _computer: {fileID: 5164333268941162812}
+        point:
+          _type: 0
+          position: {x: 0, y: 0, z: 0}
+          color: {r: 1, g: 1, b: 1, a: 1}
+          normal: {x: 0, y: 0, z: 0}
+          size: 1
+          tangent: {x: 0, y: 0, z: 0}
+          tangent2: {x: 0, y: 0, z: 0}
+      Value:
+        type: 2
+        priority: 1e-45
+    - Key:
+        invertTangents: 0
+        _pointIndex: 0
+        _computer: {fileID: 5458424929134134953}
+        point:
+          _type: 0
+          position: {x: 0, y: 0, z: 0}
+          color: {r: 1, g: 1, b: 1, a: 1}
+          normal: {x: 0, y: 0, z: 0}
+          size: 1
+          tangent: {x: 0, y: 0, z: 0}
+          tangent2: {x: 0, y: 0, z: 0}
+      Value:
+        type: 1
+        priority: 1e-45
 --- !u!1 &6340666209259000298
 GameObject:
   m_ObjectHideFlags: 0
@@ -10705,6 +10956,8 @@ Transform:
   m_Children:
   - {fileID: 5964716745363279297}
   - {fileID: 3557071490658674715}
+  - {fileID: 4191754122788541081}
+  - {fileID: 4952992141599555512}
   - {fileID: 5993128562668685922}
   - {fileID: 5627040737061808229}
   - {fileID: 8128785778059314890}

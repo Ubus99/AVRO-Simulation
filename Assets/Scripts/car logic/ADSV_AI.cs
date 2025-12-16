@@ -5,12 +5,12 @@ using Utils;
 
 namespace car_logic
 {
-    [RequireComponent(typeof(SplineNavigationProvider))]
+    [RequireComponent(typeof(NavigationProvider))]
     public class ADSV_AI : BaseStateMachine<States>
     {
         [Header("Movement")]
         [SerializeField]
-        SplineNavigationProvider navigationProvider;
+        NavigationProvider navigationProvider;
 
         [Header("Cameras")]
         public Camera topDownCamera;
@@ -20,17 +20,15 @@ namespace car_logic
         bool _errorFlag;
         float _previousSpeed;
 
-        public CarAI carAI { private set; get; }
-
         void Awake()
         {
-            navigationProvider = GetComponent<SplineNavigationProvider>();
-            carAI = GetComponent<CarAI>();
+            navigationProvider = GetComponent<NavigationProvider>();
         }
 
         void Start()
         {
-            if (ServiceLocator.Instance.TryGet<GameManager>(out var gameManager) && carAI)
+            navigationProvider = GetComponent<NavigationProvider>();
+            if (ServiceLocator.Instance.TryGet<GameManager>(out var gameManager))
                 gameManager.RegisterCar(this);
         }
 
@@ -47,7 +45,7 @@ namespace car_logic
 
         void OnDestroy()
         {
-            if (ServiceLocator.Instance.TryGet<GameManager>(out var gameManager) && carAI)
+            if (ServiceLocator.Instance.TryGet<GameManager>(out var gameManager))
                 gameManager.DeregisterCar(this);
         }
 

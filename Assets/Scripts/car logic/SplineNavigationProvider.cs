@@ -4,16 +4,11 @@ using UnityEngine;
 namespace car_logic
 {
     [RequireComponent(typeof(CarAI))]
-    public class SplineNavigationProvider : MonoBehaviour
+    public class SplineNavigationProvider : NavigationProvider
     {
-        public bool visualize = true;
-        public CarTarget targetPrefab;
-        public CarTarget target;
-        public float baseSpeed;
         CarAI _agent;
 
         PathVisualizer _pathVisualizer;
-        SplineFollower _splineFollower;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Awake()
@@ -50,7 +45,7 @@ namespace car_logic
             Gizmos.DrawSphere(target.transform.position, 0.5f);
         }
 
-        public float GetTargetSpeed()
+        public override float GetTargetSpeed()
         {
             return _agent.MaxRPM;
         }
@@ -60,12 +55,12 @@ namespace car_logic
             return baseSpeed;
         }
 
-        public void SetTargetSpeed(float speed)
+        public override void SetTargetSpeed(float speed)
         {
             _agent.MaxRPM = Mathf.RoundToInt(speed);
         }
 
-        public void SetTargetLocation(Vector3 position)
+        public override void SetTargetLocation(Vector3 position)
         {
             var sample = new SplineSample();
             target.splineFollower.Project(position, ref sample);

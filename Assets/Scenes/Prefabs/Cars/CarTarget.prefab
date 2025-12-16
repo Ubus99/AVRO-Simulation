@@ -157,4 +157,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::car_logic.CarTarget
   follower: {fileID: 0}
   pull: 100
-  maxDistance: 50
+  maxDistance: 20
