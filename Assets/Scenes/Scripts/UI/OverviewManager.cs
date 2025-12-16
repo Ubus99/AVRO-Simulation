@@ -81,6 +81,12 @@ namespace Scenes.Scripts.UI
             _dirty = true;
         }
 
+        public void DeregisterVehicle(ADSV_AI vehicle)
+        {
+            _trackedVehicles.Remove(vehicle);
+            _dirty = true;
+        }
+
         void RebuildVideoFeed()
         {
             _renderTextures.Clear();

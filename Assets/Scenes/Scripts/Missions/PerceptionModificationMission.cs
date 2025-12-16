@@ -17,10 +17,10 @@ namespace Scenes.Scripts.Missions
 
         void Update()
         {
-            if (!car) return;
-            if (car.state == States.WaitingForAid)
+            if (!CarInstance) return;
+            if (CarInstance.state == States.WaitingForAid)
             {
-                car.navigationProvider.SetTargetLocation(obstacle.transform.position);
+                CarInstance.SetTarget(obstacle.transform.position);
             }
         }
 

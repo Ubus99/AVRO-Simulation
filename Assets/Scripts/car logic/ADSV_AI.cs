@@ -1,6 +1,5 @@
 ﻿using System;
 using Gameplay;
-using Streets;
 using UnityEngine;
 using Utils;
 
@@ -10,7 +9,8 @@ namespace car_logic
     public class ADSV_AI : BaseStateMachine<States>
     {
         [Header("Movement")]
-        public CarSplineFollower navigationProvider;
+        [SerializeField]
+        CarSplineFollower navigationProvider;
 
         [Header("Cameras")]
         public Camera topDownCamera;
@@ -72,6 +72,10 @@ namespace car_logic
             }
         }
 
+        public void SetTarget(Vector3 position)
+        {
+            navigationProvider.SetTargetLocation(position);
+        }
 
         public string GetState()
         {

@@ -3,6 +3,9 @@ using car_logic;
 using Scenes.Scripts.UI;
 using UnityEngine;
 using Utils;
+using ZLinq;
+
+[assembly: ZLinqDropIn("Gameplay", DropInGenerateTypes.Collection)]
 
 namespace Gameplay
 {
@@ -17,9 +20,9 @@ namespace Gameplay
         public Camera uiCamera;
 
         [Header("Missions")]
-        public List<Mission> missions = new();
+        public List<MissionController> missionControllers = new();
 
-        readonly List<ADSV_AI> _activeCarList = new();
+        public int concurrentMissions = 1;
 
         protected void Awake()
         {
@@ -53,7 +56,11 @@ namespace Gameplay
         // Update is called once per frame
         void Update()
         {
-
+            var activeMissions = missionControllers.Count(controller => controller.inProgress);
+            for (var i = 0; i < concurrentMissions - activeMissions; i++)
+            {
+                missionControllers.First(controller => !controller.inProgress).TryActivateMission();
+            }
         }
 
         void SetupMap()
@@ -73,12 +80,15 @@ namespace Gameplay
 
         public void RegisterCar(ADSV_AI carAI)
         {
-            _activeCarList.Add(carAI);
-
             var cam = carAI.povCamera;
             cam.targetDisplay = (int)Screens.Closeup;
 
             overviewManager.RegisterVehicle(carAI);
+        }
+
+        public void DeregisterCar(ADSV_AI carAI)
+        {
+            overviewManager.DeregisterVehicle(carAI);
         }
 
         enum Screens

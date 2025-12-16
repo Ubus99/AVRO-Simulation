@@ -24,7 +24,6 @@ namespace Streets
             {
                 case "Player":
                     var car = other.GetComponentInParent<ADSV_AI>();
-                    parent.SetCar(car);
                     car.TriggerError();
                     break;
                 default:

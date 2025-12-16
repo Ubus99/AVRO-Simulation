@@ -7,8 +7,11 @@ namespace Gameplay
     [Serializable]
     public abstract class Mission : MonoBehaviour
     {
-        public ADSV_AI car;
+        public Transform startPoint;
+        public ADSV_AI carPrefab;
+
         protected bool Active;
+        protected ADSV_AI CarInstance;
         public bool completed { get; protected set; }
 
         void Awake()
@@ -28,6 +31,7 @@ namespace Gameplay
         public void Activate()
         {
             Setup();
+            CarInstance = Instantiate(carPrefab, startPoint);
             OnActivated?.Invoke(this, EventArgs.Empty);
             Active = true;
         }
@@ -37,15 +41,11 @@ namespace Gameplay
         public void Deactivate()
         {
             CleanUp();
+            Destroy(CarInstance.gameObject);
             OnDeactivated?.Invoke(this, EventArgs.Empty);
             Active = false;
         }
 
         protected abstract void CleanUp();
-        
-        public void SetCar(ADSV_AI car)
-        {
-            this.car = car;
-        }
     }
 }

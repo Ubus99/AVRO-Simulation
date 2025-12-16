@@ -6833,6 +6833,7 @@ Transform:
   m_Children:
   - {fileID: 5516634184151116678}
   - {fileID: 8389991044888279886}
+  - {fileID: 8000745969003913651}
   m_Father: {fileID: 8524890484324859749}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7766190621086838605
@@ -6847,7 +6848,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e4233346184dcbb71af8174ed4b92c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Default.Scripts.Missions.PerceptionModificationMission
-  car: {fileID: 0}
+  startPoint: {fileID: 8000745969003913651}
+  carPrefab: {fileID: 7842990661033774574, guid: 2b0758a6c0554fa49a2523f868600f70, type: 3}
   trigger: {fileID: 1129850450867891785}
   obstacle: {fileID: 9161707901318226420}
 --- !u!1 &4254556991735514069
@@ -6948,6 +6950,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8524890484324859749}
+  - component: {fileID: 6730301815692557501}
   m_Layer: 0
   m_Name: Missions
   m_TagString: Untagged
@@ -6971,6 +6974,19 @@ Transform:
   - {fileID: 5549591496939503679}
   m_Father: {fileID: 3221545386616974843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6730301815692557501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4350357870235907035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cec26ac6c0806a240b16377097ce2123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  missions: []
 --- !u!1 &4405794131822060877
 GameObject:
   m_ObjectHideFlags: 0
@@ -15202,6 +15218,52 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8345252971037769713
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8000745969003913651}
+  - component: {fileID: 1603377162798476298}
+  m_Layer: 0
+  m_Name: StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8000745969003913651
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8345252971037769713}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5549591496939503679}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1603377162798476298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8345252971037769713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8bff4fdb7584e7e8dd0dc4d7166fc9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.NavMeshSnap
+  offset: {x: 0, y: 0, z: 0}
+  _mode: 1
 --- !u!1 &8432800454869904428
 GameObject:
   m_ObjectHideFlags: 0
