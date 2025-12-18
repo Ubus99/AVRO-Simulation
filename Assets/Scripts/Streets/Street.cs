@@ -41,8 +41,8 @@ namespace Streets
         {
             foreach (var e in exits)
             {
-                var p1 = GetPointAtIndex(lane1, e.x);
-                var p2 = GetPointAtIndex(lane2, e.y);
+                var p1 = GetWorldPointAtIndex(lane1, e.x);
+                var p2 = GetWorldPointAtIndex(lane2, e.y);
 
                 Gizmos.color = Color.red;
                 Gizmos.DrawLine(p1, p2);
@@ -54,7 +54,15 @@ namespace Streets
             }
         }
 
-        public static Vector3 GetPointAtIndex(SplineContainer container, int index)
+        void OnValidate()
+        {
+            foreach (var exit in exitLanes)
+            {
+                exit.myAddress.street = this;
+            }
+        }
+
+        static Vector3 GetWorldPointAtIndex(SplineContainer container, int index)
         {
             if (index < 0 || index >= container.Splines[0].Count)
                 return Vector3.zero;
@@ -63,12 +71,17 @@ namespace Streets
             return container.transform.TransformPoint(knot.Position);
         }
 
-        public Vector3 GetPointAtIndex(Lane lane, int idx)
+        Vector3 GetWorldPointAtIndex(Lane lane, int idx)
         {
-            return GetPointAtIndex(GetLane(lane), idx);
+            return GetWorldPointAtIndex(GetLane(lane), idx);
         }
 
-        public SplineContainer GetLane(Lane lane)
+        BezierKnot GetKnotAtIndex(Lane lane, int idx)
+        {
+            return GetLane(lane)[0][idx];
+        }
+
+        SplineContainer GetLane(Lane lane)
         {
             return lane switch
             {
@@ -81,33 +94,54 @@ namespace Streets
         [Serializable]
         public class Exit
         {
-            [SerializeField]
-            public Lane lane;
-
-            [SerializeField]
-            public int index;
+            public Address myAddress;
 
             public List<Address> targets = new();
 
             public void DrawGizmos(SplineContainer laneA, SplineContainer laneB)
             {
                 Gizmos.color = Color.green;
-                var p1 = GetPointAtIndex(lane == Lane.LaneA ? laneA : laneB, index);
+                var p1 = GetWorldPointAtIndex(myAddress.lane == Lane.LaneA ? laneA : laneB, myAddress.idx);
                 foreach (var address in targets)
                 {
                     if (!address.street) continue;
 
-                    var p2 = GetPointAtIndex(address.street.GetLane(address.lane), address.idx);
+                    var p2 = GetWorldPointAtIndex(address.street.GetLane(address.lane), address.idx);
                     Gizmos.DrawLine(p1, p2);
                 }
             }
+        }
 
-            [Serializable]
-            public struct Address
+        [Serializable]
+        public struct Address : IEquatable<Address>
+        {
+            public Street street;
+            public Lane lane;
+            public int idx;
+
+            public bool Equals(Address other)
             {
-                public Street street;
-                public Lane lane;
-                public int idx;
+                return Equals(street, other.street) && lane == other.lane && idx == other.idx;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is Address other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(street, (int)lane, idx);
+            }
+
+            public BezierKnot GetKnot()
+            {
+                return street.GetKnotAtIndex(lane, idx);
+            }
+
+            public Vector3 GetWorldPoint()
+            {
+                return street.GetWorldPointAtIndex(lane, idx);
             }
         }
     }

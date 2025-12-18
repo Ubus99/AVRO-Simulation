@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
+using Utils;
 
 namespace Streets
 {
@@ -10,7 +12,9 @@ namespace Streets
         public List<Street> streets;
         public GameObject junctions;
         public GameObject nodes;
+        public JunctionTrigger triggerPrefab;
 
+        readonly Dictionary<Street.Address, JunctionTrigger> _junctionTriggers = new();
 
         bool _dirty;
 
@@ -18,29 +22,34 @@ namespace Streets
         {
             if (!_dirty) return;
 
-            ClearBranches();
-
             //flatten tree
             var exits = new Dictionary<Street.Exit, Street>();
             foreach (var s in streets)
             foreach (var e in s.exitLanes)
             {
-                exits.Add(e, s);
+                exits.TryAdd(e, s);
             }
 
-            foreach (var (e, s) in exits)
-            foreach (var t in e.targets)
+            ObjectManager.KillAllChildren(junctions.transform);
+            ObjectManager.KillAllChildren(nodes.transform);
+            _junctionTriggers.Clear();
+
+            foreach (var (e, s) in exits) // iterate exits
             {
-                var go = new GameObject($"Branch{e.lane}{t.street.name}", typeof(SplineContainer));
-                go.transform.SetParent(junctions.transform);
+                // entry knot
+                var knot1 = e.myAddress.GetKnot();
+                knot1.Position = e.myAddress.GetWorldPoint();
 
-                var spline = go.GetComponent<SplineContainer>()[0];
-                spline.Clear();
-                var knot1 = s.GetPointAtIndex(e.lane, e.index);
-                var knot3 = t.street.GetPointAtIndex(t.lane, t.idx);
+                foreach (var a in e.targets) // iterate endpoints
+                {
+                    // exit knot
+                    var knot2 = a.GetKnot();
+                    knot2.Position = a.GetWorldPoint();
 
-                spline.Add(knot1);
-                spline.Add(knot3);
+                    // apply
+                    AddBranch($"Branch_{e.myAddress.lane}{a.street.name}", knot1, knot2);
+                    AddTrigger(a, knot2.Position);
+                }
             }
 
             _dirty = false;
@@ -51,12 +60,36 @@ namespace Streets
             _dirty = true;
         }
 
-        void ClearBranches()
+        void AddBranch(string name, BezierKnot knot1, BezierKnot knot2)
         {
-            for (var i = junctions.transform.childCount - 1; i >= 0; i--)
+            var go = new GameObject(name, typeof(SplineContainer));
+            go.transform.SetParent(junctions.transform);
+
+            var spline = go.GetComponent<SplineContainer>()[0];
+            spline.Clear();
+
+            spline.Add(knot1);
+            spline.Add(knot2);
+        }
+
+        void AddTrigger(Street.Address a, Vector3 pos)
+        {
+            // load from cache
+            if (!_junctionTriggers.TryGetValue(a, out var junction) || !junction)
             {
-                DestroyImmediate(junctions.transform.GetChild(i).gameObject);
+                if (!triggerPrefab) return;
+
+                var go = PrefabUtility.InstantiatePrefab(triggerPrefab.gameObject) as GameObject;
+                if (!go) return;
+
+                go.transform.SetParent(nodes.transform);
+                go.transform.position = pos;
+
+                _junctionTriggers[a] = junction = go.GetComponent<JunctionTrigger>();
             }
+
+            // set data
+            junction.junctionData.TryAdd(a, 0);
         }
     }
 }
