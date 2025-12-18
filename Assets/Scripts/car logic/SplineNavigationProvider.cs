@@ -1,7 +1,7 @@
-using Dreamteck.Splines;
+using car_logic;
 using UnityEngine;
 
-namespace car_logic
+namespace car_navigation
 {
     [RequireComponent(typeof(CarAI))]
     public class SplineNavigationProvider : NavigationProvider
@@ -62,9 +62,6 @@ namespace car_logic
 
         public override void SetTargetLocation(Vector3 position)
         {
-            var sample = new SplineSample();
-            target.splineFollower.Project(position, ref sample);
-            target.splineFollower.SetPercent(sample.percent);
         }
     }
 }

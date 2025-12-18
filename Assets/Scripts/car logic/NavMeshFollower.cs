@@ -1,5 +1,4 @@
-using Dreamteck.Splines;
-using Gameplay;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -67,9 +66,6 @@ namespace car_logic
 
         public override void SetTargetLocation(Vector3 position)
         {
-            var sample = new SplineSample();
-            target.splineFollower.Project(position, ref sample);
-            target.splineFollower.SetPercent(sample.percent);
         }
     }
 }

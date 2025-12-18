@@ -1,17 +1,20 @@
-﻿public class AbstractSingleton<T> where T : new()
+﻿namespace Utils
 {
-    static T _instance;
-
-    public static T Instance
+    public class AbstractSingleton<T> where T : new()
     {
-        get
+        static T _instance;
+
+        public static T Instance
         {
-            if (_instance == null)
+            get
             {
-                _instance = new T();
+                if (_instance == null)
+                {
+                    _instance = new T();
+                }
+                return _instance;
             }
-            return _instance;
+            set { _instance = value; }
         }
-        set { _instance = value; }
     }
 }

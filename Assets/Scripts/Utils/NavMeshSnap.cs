@@ -1,7 +1,7 @@
 ﻿using System;
-using Dreamteck.Splines;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Splines;
 
 namespace Scripts
 {
@@ -17,13 +17,12 @@ namespace Scripts
         public Vector3 offset;
 
         public Mode _mode = Mode.Point;
-        SplineComputer _spline;
+        SplineContainer _splineContainer;
         Transform _target;
 
         void Start()
         {
-            if (TryGetComponent(out _spline))
-                _mode = Mode.Spline;
+            if (TryGetComponent(out _splineContainer)) _mode = Mode.Spline;
             else if (!TryGetComponent(out _target)) throw new MissingComponentException("Missing component");
         }
 
@@ -48,21 +47,34 @@ namespace Scripts
         }
 #endif
 
+        void OnValidate()
+        {
+            if (TryGetComponent(out _splineContainer)) _mode = Mode.Spline;
+            else if (!TryGetComponent(out _target)) throw new MissingComponentException("Missing component");
+        }
+
         void UpdateSpline()
         {
-            var points = _spline.GetPoints();
-            for (var i = 0; i < points.Length; i++)
-                if (NavMesh.SamplePosition(
-                    points[i].position,
-                    out var hit,
-                    100.0f,
-                    NavMesh.AllAreas))
+            if (!_splineContainer) return;
+            foreach (var spline in _splineContainer.Splines)
+            {
+                for (var i = 0; i < spline.Count; i++)
                 {
-                    points[i].SetPosition(hit.position + offset);
-                    points[i].normal = hit.normal;
+                    var knot = spline[i];
+                    
+                    var worldPos = _splineContainer.transform.TransformPoint(knot.Position);
+                    if (!NavMesh.SamplePosition(
+                        worldPos,
+                        out var hit,
+                        100.0f,
+                        NavMesh.AllAreas))
+                        continue;
+                    
+                    var localPos = hit.position + offset;
+                    knot.Position = _splineContainer.transform.InverseTransformPoint(localPos);
+                    spline.SetKnot(i, knot);
                 }
-
-            _spline.SetPoints(points);
+            }
         }
 
         void UpdatePoint()
