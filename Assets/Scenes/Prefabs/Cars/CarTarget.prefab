@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::car_logic.CarTarget
   follower: {fileID: 0}
-  pull: 100
-  maxDistance: 20
+  pull: 20
+  maxDistance: 30
 --- !u!114 &8269606197266912950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Method: 1
   m_Duration: 1
   m_MaxSpeed: 10
-  m_EasingMode: 0
+  m_EasingMode: 3
   m_AlignmentMode: 1
   m_ObjectForwardAxis: 2
   m_ObjectUpAxis: 1

@@ -18,8 +18,24 @@ namespace Streets
 
         bool _dirty;
 
+        void Start()
+        {
+            UpdateStreets();
+        }
+
         void Update()
         {
+            UpdateStreets();
+        }
+
+        void OnValidate()
+        {
+            _dirty = true;
+        }
+
+        void UpdateStreets()
+        {
+#if UNITY_EDITOR
             if (!_dirty) return;
 
             //flatten tree
@@ -53,11 +69,7 @@ namespace Streets
             }
 
             _dirty = false;
-        }
-
-        void OnValidate()
-        {
-            _dirty = true;
+#endif
         }
 
         SplineContainer AddBranch(string name, BezierKnot knot1, BezierKnot knot2)

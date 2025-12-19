@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Splines;
 using Utils;
 
-namespace car_navigation
+namespace car_logic
 {
     [RequireComponent(typeof(SplineAnimate))]
     public class CarTarget : MonoBehaviour
@@ -32,24 +32,47 @@ namespace car_navigation
                     var (container, progress) = streetManager.GetClosestSpline(transform.position);
                     splineFollower.Container = container;
                     splineFollower.NormalizedTime = progress;
+                    splineFollower.Play();
 
                 }
 
-            var posDif = transform.position - follower.position;
-            distance = posDif.magnitude;
+            var dirFollower = transform.position - follower.position;
+            distance = dirFollower.magnitude;
 
-            var a = Vector3.Angle(follower.forward, posDif);
-            if (Mathf.Abs(a) > 90)
+            Debug.DrawRay(transform.position, dirFollower.normalized, Color.cyan);
+            Debug.DrawRay(transform.position, transform.forward, Color.orange);
+
+            var a = Vector3.Angle(follower.forward, dirFollower);
+            if (Mathf.Abs(a) < 90) // behind car
             {
-                splineFollower.MaxSpeed = pull;
+                ResetPosition();
             }
-            else
+            else // in front of car
             {
                 if (distance < maxDistance)
+                {
                     splineFollower.MaxSpeed = pull * (1 - Mathf.Clamp01(distance / maxDistance));
-                else
+                }
+                else if (distance > 100)
+                {
                     splineFollower.MaxSpeed = 0;
+                }
+                else
+                {
+                    ResetPosition();
+                }
             }
+        }
+
+        void ResetPosition()
+        {
+            SplineUtility.GetNearestPoint(
+            splineFollower.Container[0],
+            follower.position + follower.forward * 2,
+            out var point,
+            out var t);
+
+            splineFollower.NormalizedTime = t;
         }
     }
 }

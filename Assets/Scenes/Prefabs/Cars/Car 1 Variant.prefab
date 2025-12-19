@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 8136297801523501352}
   - component: {fileID: 8780745079574888426}
   - component: {fileID: 5254377376347383090}
-  - component: {fileID: 3150443079643339640}
-  - component: {fileID: 1522304228499851586}
   - component: {fileID: 3774737485629760273}
   m_Layer: 8
   m_Name: PathSpline
@@ -91,133 +89,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3150443079643339640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1151666470657460805}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf69cfa06c48dba428c5c4d626d57ab7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Dreamteck.Splines::Dreamteck.Splines.SplineRenderer
-  updateMethod: 0
-  _spline: {fileID: 1522304228499851586}
-  _autoUpdate: 1
-  _rotationModifier:
-    blend: 1
-    useClippedPercent: 0
-    keys: []
-  _offsetModifier:
-    blend: 1
-    useClippedPercent: 0
-    keys: []
-  _colorModifier:
-    blend: 1
-    useClippedPercent: 0
-    keys: []
-  _sizeModifier:
-    blend: 1
-    useClippedPercent: 0
-    keys: []
-  _clipFromSample:
-    position: {x: 0, y: 0, z: 0}
-    up: {x: 0, y: 0, z: 0}
-    forward: {x: 0, y: 0, z: 0}
-    color: {r: 0, g: 0, b: 0, a: 0}
-    size: 0
-    percent: 0
-  _clipToSample:
-    position: {x: 0, y: 0, z: 0}
-    up: {x: 0, y: 0, z: 0}
-    forward: {x: 0, y: 0, z: 0}
-    color: {r: 0, g: 0, b: 0, a: 0}
-    size: 0
-    percent: 0
-  _loopSamples: 0
-  _clipFrom: 0
-  _clipTo: 1
-  animClipFrom: 0
-  animClipTo: 1
-  multithreaded: 0
-  buildOnAwake: 1
-  buildOnEnable: 0
-  _baked: 0
-  _markDynamic: 1
-  _size: 1
-  _color: {r: 1, g: 1, b: 1, a: 1}
-  _offset: {x: 0, y: 0, z: 0}
-  _normalMethod: 1
-  _calculateTangents: 1
-  _useSplineSize: 1
-  _useSplineColor: 1
-  _rotation: 0
-  _flipFaces: 0
-  _doubleSided: 0
-  _uvMode: 0
-  _uvScale: {x: 1, y: 1}
-  _uvOffset: {x: 0, y: 0}
-  _uvRotation: 90
-  _meshIndexFormat: 0
-  _bakedMesh: {fileID: 0}
-  colliderUpdateRate: 0.2
-  autoOrient: 1
-  updateFrameInterval: 0
-  _slices: 1
---- !u!114 &1522304228499851586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1151666470657460805}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 598e68924c9f6324bbfd049d3bae754c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Dreamteck.Splines::Dreamteck.Splines.SplineComputer
-  multithreaded: 0
-  updateMode: 0
-  triggerGroups: []
-  _spline:
-    points: []
-    type: 1
-    linearAverageDirection: 1
-    customValueInterpolation:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    customNormalInterpolation:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    sampleRate: 10
-    closed: 0
-    _knotParametrization: 0
-  _originalSamplePercents: []
-  _is2D: 0
-  hasSamples: 0
-  _optimizeAngleThreshold: 0.5
-  _space: 1
-  _sampleMode: 0
-  _subscribers:
-  - {fileID: 3150443079643339640}
-  _rawSamples: []
-  _nodes: []
-  editorDrawPivot: 1
-  editorPathColor: {r: 1, g: 1, b: 1, a: 1}
-  editorAlwaysDraw: 1
-  editorDrawThickness: 0
-  editorBillboardThickness: 1
-  isNewlyCreated: 0
-  editorUpdateMode: 0
 --- !u!114 &3774737485629760273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,8 +103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efe385bd66443bb469fe148c0c2913fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  spline: {fileID: 1522304228499851586}
-  splineRenderer: {fileID: 3150443079643339640}
 --- !u!1 &1954338379447856189
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,6 +839,9 @@ PrefabInstance:
       addedObject: {fileID: -1313964191102924369}
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 7483474639576303776}
+    - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 7460261525024183986}
     - targetCorrespondingSourceObject: {fileID: 1780351737568190, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
       insertIndex: -1
@@ -992,10 +866,10 @@ NavMeshAgent:
   m_AgentTypeID: -1372625422
   m_Radius: 0.5
   m_Speed: 10
-  m_Acceleration: 8
+  m_Acceleration: 3
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 1
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1003,6 +877,33 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
+--- !u!54 &7483474639576303776
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2173481196299933159}
+  serializedVersion: 5
+  m_Mass: 800
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &7460261525024183986
 MonoBehaviour:
   m_ObjectHideFlags: 0
