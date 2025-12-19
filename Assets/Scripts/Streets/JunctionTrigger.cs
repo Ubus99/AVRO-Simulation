@@ -1,10 +1,11 @@
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace Streets
 {
     public class JunctionTrigger : MonoBehaviour
     {
-        public SerializedDictionary<Street.Address, float> junctionData = new();
+        public SerializedDictionary<SplineContainer, float> junctionData = new();
     }
 }

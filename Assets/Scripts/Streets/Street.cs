@@ -143,6 +143,11 @@ namespace Streets
             {
                 return street.GetWorldPointAtIndex(lane, idx);
             }
+
+            public SplineContainer GetSpline()
+            {
+                return street.GetLane(lane);
+            }
         }
     }
 }

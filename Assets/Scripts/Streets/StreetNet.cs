@@ -37,18 +37,18 @@ namespace Streets
             foreach (var (e, s) in exits) // iterate exits
             {
                 // entry knot
-                var knot1 = e.myAddress.GetKnot();
-                knot1.Position = e.myAddress.GetWorldPoint();
-
+                var knotStart = e.myAddress.GetKnot();
+                knotStart.Position = e.myAddress.GetWorldPoint();
                 foreach (var a in e.targets) // iterate endpoints
                 {
                     // exit knot
-                    var knot2 = a.GetKnot();
-                    knot2.Position = a.GetWorldPoint();
+                    var knotTarget = a.GetKnot();
+                    knotTarget.Position = a.GetWorldPoint();
 
                     // apply
-                    AddBranch($"Branch_{e.myAddress.lane}{a.street.name}", knot1, knot2);
-                    AddTrigger(a, knot2.Position);
+                    var branch = AddBranch($"Branch_{e.myAddress.street.name}_{a.street.name}", knotStart, knotTarget);
+                    AddTrigger(knotStart.Position, e.myAddress, branch);
+                    AddTrigger(knotTarget.Position, a, branch);
                 }
             }
 
@@ -60,19 +60,22 @@ namespace Streets
             _dirty = true;
         }
 
-        void AddBranch(string name, BezierKnot knot1, BezierKnot knot2)
+        SplineContainer AddBranch(string name, BezierKnot knot1, BezierKnot knot2)
         {
             var go = new GameObject(name, typeof(SplineContainer));
             go.transform.SetParent(junctions.transform);
 
-            var spline = go.GetComponent<SplineContainer>()[0];
+            var sc = go.GetComponent<SplineContainer>();
+            var spline = sc[0];
             spline.Clear();
 
             spline.Add(knot1);
             spline.Add(knot2);
+
+            return sc;
         }
 
-        void AddTrigger(Street.Address a, Vector3 pos)
+        void AddTrigger(Vector3 pos, Street.Address a, SplineContainer spline = null)
         {
             // load from cache
             if (!_junctionTriggers.TryGetValue(a, out var junction) || !junction)
@@ -84,12 +87,17 @@ namespace Streets
 
                 go.transform.SetParent(nodes.transform);
                 go.transform.position = pos;
+                go.name = $"Node_{a.street.name}_{a.idx}";
 
                 _junctionTriggers[a] = junction = go.GetComponent<JunctionTrigger>();
             }
 
             // set data
-            junction.junctionData.TryAdd(a, 0);
+            junction.junctionData.TryAdd(a.GetSpline(), 0);
+            if (spline)
+            {
+                junction.junctionData.TryAdd(spline, 0);
+            }
         }
     }
 }
