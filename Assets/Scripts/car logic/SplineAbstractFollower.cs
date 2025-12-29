@@ -4,7 +4,7 @@ using UnityEngine;
 namespace car_navigation
 {
     [RequireComponent(typeof(CarAI))]
-    public class SplineNavigationProvider : NavigationProvider
+    public class SplineAbstractFollower : AbstractFollower
     {
         CarAI _agent;
 

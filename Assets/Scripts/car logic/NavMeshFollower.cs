@@ -5,7 +5,7 @@ using UnityEngine.AI;
 namespace car_logic
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class NavMeshFollower : NavigationProvider
+    public class NavMeshFollower : AbstractFollower
     {
         NavMeshAgent _agent;
 

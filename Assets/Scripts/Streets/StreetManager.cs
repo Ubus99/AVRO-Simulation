@@ -22,7 +22,7 @@ namespace Streets
             _splineContainers.AddRange(GetComponentsInChildren<SplineContainer>());
         }
 
-        public (SplineContainer container, float progress) GetClosestSpline(Vector3 point)
+        public (SplineContainer container, float progress) GetClosestSpline(Vector3 worldPoint)
         {
             var minDistance = float.MaxValue;
             SplineContainer minSpline = null;
@@ -30,8 +30,14 @@ namespace Streets
 
             foreach (var splineContainer in _splineContainers)
             {
-                var dist = SplineUtility.GetNearestPoint(splineContainer[0], point, out var nearest, out var t);
-                if (!(dist < minDistance))
+                SplineHelper.GetClosestPoint(
+                splineContainer,
+                worldPoint,
+                out _,
+                out var dist,
+                out var t);
+                
+                if (!(dist < minDistance)) // skip if not minimum
                     continue;
 
                 minDistance = dist;

@@ -30,8 +30,8 @@ namespace Gameplay
 
         public void Activate()
         {
-            Setup();
             SpawnCar();
+            Setup();
             OnActivated?.Invoke(this, EventArgs.Empty);
             Active = true;
         }

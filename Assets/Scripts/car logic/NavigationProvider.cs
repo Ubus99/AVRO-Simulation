@@ -1,5 +1,4 @@
-﻿using car_navigation;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace car_logic
 {
@@ -7,8 +6,6 @@ namespace car_logic
     {
         public float baseSpeed;
         public bool visualize = true;
-        public CarTarget targetPrefab;
-        public CarTarget target;
 
         public abstract float GetTargetSpeed();
 

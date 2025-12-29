@@ -5,12 +5,14 @@ using Utils;
 
 namespace car_logic
 {
-    [RequireComponent(typeof(NavigationProvider))]
+    [RequireComponent(typeof(AbstractFollower))]
     public class ADSV_AI : BaseStateMachine<States>
     {
         [Header("Movement")]
         [SerializeField]
         NavigationProvider navigationProvider;
+
+        public Transform target;
 
         [Header("Cameras")]
         public Camera topDownCamera;

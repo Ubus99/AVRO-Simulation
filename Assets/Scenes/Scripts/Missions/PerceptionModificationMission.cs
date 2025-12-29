@@ -14,7 +14,7 @@ namespace Scenes.Scripts.Missions
             if (!CarInstance) return;
             if (CarInstance.state == States.WaitingForAid)
             {
-                CarInstance.SetTarget(obstacle.transform.position);
+                CarInstance.SetTarget(trigger.transform.position);
             }
         }
 
@@ -24,6 +24,8 @@ namespace Scenes.Scripts.Missions
             trigger.gameObject.SetActive(true);
 
             obstacle.gameObject.SetActive(true);
+            
+            CarInstance.SetTarget(obstacle.transform.position);
         }
 
         protected override void CleanUp()
