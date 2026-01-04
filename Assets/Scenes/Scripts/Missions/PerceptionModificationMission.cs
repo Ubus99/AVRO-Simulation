@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using car_logic;
 using Gameplay;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace Scenes.Scripts.Missions
 {
     public class PerceptionModificationMission : Mission
     {
+        [Header("Mission Specifics")]
         public StreetEvent trigger;
         public GameObject obstacle;
 

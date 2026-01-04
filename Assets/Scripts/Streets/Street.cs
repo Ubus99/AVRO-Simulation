@@ -15,17 +15,6 @@ namespace Streets
             LaneB
         }
 
-        public enum Side
-        {
-            Left,
-            Right
-        }
-
-        public Color activeColor;
-        public Color opposingColor;
-
-        [SerializeField] private Side side;
-
         [SerializeField] private SplineContainer lane1;
 
         [SerializeField] private SplineContainer lane2;
@@ -73,41 +62,10 @@ namespace Streets
         {
             foreach (var exit in exitLanes) exit.myAddress.street = this;
             GetDependencies();
-            UpdateColors();
-        }
-
-        public void SetActiveSide(Side side)
-        {
-            this.side = side;
-            UpdateColors();
         }
 
         private void GetDependencies()
         {
-            if (!PrefabUtility.IsPartOfPrefabInstance(gameObject)) return;
-            lane1Material = lane1.gameObject.GetComponent<Renderer>().material;
-            lane2Material = lane2.gameObject.GetComponent<Renderer>().material;
-        }
-
-        private void UpdateColors()
-        {
-            if (!lane1Material || !lane2Material) return;
-
-            switch (side)
-            {
-                case Side.Left:
-                    lane1Material.color = activeColor;
-                    lane2Material.color = opposingColor;
-                    break;
-
-                case Side.Right:
-                    lane2Material.color = activeColor;
-                    lane1Material.color = opposingColor;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
 
         private static Vector3 GetWorldPointAtIndex(SplineContainer container, int index)

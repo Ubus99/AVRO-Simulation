@@ -1,14 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using car_logic;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace Gameplay
 {
     [Serializable]
     public abstract class Mission : MonoBehaviour
     {
-        public Transform startPoint;
-        public ADSV_AI carPrefab;
+        [Header("Prefabs")] public ADSV_AI carPrefab;
+
+        [Header("Key Points")] public Transform startPoint;
+
+        public Transform endPoint;
+        public List<SplineContainer> alternativeRoutes = new();
 
         protected bool Active;
         protected ADSV_AI CarInstance;
@@ -32,6 +38,8 @@ namespace Gameplay
         {
             SpawnCar(true);
             Setup();
+            foreach (var sc in alternativeRoutes)
+                sc.gameObject.SetActive(true);
             OnActivated?.Invoke(this, EventArgs.Empty);
             Active = true;
         }
@@ -49,6 +57,8 @@ namespace Gameplay
         {
             CleanUp();
             if (CarInstance) Destroy(CarInstance.gameObject);
+            foreach (var sc in alternativeRoutes)
+                sc.gameObject.SetActive(false);
             OnDeactivated?.Invoke(this, EventArgs.Empty);
             Active = false;
         }
