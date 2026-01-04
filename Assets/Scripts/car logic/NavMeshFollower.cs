@@ -67,5 +67,10 @@ namespace car_logic
         public override void SetTargetLocation(Vector3 position)
         {
         }
+
+        public override void Halt()
+        {
+            _agent.isStopped = true;
+        }
     }
 }

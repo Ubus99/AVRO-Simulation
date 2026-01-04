@@ -114,7 +114,7 @@ namespace car_logic
             {
                 PrintEntryState();
                 _previousSpeed = navigationProvider.GetTargetSpeed();
-                navigationProvider.SetTargetSpeed(0);
+                navigationProvider.Halt();
             }
             BaseUpdate();
             PrintState();

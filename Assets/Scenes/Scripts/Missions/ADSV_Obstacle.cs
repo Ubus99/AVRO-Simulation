@@ -6,7 +6,7 @@ using Utils;
 
 namespace Scenes.Scripts.Missions
 {
-    public class ADSVObstacle : MonoBehaviour, IPlayerClickable
+    public class ADSV_Obstacle : MonoBehaviour, IPlayerClickable
     {
         POVManager _manager;
 

@@ -1,3 +1,4 @@
+using System;
 using car_logic;
 using UnityEngine;
 
@@ -62,6 +63,12 @@ namespace car_navigation
 
         public override void SetTargetLocation(Vector3 position)
         {
+        }
+
+
+        public override void Halt()
+        {
+            throw new NotImplementedException();
         }
     }
 }

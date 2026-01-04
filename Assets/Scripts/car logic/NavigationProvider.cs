@@ -12,5 +12,7 @@ namespace car_logic
         public abstract void SetTargetSpeed(float speed);
 
         public abstract void SetTargetLocation(Vector3 position);
+
+        public abstract void Halt();
     }
 }

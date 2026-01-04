@@ -1,4 +1,5 @@
-﻿using Streets;
+﻿using System;
+using Streets;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Splines;
@@ -9,6 +10,14 @@ namespace car_logic
     [ExecuteAlways]
     public class NavMeshCaster : NavigationProvider
     {
+        public enum Mode
+        {
+            Target,
+            Roam
+        }
+
+        public Mode mode = Mode.Roam;
+
         public float evaluationDistance = 10;
 
         NavMeshAgent _agent;
@@ -44,7 +53,7 @@ namespace car_logic
                 _splineContainer = sc;
             }
 
-            UpdateTarget();
+            UpdateNavigation();
         }
 
         void OnDrawGizmos()
@@ -53,7 +62,7 @@ namespace car_logic
             Gizmos.DrawRay(gameObject.transform.position, gameObject.transform.forward * evaluationDistance);
         }
 
-        void UpdateTarget()
+        void UpdateNavigation()
         {
 #if UNITY_EDITOR
             if (!Application.isPlaying) return;
@@ -63,16 +72,36 @@ namespace car_logic
             if (!(dist <= _agent.stoppingDistance * 2) && _agent.hasPath)
                 return;
 
+            switch (mode)
+            {
+                case Mode.Target:
+                    UpdateTargetDirect();
+                    break;
+                case Mode.Roam:
+                    UpdateTargetRoaming();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
+        }
+
+        void UpdateTargetRoaming()
+        {
             SplineHelper.GetClosestPoint(
             _splineContainer,
             evaluationPoint,
             out var nearestWorldPoint,
             out _,
             out _);
-            
+
             Debug.DrawLine(evaluationPoint, nearestWorldPoint, Color.pink);
             _agent.SetDestination(nearestWorldPoint);
+        }
+
+        void UpdateTargetDirect()
+        {
+
         }
 
         public override float GetTargetSpeed()
@@ -88,6 +117,12 @@ namespace car_logic
         public override void SetTargetLocation(Vector3 position)
         {
             _agent.SetDestination(position);
+            mode = Mode.Target;
+        }
+
+        public override void Halt()
+        {
+            _agent.isStopped = true;
         }
     }
 }
