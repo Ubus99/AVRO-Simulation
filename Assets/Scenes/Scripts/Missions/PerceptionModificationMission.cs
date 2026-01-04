@@ -1,4 +1,5 @@
-﻿using car_logic;
+﻿using System;
+using car_logic;
 using Gameplay;
 using UnityEngine;
 
@@ -9,12 +10,32 @@ namespace Scenes.Scripts.Missions
         public StreetEvent trigger;
         public GameObject obstacle;
 
-        void Update()
+        private void Update()
         {
-            if (!CarInstance) return;
-            if (CarInstance.state == States.WaitingForAid)
+        }
+
+        private void HandleStateChanged(States newState)
+        {
+            switch (newState)
             {
-                CarInstance.SetTarget(obstacle.transform.position);
+                case States.Initializing:
+                    break;
+
+                case States.NoCommand:
+                    break;
+
+                case States.Driving:
+                    break;
+
+                case States.ErrorDetected:
+                    break;
+
+                case States.WaitingForAid:
+                    CarInstance.SetTarget(trigger.transform.position + trigger.transform.forward * 2f);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
             }
         }
 
@@ -24,12 +45,16 @@ namespace Scenes.Scripts.Missions
             trigger.gameObject.SetActive(true);
 
             obstacle.gameObject.SetActive(true);
+
+            CarInstance.OnStateChangeEvent += HandleStateChanged;
         }
 
         protected override void CleanUp()
         {
             trigger.gameObject.SetActive(false);
             obstacle.gameObject.SetActive(false);
+
+            if (CarInstance) CarInstance.OnStateChangeEvent -= HandleStateChanged;
         }
     }
 }

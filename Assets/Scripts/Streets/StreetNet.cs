@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Scripts;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -13,27 +14,28 @@ namespace Streets
         public GameObject junctions;
         public GameObject nodes;
         public JunctionTrigger triggerPrefab;
+        public GameObject streetVizPrefab;
 
-        readonly Dictionary<Street.Address, JunctionTrigger> _junctionTriggers = new();
+        private readonly Dictionary<Street.Address, JunctionTrigger> _junctionTriggers = new();
 
-        bool _dirty;
+        private bool _dirty;
 
-        void Start()
+        private void Start()
         {
             UpdateStreets();
         }
 
-        void Update()
+        private void Update()
         {
             UpdateStreets();
         }
 
-        void OnValidate()
+        private void OnValidate()
         {
             _dirty = true;
         }
 
-        void UpdateStreets()
+        private void UpdateStreets()
         {
 #if UNITY_EDITOR
             if (!_dirty) return;
@@ -42,9 +44,7 @@ namespace Streets
             var exits = new Dictionary<Street.Exit, Street>();
             foreach (var s in streets)
             foreach (var e in s.exitLanes)
-            {
                 exits.TryAdd(e, s);
-            }
 
             ObjectManager.KillAllChildren(junctions.transform);
             ObjectManager.KillAllChildren(nodes.transform);
@@ -72,10 +72,12 @@ namespace Streets
 #endif
         }
 
-        SplineContainer AddBranch(string name, BezierKnot knot1, BezierKnot knot2)
+        private SplineContainer AddBranch(string name, BezierKnot knot1, BezierKnot knot2)
         {
-            var go = new GameObject(name, typeof(SplineContainer));
-            go.transform.SetParent(junctions.transform);
+            if (!streetVizPrefab) return null; 
+            
+            var go = Instantiate(streetVizPrefab, junctions.transform, true);
+            go.name = name;
 
             var sc = go.GetComponent<SplineContainer>();
             var spline = sc[0];
@@ -83,11 +85,15 @@ namespace Streets
 
             spline.Add(knot1);
             spline.Add(knot2);
+            spline.Closed = false;
+            
+            var ns = go.GetComponent<NavMeshSnap>();
+            ns.offset = Vector3.down;
 
             return sc;
         }
 
-        void AddTrigger(Vector3 pos, Street.Address a, SplineContainer spline = null)
+        private void AddTrigger(Vector3 pos, Street.Address a, SplineContainer spline = null)
         {
             // load from cache
             if (!_junctionTriggers.TryGetValue(a, out var junction) || !junction)
@@ -106,10 +112,7 @@ namespace Streets
 
             // set data
             junction.junctionData.TryAdd(a.GetSpline(), 0);
-            if (spline)
-            {
-                junction.junctionData.TryAdd(spline, 0);
-            }
+            if (spline) junction.junctionData.TryAdd(spline, 0);
         }
     }
 }

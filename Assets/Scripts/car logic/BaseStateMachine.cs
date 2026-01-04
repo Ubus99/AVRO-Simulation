@@ -5,24 +5,30 @@ namespace car_logic
 {
     public abstract class BaseStateMachine<T> : MonoBehaviour where T : Enum
     {
-        float _lastMsgMillis;
-        T _state;
+        public delegate void OnStateChangeHandler(T previousState, T newState);
+
+        [SerializeField] private T _state;
+        private float _lastMsgMillis;
         protected bool stateChanged { get; private set; }
-        T previousState { get; set; }
+        private T previousState { get; set; }
 
         public T state
         {
-            protected set
+            set
             {
                 if (!value.Equals(previousState))
                 {
                     stateChanged = true;
+                    OnStateChangeEvent?.Invoke(value);
                 }
+
                 previousState = _state;
                 _state = value;
             }
-            get { return _state; }
+            get => _state;
         }
+
+        public event Action<T> OnStateChangeEvent;
 
         protected void BaseUpdate()
         {

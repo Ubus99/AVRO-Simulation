@@ -14,7 +14,7 @@ namespace Gameplay
         protected ADSV_AI CarInstance;
         public bool completed { get; protected set; }
 
-        void Awake()
+        private void Awake()
         {
             OnLoad();
         }
@@ -30,15 +30,17 @@ namespace Gameplay
 
         public void Activate()
         {
-            SpawnCar();
+            SpawnCar(true);
             Setup();
             OnActivated?.Invoke(this, EventArgs.Empty);
             Active = true;
         }
 
-        void SpawnCar()
+        private void SpawnCar(bool startErrored)
         {
             CarInstance = Instantiate(carPrefab, startPoint.position + Vector3.up, startPoint.rotation);
+            if (startErrored)
+                CarInstance.state = States.ErrorDetected;
         }
 
         protected abstract void Setup();

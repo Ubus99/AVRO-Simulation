@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -14,30 +15,47 @@ namespace Streets
             LaneB
         }
 
-        [SerializeField]
-        SplineContainer lane1;
-
-        [SerializeField]
-        SplineContainer lane2;
-
-        [Header("Nodes")]
-        public List<Vector2Int> exits = new();
-
-        [Header("Exits")]
-        public List<Exit> exitLanes = new();
-
-
-        public Spline spline1
+        public enum Side
         {
-            get { return lane1[0]; }
+            Left,
+            Right
         }
 
-        public Spline spline2
+        public Color activeColor;
+        public Color opposingColor;
+
+        [SerializeField] private Side side;
+
+        [SerializeField] private SplineContainer lane1;
+
+        [SerializeField] private SplineContainer lane2;
+
+        [Header("Nodes")] public List<Vector2Int> exits = new();
+
+        [Header("Exits")] public List<Exit> exitLanes = new();
+
+        private Material lane1Material;
+
+        private Material lane2Material;
+
+        public Spline spline1 => lane1[0];
+
+        public Spline spline2 => lane2[0];
+
+        private void Start()
         {
-            get { return lane2[0]; }
+            GetDependencies();
         }
 
-        void OnDrawGizmos()
+        private void OnDestroy()
+        {
+#if UNITY_EDITOR
+            DestroyImmediate(lane1Material);
+            DestroyImmediate(lane2Material);
+#endif
+        }
+
+        private void OnDrawGizmos()
         {
             foreach (var e in exits)
             {
@@ -48,21 +66,51 @@ namespace Streets
                 Gizmos.DrawLine(p1, p2);
             }
 
-            foreach (var e in exitLanes)
-            {
-                e.DrawGizmos(lane1, lane2);
-            }
+            foreach (var e in exitLanes) e.DrawGizmos(lane1, lane2);
         }
 
-        void OnValidate()
+        private void OnValidate()
         {
-            foreach (var exit in exitLanes)
+            foreach (var exit in exitLanes) exit.myAddress.street = this;
+            GetDependencies();
+            UpdateColors();
+        }
+
+        public void SetActiveSide(Side side)
+        {
+            this.side = side;
+            UpdateColors();
+        }
+
+        private void GetDependencies()
+        {
+            if (!PrefabUtility.IsPartOfPrefabInstance(gameObject)) return;
+            lane1Material = lane1.gameObject.GetComponent<Renderer>().material;
+            lane2Material = lane2.gameObject.GetComponent<Renderer>().material;
+        }
+
+        private void UpdateColors()
+        {
+            if (!lane1Material || !lane2Material) return;
+
+            switch (side)
             {
-                exit.myAddress.street = this;
+                case Side.Left:
+                    lane1Material.color = activeColor;
+                    lane2Material.color = opposingColor;
+                    break;
+
+                case Side.Right:
+                    lane2Material.color = activeColor;
+                    lane1Material.color = opposingColor;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        static Vector3 GetWorldPointAtIndex(SplineContainer container, int index)
+        private static Vector3 GetWorldPointAtIndex(SplineContainer container, int index)
         {
             if (index < 0 || index >= container.Splines[0].Count)
                 return Vector3.zero;
@@ -71,17 +119,17 @@ namespace Streets
             return container.transform.TransformPoint(knot.Position);
         }
 
-        Vector3 GetWorldPointAtIndex(Lane lane, int idx)
+        private Vector3 GetWorldPointAtIndex(Lane lane, int idx)
         {
             return GetWorldPointAtIndex(GetLane(lane), idx);
         }
 
-        BezierKnot GetKnotAtIndex(Lane lane, int idx)
+        private BezierKnot GetKnotAtIndex(Lane lane, int idx)
         {
             return GetLane(lane)[0][idx];
         }
 
-        SplineContainer GetLane(Lane lane)
+        private SplineContainer GetLane(Lane lane)
         {
             return lane switch
             {
