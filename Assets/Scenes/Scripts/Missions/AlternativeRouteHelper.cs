@@ -2,25 +2,28 @@ using System.Collections.Generic;
 using Gameplay;
 using UnityEngine;
 using UnityEngine.Splines;
+using ZLinq;
 
 namespace Scenes.Scripts.Missions
 {
     [ExecuteInEditMode]
     public class AlternativeRouteHelper : MonoBehaviour
     {
-        public List<SplineContainer> splineContainers = new();
+        public List<AlternativeRoute> alternativeRoutes = new();
         private Mission _mission;
+        private List<SplineContainer> _splines = new();
 
         private void LateUpdate()
         {
             if (!_mission) return;
 
-            splineContainers.Clear();
-            splineContainers.AddRange(GetComponentsInChildren<SplineContainer>());
+            alternativeRoutes.Clear();
+            alternativeRoutes.AddRange(GetComponentsInChildren<AlternativeRoute>());
+            _splines = alternativeRoutes.Select(route => route.Route).ToList();
             _mission.alternativeRoutes.Clear();
-            _mission.alternativeRoutes.AddRange(splineContainers);
+            _mission.alternativeRoutes.AddRange(_splines);
 
-            foreach (var sc in splineContainers)
+            foreach (var sc in _splines)
             {
                 if (!sc) continue;
 

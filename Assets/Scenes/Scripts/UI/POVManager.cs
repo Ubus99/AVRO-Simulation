@@ -8,24 +8,28 @@ namespace Scenes.Scripts.UI
     {
         public GameObject menu;
         public VideoFeed videoFeed;
-        Canvas _canvas;
+        public ListPanel log;
+        public ListPanel actions;
+        public ListPanel layers;
 
-        RectTransform _menuInstance;
+        private Canvas _canvas;
 
-        void Awake()
+        private RectTransform _menuInstance;
+
+        private void Awake()
         {
             _canvas = GetComponentInParent<Canvas>();
             ServiceLocator.Instance.TryRegister<POVManager>(this);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Start()
         {
             ServiceLocator.Instance.TryGet<OverviewManager>(out var overviewManager);
             overviewManager.OnFocusChange += vehicle => AssignCamera(vehicle.povCamera);
         }
 
-        void AssignCamera(Camera cam)
+        private void AssignCamera(Camera cam)
         {
             videoFeed.SetCamera(cam);
         }
@@ -42,7 +46,7 @@ namespace Scenes.Scripts.UI
             }
 
 
-            GUIUtils.PlaceAt(_menuInstance, screenPos, _canvas, container, false);
+            GUIUtils.PlaceAt(_menuInstance, screenPos, _canvas, container);
         }
 
         public void OnObstacleMissed(Vector2 pos)

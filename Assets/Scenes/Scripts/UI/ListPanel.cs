@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Utils;
 
 namespace Scenes.Scripts.UI
 {
@@ -10,16 +12,32 @@ namespace Scenes.Scripts.UI
         public bool leftIcon;
         public bool rightIcon;
 
-        public TextMeshProUGUI titleText;
-        public GameObject buttonLeft;
-        public GameObject buttonRight;
-        //public ListItem itemPrefab;
+        [Header("References")] //
+        [SerializeField]
+        private TextMeshProUGUI titleText;
+        [SerializeField] private GameObject buttonLeft;
+        [SerializeField] private GameObject buttonRight;
+        [SerializeField] private ListItem itemPrefab;
+        [SerializeField] private GameObject body;
 
-        void OnValidate()
+        private void OnValidate()
         {
             if (titleText) titleText.text = title;
             if (buttonLeft) buttonLeft.SetActive(leftIcon);
             if (buttonRight) buttonRight.SetActive(rightIcon);
+        }
+
+        public void UpdateList(List<ListItem.ElementData> data)
+        {
+            ObjectManager.KillAllChildren(body.transform);
+
+            foreach (var ed in data)
+            {
+                var li = Instantiate(itemPrefab, body.transform);
+                var go = li.gameObject;
+
+                li.SetData(ed);
+            }
         }
     }
 }

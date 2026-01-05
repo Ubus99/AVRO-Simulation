@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,52 +7,43 @@ namespace Scenes.Scripts.UI
 {
     public class ListItem : MonoBehaviour
     {
-        [Header("References")]
-        public GameObject leftButton;
+        [Header("References")] public GameObject leftButton;
 
-        public GameObject rightButton;
+        [SerializeField] private GameObject rightButton;
 
-        public TextMeshProUGUI title;
+        [SerializeField] private TextMeshProUGUI title;
 
-        public TextMeshProUGUI label;
+        [SerializeField] private TextMeshProUGUI label;
 
-        [Header("Options")]
-        public bool selectable = true;
+        [Header("Options")] public bool selectable = true;
 
-        public bool showLeftButton;
+        [SerializeField] private bool showLeftButton;
 
-        public bool showRightButton;
+        [SerializeField] private bool showRightButton;
 
-        public bool showLabel;
+        [SerializeField] private bool showLabel;
 
-        public string titleText;
-
-        public string labelText;
+        [SerializeField] private ElementData itemData;
 
         //privates
-        Button _button;
+        private Button _button;
 
-        void Awake()
+        private void Awake()
         {
             RefreshComponents();
         }
 
-        void OnValidate()
+        private void OnValidate()
         {
             RefreshComponents();
 
             _button.interactable = selectable;
             if (leftButton) leftButton.SetActive(showLeftButton);
             if (rightButton) rightButton.SetActive(showRightButton);
-            if (title) title.text = titleText;
-            if (label)
-            {
-                label.gameObject.SetActive(showLabel);
-                label.text = labelText;
-            }
+            SetData(itemData);
         }
 
-        void RefreshComponents()
+        private void RefreshComponents()
         {
             _button = GetComponent<Button>();
         }
@@ -59,6 +51,25 @@ namespace Scenes.Scripts.UI
         public void ToggleSelectable()
         {
             selectable = !selectable;
+        }
+
+        public void SetData(ElementData data)
+        {
+            itemData = data;
+            if (title) title.text = itemData.titleText;
+
+            if (!label) return;
+
+            label.gameObject.SetActive(showLabel);
+            label.text = itemData.labelText;
+        }
+
+        [Serializable]
+        public struct ElementData
+        {
+            public string titleText;
+
+            public string labelText;
         }
     }
 }
