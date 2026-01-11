@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 581663720781685848, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: m_text
-      value: \uE06D
+      value: \uE111
       objectReference: {fileID: 0}
     - target: {fileID: 680254792341854430, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: m_Name
-      value: chevron-down
+      value: Start
       objectReference: {fileID: 0}
     - target: {fileID: 1623732513273410420, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: m_AnchorMax.y
@@ -42,19 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: iconID
-      value: 57453
-      objectReference: {fileID: 0}
-    - target: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
-      propertyPath: unicodeText
-      value: E06D
-      objectReference: {fileID: 0}
-    - target: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
-      propertyPath: unicodeString
-      value: E06D
+      value: 57617
       objectReference: {fileID: 0}
     - target: {fileID: 6554979252453201152, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: m_Pivot.x

@@ -5,23 +5,34 @@ using UnityEngine.UI;
 namespace Utils
 {
     [ExecuteInEditMode]
-    public class LucidePicker : MonoBehaviour
+    public class LucidePicker : EditorBehavior
     {
         static readonly char[] Trim = { '&', '#' };
 
         public string iconID;
         public Color textColor = Color.black;
-        Button _button;
+        public string unicodeString;
 
+        Button _button;
         TextMeshProUGUI _text;
 
         void Awake()
+        {
+            RefreshComponents();
+        }
+
+        protected override void DelayedOnValidate()
+        {
+            Refresh();
+        }
+
+        protected override void RefreshComponents()
         {
             _text = GetComponentInChildren<TextMeshProUGUI>();
             _button = GetComponent<Button>();
         }
 
-        void OnValidate()
+        public void Refresh()
         {
             _text = GetComponentInChildren<TextMeshProUGUI>();
             if (!_text)
@@ -31,8 +42,8 @@ namespace Utils
             }
             if (!int.TryParse(iconID.TrimStart(Trim), out var sanitizedIconID)) return;
             sanitizedIconID += 0; //offset
-            var unicode = sanitizedIconID.ToString("X");
-            _text.text = $"\\u{unicode}";
+            unicodeString = sanitizedIconID.ToString("X");
+            _text.text = $"\\u{unicodeString}";
             _text.color = textColor;
 
             //update color

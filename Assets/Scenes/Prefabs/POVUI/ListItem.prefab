@@ -288,16 +288,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ad9c02e00a886b43ae498b2c3164459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  leftButton: {fileID: 1597916643060931183}
-  rightButton: {fileID: 2953115830098595727}
+  leftButton: {fileID: 3831776736550733514}
+  rightButton: {fileID: 863098111856120618}
   title: {fileID: 7538257635679857575}
   label: {fileID: 7882140544784805934}
-  selectable: 1
-  showLeftButton: 1
-  showRightButton: 1
-  showLabel: 0
-  titleText: Title
-  labelText: label
+  itemData:
+    selectable: 0
+    leftIcon: {fileID: 0}
+    rightIcon: {fileID: 0}
+    titleText: 
+    labelText: 
 --- !u!1 &5959586217622661127
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,6 +742,10 @@ PrefabInstance:
       propertyPath: iconID
       value: 58686
       objectReference: {fileID: 0}
+    - target: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: unicodeString
+      value: E53E
+      objectReference: {fileID: 0}
     - target: {fileID: 6554979252453201152, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -843,11 +847,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1737d5908878724e823a75b60394d99, type: 3}
---- !u!1 &1597916643060931183 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 680254792341854430, guid: a1737d5908878724e823a75b60394d99, type: 3}
+--- !u!114 &3831776736550733514 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
   m_PrefabInstance: {fileID: 2259734549474820785}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0c9fb75ba9d5243bba8d27c737323e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Utils.LucidePicker
 --- !u!224 &5020324462031574961 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6554979252453201152, guid: a1737d5908878724e823a75b60394d99, type: 3}
@@ -957,6 +967,10 @@ PrefabInstance:
       propertyPath: textColor.r
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: unicodeString
+      value: E0BA
+      objectReference: {fileID: 0}
     - target: {fileID: 6554979252453201152, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1058,11 +1072,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1737d5908878724e823a75b60394d99, type: 3}
---- !u!1 &2953115830098595727 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 680254792341854430, guid: a1737d5908878724e823a75b60394d99, type: 3}
+--- !u!114 &863098111856120618 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
   m_PrefabInstance: {fileID: 2417116964604811089}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0c9fb75ba9d5243bba8d27c737323e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Utils.LucidePicker
 --- !u!224 &8898169434847330897 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6554979252453201152, guid: a1737d5908878724e823a75b60394d99, type: 3}

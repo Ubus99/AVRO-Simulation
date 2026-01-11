@@ -1,5 +1,6 @@
 ﻿using System;
 using Gameplay;
+using Unity.Serialization;
 using UnityEngine;
 using Utils;
 
@@ -18,6 +19,9 @@ namespace car_logic
         public Camera topDownCamera;
 
         public Camera povCamera;
+
+        [DontSerialize]
+        public Mission currentMission;
 
         bool _errorFlag;
         float _previousSpeed;

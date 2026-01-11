@@ -27,7 +27,7 @@ namespace Scenes.Scripts.UI
             if (buttonRight) buttonRight.SetActive(rightIcon);
         }
 
-        public void UpdateList(List<ListItem.ElementData> data)
+        public void UpdateList(IEnumerable<ListItem.ElementData> data)
         {
             ObjectManager.KillAllChildren(body.transform);
 

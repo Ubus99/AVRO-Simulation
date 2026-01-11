@@ -1,3 +1,5 @@
+using System.Linq;
+using car_logic;
 using UI;
 using UnityEngine;
 using Utils;
@@ -12,26 +14,27 @@ namespace Scenes.Scripts.UI
         public ListPanel actions;
         public ListPanel layers;
 
-        private Canvas _canvas;
+        Canvas _canvas;
 
-        private RectTransform _menuInstance;
+        RectTransform _menuInstance;
 
-        private void Awake()
+        void Awake()
         {
             _canvas = GetComponentInParent<Canvas>();
             ServiceLocator.Instance.TryRegister<POVManager>(this);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        private void Start()
+        void Start()
         {
             ServiceLocator.Instance.TryGet<OverviewManager>(out var overviewManager);
-            overviewManager.OnFocusChange += vehicle => AssignCamera(vehicle.povCamera);
+            overviewManager.OnFocusChange += HandleFocusChange;
         }
 
-        private void AssignCamera(Camera cam)
+        void HandleFocusChange(ADSV_AI vehicle)
         {
-            videoFeed.SetCamera(cam);
+            videoFeed.SetCamera(vehicle.povCamera);
+            actions.UpdateList(vehicle.currentMission.alternativeRoutes.Select(ar => ar.GetData()));
         }
 
         public void OnObstacleClicked(IPlayerClickable playerClickable, Vector2 screenPos)

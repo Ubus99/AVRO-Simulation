@@ -2,71 +2,101 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 namespace Scenes.Scripts.UI
 {
-    public class ListItem : MonoBehaviour
+    public class ListItem : EditorBehavior
     {
-        [Header("References")] public GameObject leftButton;
+        [Header("References")]
+        [SerializeField]
+        LucidePicker leftButton;
 
-        [SerializeField] private GameObject rightButton;
+        [SerializeField]
+        LucidePicker rightButton;
 
-        [SerializeField] private TextMeshProUGUI title;
+        [SerializeField]
+        TextMeshProUGUI title;
 
-        [SerializeField] private TextMeshProUGUI label;
+        [SerializeField]
+        TextMeshProUGUI label;
 
-        [Header("Options")] public bool selectable = true;
-
-        [SerializeField] private bool showLeftButton;
-
-        [SerializeField] private bool showRightButton;
-
-        [SerializeField] private bool showLabel;
-
-        [SerializeField] private ElementData itemData;
+        [Header("Options")]
+        [SerializeField]
+        ElementData itemData;
 
         //privates
-        private Button _button;
+        Button _button;
 
-        private void Awake()
+        void Awake()
         {
             RefreshComponents();
         }
 
-        private void OnValidate()
+        protected override void DelayedOnValidate()
         {
             RefreshComponents();
 
-            _button.interactable = selectable;
-            if (leftButton) leftButton.SetActive(showLeftButton);
-            if (rightButton) rightButton.SetActive(showRightButton);
+            _button.interactable = itemData.selectable;
+            if (leftButton) leftButton.gameObject.SetActive(itemData.leftIcon);
+            if (rightButton) rightButton.gameObject.SetActive(itemData.rightIcon);
             SetData(itemData);
         }
 
-        private void RefreshComponents()
+        protected override void RefreshComponents()
         {
             _button = GetComponent<Button>();
         }
 
         public void ToggleSelectable()
         {
-            selectable = !selectable;
+            itemData.selectable = !itemData.selectable;
         }
 
         public void SetData(ElementData data)
         {
             itemData = data;
+
             if (title) title.text = itemData.titleText;
 
-            if (!label) return;
+            if (label)
+            {
+                label.gameObject.SetActive(itemData.labelText != "");
+                label.text = itemData.labelText;
+            }
 
-            label.gameObject.SetActive(showLabel);
-            label.text = itemData.labelText;
+            if (data.leftIcon)
+            {
+                leftButton.gameObject.SetActive(true);
+                leftButton.unicodeString = data.leftIcon.unicodeString;
+                leftButton.Refresh();
+            }
+            else
+            {
+                leftButton.gameObject.SetActive(false);
+            }
+
+            if (data.rightIcon)
+            {
+                rightButton.gameObject.SetActive(true);
+                rightButton.unicodeString = data.rightIcon.unicodeString;
+                rightButton.Refresh();
+            }
+            else
+            {
+                rightButton.gameObject.SetActive(false);
+            }
         }
 
         [Serializable]
         public struct ElementData
         {
+            public bool selectable;
+
+            public LucidePicker leftIcon;
+
+            public LucidePicker rightIcon;
+
             public string titleText;
 
             public string labelText;

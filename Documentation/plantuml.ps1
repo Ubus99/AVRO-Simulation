@@ -1,0 +1,1 @@
+﻿puml-gen ..\Assets\ .\UML\ -dir

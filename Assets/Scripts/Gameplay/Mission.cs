@@ -1,26 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using car_logic;
+using Scenes.Scripts.Missions;
+using Scenes.Scripts.UI;
 using UnityEngine;
-using UnityEngine.Splines;
 
 namespace Gameplay
 {
     [Serializable]
     public abstract class Mission : MonoBehaviour
     {
-        [Header("Prefabs")] public ADSV_AI carPrefab;
+        [Header("Prefabs")]
+        public ADSV_AI carPrefab;
 
-        [Header("Key Points")] public Transform startPoint;
+        [Header("Key Points")]
+        public Transform startPoint;
 
         public Transform endPoint;
-        public List<SplineContainer> alternativeRoutes = new();
+        public List<AlternativeRoute> alternativeRoutes = new();
+        public List<ListItem.ElementData> history = new();
 
         protected bool Active;
         protected ADSV_AI CarInstance;
         public bool completed { get; protected set; }
 
-        private void Awake()
+        void Awake()
         {
             OnLoad();
         }
@@ -44,9 +48,10 @@ namespace Gameplay
             Active = true;
         }
 
-        private void SpawnCar(bool startErrored)
+        void SpawnCar(bool startErrored)
         {
             CarInstance = Instantiate(carPrefab, startPoint.position + Vector3.up, startPoint.rotation);
+            CarInstance.currentMission = this;
             if (startErrored)
                 CarInstance.state = States.ErrorDetected;
         }

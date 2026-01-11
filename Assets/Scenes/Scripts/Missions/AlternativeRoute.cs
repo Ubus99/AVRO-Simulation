@@ -1,39 +1,47 @@
 using Scenes.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Splines;
+using Utils;
 
 namespace Scenes.Scripts.Missions
 {
     [ExecuteInEditMode]
-    public class AlternativeRoute : MonoBehaviour
+    public class AlternativeRoute : EditorBehavior
     {
         [Header("Information")] //
         [SerializeField]
-        private string informationText;
+        string informationText;
 
-        [SerializeField] private bool selectable;
+        [SerializeField]
+        bool selectable;
 
         [Header("Settings")] //
         public VizSettings vizSettings;
 
         // --------------------- private ------------------
 
-        private Material _material;
+        Material _material;
 
-        private MeshRenderer _renderer;
+        MeshRenderer _renderer;
 
         public SplineContainer Route { get; private set; }
 
-        private void Start()
+        void Start()
         {
             GetDependencies();
         }
 
-        private void OnValidate()
+        protected override void DelayedOnValidate()
         {
+
             GetDependencies();
             if (!_material || !vizSettings) return;
             _material.color = !selectable ? vizSettings.errorColor : vizSettings.inactiveColor;
+        }
+
+        protected override void RefreshComponents()
+        {
+            GetDependencies();
         }
 
         public ListItem.ElementData GetData()
@@ -41,7 +49,7 @@ namespace Scenes.Scripts.Missions
             return new ListItem.ElementData { titleText = name, labelText = informationText };
         }
 
-        private void GetDependencies()
+        void GetDependencies()
         {
             _renderer = GetComponentInChildren<MeshRenderer>();
             _material = _renderer.material = new Material(_renderer.sharedMaterial);

@@ -8,12 +8,10 @@ namespace Streets
     public class StreetManager : MonoBehaviour
     {
         readonly List<SplineContainer> _splineContainers = new();
-        bool _dirty;
 
         void Awake()
         {
             ServiceLocator.Instance.TryRegister<StreetManager>(this);
-            _dirty = true;
         }
 
         void Start()

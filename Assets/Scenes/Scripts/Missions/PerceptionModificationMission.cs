@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using car_logic;
 using Gameplay;
 using UnityEngine;
-using UnityEngine.Splines;
 
 namespace Scenes.Scripts.Missions
 {
@@ -11,13 +9,14 @@ namespace Scenes.Scripts.Missions
     {
         [Header("Mission Specifics")]
         public StreetEvent trigger;
+
         public GameObject obstacle;
 
-        private void Update()
+        void Update()
         {
         }
 
-        private void HandleStateChanged(States newState)
+        void HandleStateChanged(States newState)
         {
             switch (newState)
             {
