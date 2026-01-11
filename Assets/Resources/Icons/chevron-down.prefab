@@ -41,6 +41,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: glyph
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b2d76343f4d7854f8a58a6b00261e21, type: 2}
+    - target: {fileID: 3058230270402069627, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: iconID
       value: 57453
       objectReference: {fileID: 0}

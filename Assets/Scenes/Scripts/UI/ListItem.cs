@@ -1,8 +1,10 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utils;
+using Utils.Lucide;
 
 namespace Scenes.Scripts.UI
 {
@@ -10,10 +12,10 @@ namespace Scenes.Scripts.UI
     {
         [Header("References")]
         [SerializeField]
-        LucidePicker leftButton;
+        LucideLoader leftButton;
 
         [SerializeField]
-        LucidePicker rightButton;
+        LucideLoader rightButton;
 
         [SerializeField]
         TextMeshProUGUI title;
@@ -38,8 +40,8 @@ namespace Scenes.Scripts.UI
             RefreshComponents();
 
             _button.interactable = itemData.selectable;
-            if (leftButton) leftButton.gameObject.SetActive(itemData.leftIcon);
-            if (rightButton) rightButton.gameObject.SetActive(itemData.rightIcon);
+            if (leftButton) leftButton.gameObject.SetActive(itemData.leftLoader);
+            if (rightButton) rightButton.gameObject.SetActive(itemData.rightLoader);
             SetData(itemData);
         }
 
@@ -65,10 +67,10 @@ namespace Scenes.Scripts.UI
                 label.text = itemData.labelText;
             }
 
-            if (data.leftIcon)
+            if (data.leftLoader)
             {
                 leftButton.gameObject.SetActive(true);
-                leftButton.unicodeString = data.leftIcon.unicodeString;
+                leftButton.glyph.unicodeString = data.leftLoader.glyph.unicodeString;
                 leftButton.Refresh();
             }
             else
@@ -76,10 +78,10 @@ namespace Scenes.Scripts.UI
                 leftButton.gameObject.SetActive(false);
             }
 
-            if (data.rightIcon)
+            if (data.rightLoader)
             {
                 rightButton.gameObject.SetActive(true);
-                rightButton.unicodeString = data.rightIcon.unicodeString;
+                rightButton.glyph.unicodeString = data.rightLoader.glyph.unicodeString;
                 rightButton.Refresh();
             }
             else
@@ -93,9 +95,11 @@ namespace Scenes.Scripts.UI
         {
             public bool selectable;
 
-            public LucidePicker leftIcon;
+            [FormerlySerializedAs("leftIcon")]
+            public LucideLoader leftLoader;
 
-            public LucidePicker rightIcon;
+            [FormerlySerializedAs("rightIcon")]
+            public LucideLoader rightLoader;
 
             public string titleText;
 
