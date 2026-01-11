@@ -34,6 +34,7 @@ namespace Scenes.Scripts.UI
         void HandleFocusChange(ADSV_AI vehicle)
         {
             videoFeed.SetCamera(vehicle.povCamera);
+            log.UpdateList(vehicle.currentMission.history);
             actions.UpdateList(vehicle.currentMission.alternativeRoutes.Select(ar => ar.GetData()));
         }
 

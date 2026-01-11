@@ -14,13 +14,21 @@ namespace Scenes.Scripts.UI
 
         [Header("References")] //
         [SerializeField]
-        private TextMeshProUGUI titleText;
-        [SerializeField] private GameObject buttonLeft;
-        [SerializeField] private GameObject buttonRight;
-        [SerializeField] private ListItem itemPrefab;
-        [SerializeField] private GameObject body;
+        TextMeshProUGUI titleText;
 
-        private void OnValidate()
+        [SerializeField]
+        GameObject buttonLeft;
+
+        [SerializeField]
+        GameObject buttonRight;
+
+        [SerializeField]
+        ListItem itemPrefab;
+
+        [SerializeField]
+        GameObject body;
+
+        void OnValidate()
         {
             if (titleText) titleText.text = title;
             if (buttonLeft) buttonLeft.SetActive(leftIcon);
