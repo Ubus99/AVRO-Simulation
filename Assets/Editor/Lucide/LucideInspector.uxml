@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement style="flex-grow: 1; flex-direction: column; justify-content: flex-start; align-self: flex-start; width: auto;">
         <ui:Label text="Glyph" name="glyphLabel" binding-path="" emoji-fallback-support="true" selectable="false" focusable="false" double-click-selects-word="false" triple-click-selects-line="false" display-tooltip-when-elided="false" class="unity-base-field_aligned" style="-unity-font-definition: resource(&quot;Icons/lucide-font/lucide&quot;); -unity-text-generator: standard; font-size: 64px;"/>
-        <ui:TextField label="" placeholder-text="Icon code" name="unicodeInput" binding-path="iconID" enabled="true" hide-placeholder-on-focus="false" class="unity-base-field_aligned" style="flex-direction: column; align-items: stretch; justify-content: flex-start; align-self: auto; align-content: auto;"/>
+        <ui:IntegerField label="" value="0" max-length="5" binding-path="iconID" name="IDField"/>
+        <uie:PropertyField binding-path="unicodeString" enabled="false"/>
     </ui:VisualElement>
 </ui:UXML>

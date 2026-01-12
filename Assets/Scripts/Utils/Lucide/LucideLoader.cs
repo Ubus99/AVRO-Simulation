@@ -8,6 +8,7 @@ namespace Utils.Lucide
     public class LucideLoader : EditorBehavior
     {
         public GlyphData glyph;
+        public Color glyphColor = Color.black;
 
         Button _button;
         TextMeshProUGUI _text;
@@ -38,7 +39,7 @@ namespace Utils.Lucide
             }
 
             _text.text = $"\\u{glyph.unicodeString}";
-            _text.color = glyph.textColor;
+            _text.color = glyphColor;
 
             //update color
             _button = GetComponent<Button>();
@@ -46,9 +47,9 @@ namespace Utils.Lucide
             if (!_button.interactable)
             {
                 _text.color = new Color(
-                glyph.textColor.r,
-                glyph.textColor.g,
-                glyph.textColor.b,
+                glyphColor.r,
+                glyphColor.g,
+                glyphColor.b,
                 0.75f);
             }
         }

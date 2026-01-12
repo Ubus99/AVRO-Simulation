@@ -21,6 +21,9 @@ namespace Scenes.Scripts.UI
         TextMeshProUGUI title;
 
         [SerializeField]
+        LayoutGroup lowerSection;
+
+        [SerializeField]
         TextMeshProUGUI label;
 
         [Header("Options")]
@@ -29,6 +32,7 @@ namespace Scenes.Scripts.UI
 
         //privates
         Button _button;
+        int _lowerLeftPadding;
 
         void Awake()
         {
@@ -40,14 +44,15 @@ namespace Scenes.Scripts.UI
             RefreshComponents();
 
             _button.interactable = itemData.selectable;
-            if (leftButton) leftButton.gameObject.SetActive(itemData.leftLoader);
-            if (rightButton) rightButton.gameObject.SetActive(itemData.rightLoader);
+            if (leftButton) leftButton.gameObject.SetActive(itemData.leftIcon);
+            if (rightButton) rightButton.gameObject.SetActive(itemData.rightIcon);
             SetData(itemData);
         }
 
         protected override void RefreshComponents()
         {
             _button = GetComponent<Button>();
+            _lowerLeftPadding = lowerSection.padding.left;
         }
 
         public void ToggleSelectable()
@@ -67,21 +72,23 @@ namespace Scenes.Scripts.UI
                 label.text = itemData.labelText;
             }
 
-            if (data.leftLoader)
+            if (data.leftIcon)
             {
+                lowerSection.padding.left = _lowerLeftPadding;
                 leftButton.gameObject.SetActive(true);
-                leftButton.glyph.unicodeString = data.leftLoader.glyph.unicodeString;
+                leftButton.glyph.unicodeString = data.leftIcon.unicodeString;
                 leftButton.Refresh();
             }
             else
             {
+                lowerSection.padding.left = 0;
                 leftButton.gameObject.SetActive(false);
             }
 
-            if (data.rightLoader)
+            if (data.rightIcon)
             {
                 rightButton.gameObject.SetActive(true);
-                rightButton.glyph.unicodeString = data.rightLoader.glyph.unicodeString;
+                rightButton.glyph.unicodeString = data.rightIcon.unicodeString;
                 rightButton.Refresh();
             }
             else
@@ -95,11 +102,11 @@ namespace Scenes.Scripts.UI
         {
             public bool selectable;
 
-            [FormerlySerializedAs("leftIcon")]
-            public LucideLoader leftLoader;
+            [FormerlySerializedAs("leftLoader")]
+            public GlyphData leftIcon;
 
-            [FormerlySerializedAs("rightIcon")]
-            public LucideLoader rightLoader;
+            [FormerlySerializedAs("rightLoader")]
+            public GlyphData rightIcon;
 
             public string titleText;
 

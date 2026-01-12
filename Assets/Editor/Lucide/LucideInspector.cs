@@ -8,7 +8,6 @@ namespace Editor.Lucide
     [CustomEditor(typeof(GlyphData))]
     public class LucideInspector : UnityEditor.Editor
     {
-        static readonly char[] Trim = { '&', '#' };
         public VisualTreeAsset inspectorUxml;
         public Font iconFont;
 
@@ -22,34 +21,30 @@ namespace Editor.Lucide
             VisualElement uxmlContent = inspectorUxml.CloneTree();
             root.Add(uxmlContent);
 
-            var glyph = root.Q<Label>("glyphLabel");
-            var input = root.Q<TextField>("unicodeInput");
+            var glyph = root.Q<Label>("glyphLabel"); //for display only
+            var input = root.Q<IntegerField>("IDField");
 
-            // initial set (in case serialized value already present)
+            if (iconFont) glyph.style.unityFont = iconFont;
             UpdateGlyph(glyph);
 
             input.RegisterValueChangedCallback(evt => UpdateGlyph(glyph));
 
-            // refresh on Undo/Redo
             Undo.undoRedoPerformed += () => UpdateGlyph(glyph);
-
-            // optionally assign a font that contains the glyph
-            if (iconFont) glyph.style.unityFont = iconFont;
 
             return root;
         }
 
         void UpdateGlyph(Label glyph)
         {
-            var iconID = serializedObject.FindProperty("iconID").stringValue;
+            var iconIDProp = serializedObject.FindProperty("iconID");
+            var unicodeProp = serializedObject.FindProperty("unicodeString");
 
-            if (!int.TryParse(iconID.TrimStart(Trim), out var sanitizedIconID)) return;
-            sanitizedIconID += 0; //offset
+            var sanitizedIconID = iconIDProp.intValue + 0; //offset
+            var unicode = unicodeProp.stringValue = sanitizedIconID.ToString("X");
 
-            var unicode = sanitizedIconID.ToString("X");
-            serializedObject.FindProperty("unicodeString").stringValue = unicode;
+            serializedObject.ApplyModifiedProperties();
 
-            glyph.text = unicode == "" ? "�" : GlyphData.UnicodeToChar(unicode);
+            glyph.text = unicode == "" ? "�" : GlyphData.UnicodeToChar(sanitizedIconID);
         }
     }
 }
