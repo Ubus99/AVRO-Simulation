@@ -46,8 +46,8 @@ namespace Streets
             foreach (var e in s.exitLanes)
                 exits.TryAdd(e, s);
 
-            ObjectManager.KillAllChildren(junctions.transform);
-            ObjectManager.KillAllChildren(nodes.transform);
+            ObjectManagementUtility.KillAllChildren(junctions.transform);
+            ObjectManagementUtility.KillAllChildren(nodes.transform);
             _junctionTriggers.Clear();
 
             foreach (var (e, s) in exits) // iterate exits

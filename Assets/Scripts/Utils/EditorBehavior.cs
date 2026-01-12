@@ -10,7 +10,7 @@ namespace Utils
         {
             if (_dirty)
             {
-                DelayedOnValidate();
+                HandleIsDirty();
                 _dirty = false;
             }
         }
@@ -20,7 +20,7 @@ namespace Utils
             _dirty = true;
         }
 
-        protected abstract void DelayedOnValidate();
+        protected abstract void HandleIsDirty();
         protected abstract void RefreshComponents();
     }
 }

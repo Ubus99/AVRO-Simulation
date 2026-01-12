@@ -2,7 +2,7 @@
 
 namespace Utils
 {
-    public static class ObjectManager
+    public static class ObjectManagementUtility
     {
         public static void KillAllChildren(Transform parent)
         {

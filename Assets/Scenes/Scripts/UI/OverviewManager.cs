@@ -8,7 +8,7 @@ using Utils;
 namespace Scenes.Scripts.UI
 {
     [RequireComponent(typeof(DynamicGrid))]
-    public class OverviewManager : MonoBehaviour
+    public class OverviewManager : EditorBehavior
     {
         public delegate void FocusChangeDelegate(ADSV_AI activeVehicle);
 
@@ -18,24 +18,13 @@ namespace Scenes.Scripts.UI
         readonly Dictionary<Texture, ADSV_AI> _renderTextures = new();
         readonly List<ADSV_AI> _trackedVehicles = new();
         readonly List<CarTopView> _views = new();
-        bool _dirty;
         DynamicGrid _gridLayout;
 
         void Awake()
         {
-            _gridLayout = gameObject.GetComponent<DynamicGrid>();
-            _dirty = true;
+            RefreshComponents();
+            ObjectManagementUtility.KillAllChildren(transform);
             ServiceLocator.Instance.TryRegister<OverviewManager>(this);
-        }
-
-        // Update is called once per frame
-        void LateUpdate()
-        {
-            if (!_dirty)
-                return;
-
-            RebuildVideoFeed();
-            _dirty = false;
         }
 
         void OnEnable()
@@ -57,9 +46,16 @@ namespace Scenes.Scripts.UI
             MarkDirty();
         }
 
-        void OnValidate()
+        protected override void HandleIsDirty()
         {
-            MarkDirty();
+
+            RebuildVideoFeed();
+        }
+
+        protected override void RefreshComponents()
+        {
+            _gridLayout = gameObject.GetComponent<DynamicGrid>();
+            _dirty = true;
         }
 
         public event FocusChangeDelegate OnFocusChange;

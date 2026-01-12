@@ -39,7 +39,7 @@ namespace Scenes.Scripts.UI
             RefreshComponents();
         }
 
-        protected override void DelayedOnValidate()
+        protected override void HandleIsDirty()
         {
             RefreshComponents();
 

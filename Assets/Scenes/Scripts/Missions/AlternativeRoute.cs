@@ -31,7 +31,7 @@ namespace Scenes.Scripts.Missions
             GetDependencies();
         }
 
-        protected override void DelayedOnValidate()
+        protected override void HandleIsDirty()
         {
 
             GetDependencies();

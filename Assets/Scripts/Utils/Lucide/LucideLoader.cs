@@ -18,7 +18,7 @@ namespace Utils.Lucide
             RefreshComponents();
         }
 
-        protected override void DelayedOnValidate()
+        protected override void HandleIsDirty()
         {
             Refresh();
         }

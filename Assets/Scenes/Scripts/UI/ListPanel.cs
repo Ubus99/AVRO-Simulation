@@ -37,7 +37,7 @@ namespace Scenes.Scripts.UI
 
         public void UpdateList(IEnumerable<ListItem.ElementData> data)
         {
-            ObjectManager.KillAllChildren(body.transform);
+            ObjectManagementUtility.KillAllChildren(body.transform);
 
             foreach (var ed in data)
             {
