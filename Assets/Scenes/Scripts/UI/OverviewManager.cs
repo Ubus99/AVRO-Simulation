@@ -23,7 +23,10 @@ namespace Scenes.Scripts.UI
         void Awake()
         {
             RefreshComponents();
-            ObjectManagementUtility.KillAllChildren(transform);
+            if (Application.isPlaying)
+            {
+                ObjectManagementUtility.KillAllChildren(transform);
+            }
             ServiceLocator.Instance.TryRegister<OverviewManager>(this);
         }
 
@@ -48,7 +51,6 @@ namespace Scenes.Scripts.UI
 
         protected override void HandleIsDirty()
         {
-
             RebuildVideoFeed();
         }
 

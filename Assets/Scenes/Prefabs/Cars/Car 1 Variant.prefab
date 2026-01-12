@@ -696,7 +696,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5932779491099813539}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8554aa3e85b171f4bb16d46fcfd616d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 58e8e439c24943c683770429126141e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
 --- !u!1 &5936777950143658345
@@ -1250,7 +1250,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8401236953887672478}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8554aa3e85b171f4bb16d46fcfd616d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 58e8e439c24943c683770429126141e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Utils::Utils.CameraStackSynchronizer
 --- !u!1 &8497333115894922989
@@ -1715,6 +1715,7 @@ MonoBehaviour:
   target: {fileID: 0}
   topDownCamera: {fileID: 828266717418472045}
   povCamera: {fileID: 3388885306685606077}
+  currentMission: {fileID: 0}
 --- !u!1 &2174069641190503141 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1207575144611004, guid: ed7795f4883cb97468521311f1be4e22, type: 3}
