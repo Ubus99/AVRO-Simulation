@@ -2,7 +2,6 @@ using System.Linq;
 using car_logic;
 using UI;
 using UnityEngine;
-using Utils;
 using Utils.Objects;
 
 namespace Scenes.Scripts.UI
@@ -42,6 +41,8 @@ namespace Scenes.Scripts.UI
         public void OnObstacleClicked(IPlayerClickable playerClickable, Vector2 screenPos)
         {
             var container = videoFeed.rectTransform;
+
+            return; // disable menu spawwning
 
             if (!_menuInstance)
             {

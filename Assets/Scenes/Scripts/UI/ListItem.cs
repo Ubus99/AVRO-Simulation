@@ -85,7 +85,7 @@ namespace Scenes.Scripts.UI
             {
                 button.gameObject.SetActive(true);
                 button.glyph.unicodeString = data.unicodeString;
-                button.Refresh();
+                button.UpdateComponents();
             }
             else
             {

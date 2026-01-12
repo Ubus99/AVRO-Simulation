@@ -19,9 +19,14 @@ namespace Utils.Lucide
             RefreshComponents();
         }
 
+        void OnDisable()
+        {
+            if (glyph) glyph.OnChanged -= UpdateComponents;
+        }
+
         protected override void HandleIsDirty()
         {
-            Refresh();
+            UpdateComponents();
         }
 
         protected override void RefreshComponents()
@@ -30,14 +35,14 @@ namespace Utils.Lucide
             _button = GetComponent<Button>();
         }
 
-        public void Refresh()
+        public void UpdateComponents()
         {
-            _text = GetComponentInChildren<TextMeshProUGUI>();
             if (!_text || !glyph)
             {
                 Debug.LogWarning($"unable to find TextMeshProUGUI on {gameObject.name}");
                 return;
             }
+            glyph.OnChanged += UpdateComponents;
 
             _text.text = $"\\u{glyph.unicodeString}";
             _text.color = glyphColor;

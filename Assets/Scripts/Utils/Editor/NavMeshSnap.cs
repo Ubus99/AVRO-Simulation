@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Splines;
 
-namespace Scripts
+namespace Utils.Editor
 {
     [ExecuteInEditMode]
     public class NavMeshSnap : MonoBehaviour

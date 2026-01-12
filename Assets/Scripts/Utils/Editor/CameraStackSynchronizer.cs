@@ -2,8 +2,9 @@
 using UnityEngine;
 using Utils.Types;
 
-namespace Utils
+namespace Utils.Editor
 {
+    [ExecuteAlways]
     public class CameraStackSynchronizer : EditorBehavior
     {
         readonly List<Camera> _secondaryCameras = new();
@@ -22,6 +23,12 @@ namespace Utils
             {
                 camera.transform.localPosition = Vector3.zero;
                 camera.transform.localRotation = Quaternion.identity;
+                camera.targetDisplay = _primaryCamera.targetDisplay;
+                
+                if (camera.gameObject.TryGetComponent(out AudioListener audioListener))
+                {
+                    audioListener.enabled = false;
+                }
 
                 camera.orthographic = _primaryCamera.orthographic;
                 if (camera.orthographic)

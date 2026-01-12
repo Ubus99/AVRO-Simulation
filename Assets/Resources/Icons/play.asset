@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: play
   m_EditorClassIdentifier: Utils::Utils.Lucide.GlyphData
   iconID: 57660
-  textColor: {r: 0, g: 0, b: 0, a: 1}
   unicodeString: E13C

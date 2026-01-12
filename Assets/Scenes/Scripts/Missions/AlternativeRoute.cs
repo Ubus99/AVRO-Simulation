@@ -32,11 +32,17 @@ namespace Scenes.Scripts.Missions
         void Start()
         {
             RefreshComponents();
+            if (vizSettings) vizSettings.OnChanged += HandleIsDirty;
+        }
+
+        void OnDisable()
+        {
+
+            if (vizSettings) vizSettings.OnChanged -= HandleIsDirty;
         }
 
         protected override void HandleIsDirty()
         {
-
             RefreshComponents();
             if (!_material || !vizSettings) return;
             _material.color = !selectable ? vizSettings.errorColor : vizSettings.inactiveColor;

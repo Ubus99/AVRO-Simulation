@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Scripts;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
 using Utils;
+using Utils.Editor;
 using Utils.Objects;
 
 namespace Streets
