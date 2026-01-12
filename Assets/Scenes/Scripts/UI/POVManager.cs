@@ -3,6 +3,7 @@ using car_logic;
 using UI;
 using UnityEngine;
 using Utils;
+using Utils.Objects;
 
 namespace Scenes.Scripts.UI
 {
@@ -21,13 +22,13 @@ namespace Scenes.Scripts.UI
         void Awake()
         {
             _canvas = GetComponentInParent<Canvas>();
-            ServiceLocator.Instance.TryRegister<POVManager>(this);
+            ServiceLocator.instance.TryRegister<POVManager>(this);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            ServiceLocator.Instance.TryGet<OverviewManager>(out var overviewManager);
+            ServiceLocator.instance.TryGet<OverviewManager>(out var overviewManager);
             overviewManager.OnFocusChange += HandleFocusChange;
         }
 

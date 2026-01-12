@@ -3,6 +3,7 @@ using car_logic;
 using Scenes.Scripts.UI;
 using UnityEngine;
 using Utils;
+using Utils.Objects;
 using ZLinq;
 
 [assembly: ZLinqDropIn("Gameplay", DropInGenerateTypes.Collection)]
@@ -37,7 +38,7 @@ namespace Gameplay
             }
 
             DontDestroyOnLoad(gameObject);
-            ServiceLocator.Instance.TryRegister<GameManager>(this);
+            ServiceLocator.instance.TryRegister<GameManager>(this);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created

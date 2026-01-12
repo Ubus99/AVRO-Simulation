@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Splines;
 using Utils;
+using Utils.Objects;
 
 namespace car_logic
 {
@@ -42,7 +43,7 @@ namespace car_logic
 
         void Start()
         {
-            ServiceLocator.Instance.TryGet(out _streetManager);
+            ServiceLocator.instance.TryGet(out _streetManager);
         }
 
         void FixedUpdate()

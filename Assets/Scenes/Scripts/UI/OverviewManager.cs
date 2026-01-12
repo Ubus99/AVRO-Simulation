@@ -4,6 +4,8 @@ using car_logic;
 using UI;
 using UnityEngine;
 using Utils;
+using Utils.Objects;
+using Utils.Types;
 
 namespace Scenes.Scripts.UI
 {
@@ -27,7 +29,7 @@ namespace Scenes.Scripts.UI
             {
                 ObjectManagementUtility.KillAllChildren(transform);
             }
-            ServiceLocator.Instance.TryRegister<OverviewManager>(this);
+            ServiceLocator.instance.TryRegister<OverviewManager>(this);
         }
 
         void OnEnable()
@@ -57,32 +59,32 @@ namespace Scenes.Scripts.UI
         protected override void RefreshComponents()
         {
             _gridLayout = gameObject.GetComponent<DynamicGrid>();
-            _dirty = true;
+            Dirty = true;
         }
 
         public event FocusChangeDelegate OnFocusChange;
 
         void MarkDirty()
         {
-            _dirty = true;
+            Dirty = true;
         }
 
         public void RegisterVehicle(IEnumerable<ADSV_AI> cameras)
         {
             _trackedVehicles.AddRange(cameras);
-            _dirty = true;
+            Dirty = true;
         }
 
         public void RegisterVehicle(ADSV_AI vehicle)
         {
             _trackedVehicles.Add(vehicle);
-            _dirty = true;
+            Dirty = true;
         }
 
         public void DeregisterVehicle(ADSV_AI vehicle)
         {
             _trackedVehicles.Remove(vehicle);
-            _dirty = true;
+            Dirty = true;
         }
 
         void RebuildVideoFeed()

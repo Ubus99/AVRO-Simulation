@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Utils
+namespace Utils.Objects
 {
     public static class ObjectManagementUtility
     {

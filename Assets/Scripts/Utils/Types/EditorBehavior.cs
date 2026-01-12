@@ -1,23 +1,23 @@
 ﻿using UnityEngine;
 
-namespace Utils
+namespace Utils.Types
 {
     public abstract class EditorBehavior : MonoBehaviour
     {
-        protected bool _dirty;
+        protected bool Dirty;
 
         void Update()
         {
-            if (_dirty)
+            if (Dirty)
             {
                 HandleIsDirty();
-                _dirty = false;
+                Dirty = false;
             }
         }
 
         void OnValidate()
         {
-            _dirty = true;
+            Dirty = true;
         }
 
         protected abstract void HandleIsDirty();

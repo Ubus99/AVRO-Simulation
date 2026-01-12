@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using car_logic;
 using UnityEngine;
 using Utils;
+using Utils.Objects;
 
 namespace Gameplay
 {
@@ -11,7 +12,7 @@ namespace Gameplay
 
         void Awake()
         {
-            ServiceLocator.Instance.TryRegister<CarManager>(this);
+            ServiceLocator.instance.TryRegister<CarManager>(this);
         }
 
         public void AddCar(ADSV_AI car)

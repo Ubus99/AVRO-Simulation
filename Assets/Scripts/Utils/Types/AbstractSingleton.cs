@@ -1,10 +1,10 @@
-﻿namespace Utils
+﻿namespace Utils.Types
 {
     public class AbstractSingleton<T> where T : new()
     {
         static T _instance;
 
-        public static T Instance
+        public static T instance
         {
             get
             {

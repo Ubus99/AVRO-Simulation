@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utils;
 using Utils.Lucide;
+using Utils.Types;
 
 namespace Scenes.Scripts.UI
 {

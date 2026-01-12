@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 using Utils;
+using Utils.Objects;
 
 namespace Streets
 {
@@ -11,7 +12,7 @@ namespace Streets
 
         void Awake()
         {
-            ServiceLocator.Instance.TryRegister<StreetManager>(this);
+            ServiceLocator.instance.TryRegister<StreetManager>(this);
         }
 
         void Start()

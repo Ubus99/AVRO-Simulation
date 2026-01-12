@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using Utils.Types;
 
-namespace Utils
+namespace Utils.Objects
 {
     public class ServiceLocator : AbstractSingleton<ServiceLocator>
     {

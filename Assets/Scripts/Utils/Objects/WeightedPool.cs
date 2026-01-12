@@ -3,7 +3,7 @@ using System.Linq;
 using AYellowpaper.SerializedCollections;
 using Random = UnityEngine.Random;
 
-namespace Utils
+namespace Utils.Objects
 {
     [Serializable]
     public class WeightedPool<T> : SerializedDictionary<T, float>

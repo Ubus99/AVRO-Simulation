@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Splines;
 using Utils;
+using Utils.Objects;
 
 namespace car_logic
 {
@@ -27,7 +28,7 @@ namespace car_logic
         {
             if (!follower) return;
             if (!splineFollower.Container)
-                if (ServiceLocator.Instance.TryGet<StreetManager>(out var streetManager))
+                if (ServiceLocator.instance.TryGet<StreetManager>(out var streetManager))
                 {
                     var (container, progress) = streetManager.GetClosestSpline(transform.position);
                     splineFollower.Container = container;

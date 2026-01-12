@@ -3,6 +3,7 @@ using Gameplay;
 using Unity.Serialization;
 using UnityEngine;
 using Utils;
+using Utils.Objects;
 
 namespace car_logic
 {
@@ -34,7 +35,7 @@ namespace car_logic
         void Start()
         {
             navigationProvider = GetComponent<NavigationProvider>();
-            if (ServiceLocator.Instance.TryGet<GameManager>(out var gameManager))
+            if (ServiceLocator.instance.TryGet<GameManager>(out var gameManager))
                 gameManager.RegisterCar(this);
         }
 
@@ -51,7 +52,7 @@ namespace car_logic
 
         void OnDestroy()
         {
-            if (ServiceLocator.Instance.TryGet<GameManager>(out var gameManager))
+            if (ServiceLocator.instance.TryGet<GameManager>(out var gameManager))
                 gameManager.DeregisterCar(this);
         }
 

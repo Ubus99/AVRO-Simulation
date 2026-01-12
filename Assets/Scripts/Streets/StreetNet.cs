@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
 using Utils;
+using Utils.Objects;
 
 namespace Streets
 {

@@ -3,6 +3,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utils;
+using Utils.Objects;
 
 namespace Scenes.Scripts.Missions
 {
@@ -15,7 +16,7 @@ namespace Scenes.Scripts.Missions
 
         void Start()
         {
-            ServiceLocator.Instance.TryGet(out _manager);
+            ServiceLocator.instance.TryGet(out _manager);
         }
 
         public void ClickOn(object source, Vector2 position)

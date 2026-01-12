@@ -2,6 +2,7 @@ using Scenes.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Splines;
 using Utils;
+using Utils.Types;
 
 namespace Scenes.Scripts.Missions
 {

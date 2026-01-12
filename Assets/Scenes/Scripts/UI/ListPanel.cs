@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Utils;
+using Utils.Objects;
 
 namespace Scenes.Scripts.UI
 {
