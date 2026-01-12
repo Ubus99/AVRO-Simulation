@@ -1,14 +1,15 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using Utils;
 using Utils.Lucide;
 using Utils.Types;
 
 namespace Scenes.Scripts.UI
 {
+    [ExecuteInEditMode]
     public class ListItem : EditorBehavior
     {
         [Header("References")]
@@ -43,10 +44,6 @@ namespace Scenes.Scripts.UI
         protected override void HandleIsDirty()
         {
             RefreshComponents();
-
-            _button.interactable = itemData.selectable;
-            if (leftButton) leftButton.gameObject.SetActive(itemData.leftIcon);
-            if (rightButton) rightButton.gameObject.SetActive(itemData.rightIcon);
             SetData(itemData);
         }
 
@@ -73,28 +70,26 @@ namespace Scenes.Scripts.UI
                 label.text = itemData.labelText;
             }
 
-            if (data.leftIcon)
-            {
-                lowerSection.padding.left = _lowerLeftPadding;
-                leftButton.gameObject.SetActive(true);
-                leftButton.glyph.unicodeString = data.leftIcon.unicodeString;
-                leftButton.Refresh();
-            }
-            else
-            {
-                lowerSection.padding.left = 0;
-                leftButton.gameObject.SetActive(false);
-            }
+            lowerSection.padding.left = data.leftIcon ? _lowerLeftPadding : 0;
 
-            if (data.rightIcon)
+            UpdateIconButton(rightButton, data.rightIcon);
+            UpdateIconButton(rightButton, data.rightIcon);
+
+            _button.interactable = itemData.selectable;
+            _button.onClick = data.onClicked;
+        }
+
+        static void UpdateIconButton(LucideLoader button, GlyphData data)
+        {
+            if (data)
             {
-                rightButton.gameObject.SetActive(true);
-                rightButton.glyph.unicodeString = data.rightIcon.unicodeString;
-                rightButton.Refresh();
+                button.gameObject.SetActive(true);
+                button.glyph.unicodeString = data.unicodeString;
+                button.Refresh();
             }
             else
             {
-                rightButton.gameObject.SetActive(false);
+                button.gameObject.SetActive(false);
             }
         }
 
@@ -103,15 +98,15 @@ namespace Scenes.Scripts.UI
         {
             public bool selectable;
 
-            [FormerlySerializedAs("leftLoader")]
             public GlyphData leftIcon;
 
-            [FormerlySerializedAs("rightLoader")]
             public GlyphData rightIcon;
 
             public string titleText;
 
             public string labelText;
+
+            public Button.ButtonClickedEvent onClicked;
         }
     }
 }

@@ -1,7 +1,7 @@
 using Scenes.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Splines;
-using Utils;
+using UnityEngine.UI;
 using Utils.Types;
 
 namespace Scenes.Scripts.Missions
@@ -25,36 +25,47 @@ namespace Scenes.Scripts.Missions
 
         MeshRenderer _renderer;
 
-        public SplineContainer Route { get; private set; }
+        public AlternativeRouteHelper parent { get; set; }
+
+        public SplineContainer route { get; private set; }
 
         void Start()
         {
-            GetDependencies();
+            RefreshComponents();
         }
 
         protected override void HandleIsDirty()
         {
 
-            GetDependencies();
+            RefreshComponents();
             if (!_material || !vizSettings) return;
             _material.color = !selectable ? vizSettings.errorColor : vizSettings.inactiveColor;
         }
 
         protected override void RefreshComponents()
         {
-            GetDependencies();
+            _renderer = GetComponentInChildren<MeshRenderer>();
+            _material = _renderer.material = new Material(_renderer.sharedMaterial);
+            route = GetComponentInChildren<SplineContainer>();
+        }
+
+        public void SetActive(bool active)
+        {
+            if (!selectable) return;
+            _material.color = active ? vizSettings.activeColor : vizSettings.inactiveColor;
         }
 
         public ListItem.ElementData GetData()
         {
-            return new ListItem.ElementData { titleText = name, labelText = informationText };
-        }
-
-        void GetDependencies()
-        {
-            _renderer = GetComponentInChildren<MeshRenderer>();
-            _material = _renderer.material = new Material(_renderer.sharedMaterial);
-            Route = GetComponentInChildren<SplineContainer>();
+            var data = new ListItem.ElementData
+            {
+                titleText = name,
+                labelText = informationText,
+                selectable = selectable,
+                onClicked = new Button.ButtonClickedEvent()
+            };
+            data.onClicked.AddListener(() => parent.SetActiveRoute(this));
+            return data;
         }
     }
 }
