@@ -42,7 +42,7 @@ namespace Scenes.Scripts.UI
             gameObject.SetActive(false);
         }
 
-        public void HandleFocusChange(ADSV_AI vehicle)
+        public void LoadData(ADSV_AI vehicle)
         {
             videoFeed.SetCamera(vehicle.povCamera);
             log.UpdateList(vehicle.currentMission.history);
@@ -53,17 +53,6 @@ namespace Scenes.Scripts.UI
         {
             var container = videoFeed.rectTransform;
 
-            return; // disable menu spawwning
-
-            if (!_menuInstance)
-            {
-                var go = Instantiate(menu);
-                _menuInstance = go.GetComponent<RectTransform>();
-                _menuInstance.gameObject.SetActive(true);
-            }
-
-
-            GUIUtils.PlaceAt(_menuInstance, screenPos, _canvas, container);
         }
 
         public void OnObstacleMissed(Vector2 pos)

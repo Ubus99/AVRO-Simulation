@@ -22,7 +22,7 @@ namespace Scenes.Scripts.UI
             overviewManager.onViewSelected.AddListener(car =>
             {
                 ActivateScreen(povManager);
-                povManager.HandleFocusChange(car);
+                povManager.LoadData(car);
             });
             povManager.Hide();
         }

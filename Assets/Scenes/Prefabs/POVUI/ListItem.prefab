@@ -224,7 +224,7 @@ MonoBehaviour:
     m_Top: 6
     m_Bottom: 6
   m_ChildAlignment: 3
-  m_Spacing: 0
+  m_Spacing: 4
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -299,6 +299,9 @@ MonoBehaviour:
     rightIcon: {fileID: 0}
     titleText: 
     labelText: 
+    onClicked:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &5959586217622661127
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,7 +597,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
+  m_fontSize: 24
   m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0

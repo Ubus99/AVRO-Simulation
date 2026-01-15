@@ -68,7 +68,7 @@ namespace Scenes.Scripts.UI
 
             lowerSection.padding.left = itemData.leftIcon ? _lowerLeftPadding : 0;
 
-            UpdateIconButton(rightButton, itemData.rightIcon);
+            UpdateIconButton(leftButton, itemData.leftIcon);
             UpdateIconButton(rightButton, itemData.rightIcon);
 
             _button.interactable = itemData.selectable;

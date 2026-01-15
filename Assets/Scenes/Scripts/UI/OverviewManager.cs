@@ -17,7 +17,6 @@ namespace Scenes.Scripts.UI
         public GameObject body;
         public UnityEvent<ADSV_AI> onViewSelected;
 
-        readonly Dictionary<Texture, ADSV_AI> _renderTextures = new();
         readonly List<ADSV_AI> _trackedVehicles = new();
         readonly List<CarTopView> _views = new();
         DynamicGrid _gridLayout;
@@ -34,7 +33,6 @@ namespace Scenes.Scripts.UI
 
         void OnEnable()
         {
-            _gridLayout.OnLayoutChanged += MarkDirty;
             foreach (var view in _views)
             {
                 view.OnClicked += HandleViewClicked;
@@ -43,7 +41,6 @@ namespace Scenes.Scripts.UI
 
         void OnDisable()
         {
-            _gridLayout.OnLayoutChanged -= MarkDirty;
             foreach (var view in _views)
             {
                 view.OnClicked -= HandleViewClicked;
@@ -101,7 +98,6 @@ namespace Scenes.Scripts.UI
 
         void RebuildVideoFeed()
         {
-            _renderTextures.Clear();
             foreach (var rawImage in _views)
             {
                 DestroyImmediate(rawImage.gameObject);
@@ -110,26 +106,19 @@ namespace Scenes.Scripts.UI
 
             foreach (var v in _trackedVehicles)
             {
-                var cellSize = _gridLayout.cellSize;
-                var t = new RenderTexture(cellSize.x, cellSize.y, 16, RenderTextureFormat.ARGB32)
-                {
-                    name = v.name + "_texture",
-                    antiAliasing = 4
-                };
-                v.topDownCamera.targetTexture = t;
+                var view = Instantiate(imagePrefab, transform);
+                view.transform.SetParent(body.transform);
+                view.transform.localScale = Vector3.one;
+                view.OnClicked += HandleViewClicked;
+                view.ADS = v;
+                view.Rebuild();
+
+                v.topDownCamera.targetTexture = view.renderTexture;
                 if (v.topDownCamera.gameObject.TryGetComponent(out CameraStackSynchronizer css))
                 {
                     css.ForceRefresh();
                 }
-
-                var view = Instantiate(imagePrefab, transform);
-                view.transform.SetParent(body.transform);
-                view.transform.localScale = Vector3.one;
-                view.image.texture = t;
-                view.OnClicked += HandleViewClicked;
-                view.ADS = v;
                 _views.Add(view);
-                _renderTextures.Add(t, v);
             }
         }
 

@@ -7,16 +7,13 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    [ExecuteAlways]
     public class DynamicGrid : LayoutGroup
     {
         public Vector2Int spacing = Vector2Int.one;
         Vector2Int _grid;
 
         public Vector2Int cellSize { get; private set; } = new(256, 256);
-
-        public event Action OnLayoutChanged;
-
+        
         void UpdateGrid()
         {
             var cc = rectChildren.Count;
@@ -112,6 +109,12 @@ namespace UI
         {
             foreach (var rect in rectChildren)
             {
+                m_Tracker.Add(this,
+                rect,
+                DrivenTransformProperties.Anchors |
+                DrivenTransformProperties.AnchoredPosition |
+                DrivenTransformProperties.SizeDelta);
+
                 rect.anchorMin = Vector2.up;
                 rect.anchorMax = Vector2.up;
                 rect.sizeDelta = cellSize;
