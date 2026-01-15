@@ -110,7 +110,7 @@ namespace Scenes.Scripts.UI
 
             foreach (var v in _trackedVehicles)
             {
-                var cellSize = _gridLayout.CellSize;
+                var cellSize = _gridLayout.cellSize;
                 var t = new RenderTexture(cellSize.x, cellSize.y, 16, RenderTextureFormat.ARGB32)
                 {
                     name = v.name + "_texture",
