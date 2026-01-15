@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using car_logic;
 using Scenes.Scripts.UI;
 using UnityEngine;
-using Utils;
 using Utils.Objects;
 using ZLinq;
 
@@ -13,7 +12,7 @@ namespace Gameplay
     public class GameManager : MonoBehaviour
     {
         [Header("UI")]
-        public OverviewManager overviewManager;
+        public ScreenManager screenManager;
 
         [Header("GameCameras")]
         public Camera mapCam;
@@ -78,21 +77,21 @@ namespace Gameplay
 
         void SetupUICamera()
         {
-            overviewManager.GetComponentInParent<Canvas>().targetDisplay = (int)Screens.Vehicles;
+            screenManager.GetComponentInParent<Canvas>().targetDisplay = (int)Screens.Vehicles;
             uiCamera.targetDisplay = (int)Screens.Vehicles;
         }
 
         public void RegisterCar(ADSV_AI carAI)
         {
             var cam = carAI.povCamera;
-            cam.targetDisplay = (int)Screens.Closeup;
+            cam.targetDisplay = (int)Screens.Vehicles;
 
-            overviewManager.RegisterVehicle(carAI);
+            screenManager.overviewManager.RegisterVehicle(carAI);
         }
 
         public void DeregisterCar(ADSV_AI carAI)
         {
-            overviewManager.DeregisterVehicle(carAI);
+            screenManager.overviewManager.DeregisterVehicle(carAI);
         }
 
         enum Screens

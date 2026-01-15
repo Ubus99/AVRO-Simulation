@@ -2,6 +2,7 @@
 
 namespace Utils.Types
 {
+    [ExecuteInEditMode]
     public abstract class EditorBehavior : MonoBehaviour
     {
         protected bool Dirty;

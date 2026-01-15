@@ -1,8 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utils.Lucide;
 using Utils.Types;
@@ -36,7 +34,7 @@ namespace Scenes.Scripts.UI
         Button _button;
         int _lowerLeftPadding;
 
-        void Awake()
+        void Start()
         {
             RefreshComponents();
         }
@@ -44,7 +42,7 @@ namespace Scenes.Scripts.UI
         protected override void HandleIsDirty()
         {
             RefreshComponents();
-            SetData(itemData);
+            Refresh();
         }
 
         protected override void RefreshComponents()
@@ -58,10 +56,8 @@ namespace Scenes.Scripts.UI
             itemData.selectable = !itemData.selectable;
         }
 
-        public void SetData(ElementData data)
+        void Refresh()
         {
-            itemData = data;
-
             if (title) title.text = itemData.titleText;
 
             if (label)
@@ -70,13 +66,19 @@ namespace Scenes.Scripts.UI
                 label.text = itemData.labelText;
             }
 
-            lowerSection.padding.left = data.leftIcon ? _lowerLeftPadding : 0;
+            lowerSection.padding.left = itemData.leftIcon ? _lowerLeftPadding : 0;
 
-            UpdateIconButton(rightButton, data.rightIcon);
-            UpdateIconButton(rightButton, data.rightIcon);
+            UpdateIconButton(rightButton, itemData.rightIcon);
+            UpdateIconButton(rightButton, itemData.rightIcon);
 
             _button.interactable = itemData.selectable;
-            _button.onClick = data.onClicked;
+            _button.onClick = itemData.onClicked;
+        }
+
+        public void SetData(ElementData data)
+        {
+            itemData = data;
+            Dirty = true;
         }
 
         static void UpdateIconButton(LucideLoader button, GlyphData data)

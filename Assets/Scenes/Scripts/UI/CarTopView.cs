@@ -16,33 +16,17 @@ namespace Scenes.Scripts.UI
         public TextMeshProUGUI text;
         public ADSV_AI ADS;
 
-        [Header("State")]
-        public bool selected;
-
-        public Color selectedColor = Color.white;
-
-        public Color defaultColor = Color.white;
-
         // Update is called once per frame
         void LateUpdate()
         {
             if (!outline) return;
 
-            outline.effectColor = selected ? selectedColor : defaultColor;
             text.text = ADS ? ADS.GetState() : "";
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            switch (selected)
-            {
-                case true:
-                    OnTwiceClicked?.Invoke(this, EventArgs.Empty);
-                    break;
-                case false:
-                    OnClicked?.Invoke(this, EventArgs.Empty);
-                    break;
-            }
+            OnClicked?.Invoke(this, EventArgs.Empty);
         }
 
         public event EventHandler OnClicked;

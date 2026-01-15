@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Button = UnityEngine.UIElements.Button;
+using Utils.Editor;
 
 namespace UI
 {
     [ExecuteAlways]
     [RequireComponent(typeof(CanvasRenderer))]
-    public class VideoFeed : Graphic, IPointerClickHandler
+    public class VideoFeed : Graphic, IPointerClickHandler, ISubScreen
     {
         [SerializeField]
         Camera feedCamera;
@@ -80,6 +80,20 @@ namespace UI
 
         }
 
+        public void Show()
+        {
+            if (feedCamera)
+            {
+                feedCamera.enabled = true;
+            }
+            _dirty = true;
+        }
+
+        public void Hide()
+        {
+            if (feedCamera) feedCamera.enabled = false;
+        }
+
         public override void Rebuild(CanvasUpdate executing)
         {
             base.Rebuild(executing);
@@ -105,6 +119,11 @@ namespace UI
             var rect = ToScreenRect(_rectTransform, _canvas);
 
             feedCamera.pixelRect = rect;
+
+            if (feedCamera.gameObject.TryGetComponent(out CameraStackSynchronizer css))
+            {
+                css.ForceRefresh();
+            }
         }
 
         static Rect ToScreenRect(RectTransform rectTransform, Canvas canvas, Camera cam = null)
@@ -137,13 +156,13 @@ namespace UI
         {
             if (feedCamera)
             {
-                feedCamera.gameObject.SetActive(false);
+                feedCamera.enabled = false;
             }
 
             if (cam)
             {
                 feedCamera = cam;
-                cam.gameObject.SetActive(true);
+                cam.enabled = true;
                 color = new Color(1, 1, 1, 0);
             }
             else

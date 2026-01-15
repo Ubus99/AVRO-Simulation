@@ -6,7 +6,7 @@ using Utils.Objects;
 
 namespace Scenes.Scripts.UI
 {
-    public class POVManager : MonoBehaviour
+    public class POVManager : MonoBehaviour, ISubScreen
     {
         public GameObject menu;
         public VideoFeed videoFeed;
@@ -28,10 +28,21 @@ namespace Scenes.Scripts.UI
         void Start()
         {
             ServiceLocator.instance.TryGet<OverviewManager>(out var overviewManager);
-            overviewManager.OnFocusChange += HandleFocusChange;
         }
 
-        void HandleFocusChange(ADSV_AI vehicle)
+        public void Show()
+        {
+            gameObject.SetActive(true);
+            videoFeed.Show();
+        }
+
+        public void Hide()
+        {
+            videoFeed.Hide();
+            gameObject.SetActive(false);
+        }
+
+        public void HandleFocusChange(ADSV_AI vehicle)
         {
             videoFeed.SetCamera(vehicle.povCamera);
             log.UpdateList(vehicle.currentMission.history);

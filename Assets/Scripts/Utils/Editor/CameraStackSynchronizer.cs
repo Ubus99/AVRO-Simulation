@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Utils.Types;
 
@@ -15,30 +17,35 @@ namespace Utils.Editor
             RefreshComponents();
         }
 
+        public void ForceRefresh()
+        {
+            Dirty = true;
+        }
+
         protected override void HandleIsDirty()
         {
             if (!_primaryCamera || _secondaryCameras.Count == 0) return;
 
-            foreach (var camera in _secondaryCameras)
+            foreach (var cam in _secondaryCameras.Where(cam => cam != _primaryCamera)) // with failsafe
             {
-                camera.transform.localPosition = Vector3.zero;
-                camera.transform.localRotation = Quaternion.identity;
-                camera.targetDisplay = _primaryCamera.targetDisplay;
+                cam.transform.localPosition = Vector3.zero;
+                cam.transform.localRotation = Quaternion.identity;
+                cam.transform.localScale = Vector3.one;
+
+                cam.useOcclusionCulling = _primaryCamera.useOcclusionCulling;
                 
-                if (camera.gameObject.TryGetComponent(out AudioListener audioListener))
+                cam.targetTexture = _primaryCamera.targetTexture;
+                cam.rect = _primaryCamera.rect;
+                cam.targetDisplay = _primaryCamera.targetDisplay;
+
+                if (cam.gameObject.TryGetComponent(out AudioListener audioListener))
                 {
                     audioListener.enabled = false;
                 }
 
-                camera.orthographic = _primaryCamera.orthographic;
-                if (camera.orthographic)
-                {
-                    camera.orthographicSize = _primaryCamera.orthographicSize;
-                }
-                else
-                {
-                    camera.fieldOfView = _primaryCamera.fieldOfView;
-                }
+                cam.orthographic = _primaryCamera.orthographic;
+                cam.orthographicSize = _primaryCamera.orthographicSize;
+                cam.fieldOfView = _primaryCamera.fieldOfView;
             }
         }
 

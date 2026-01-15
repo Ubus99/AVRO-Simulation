@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using car_logic;
 using UI;
 using UnityEngine;
-using Utils;
+using UnityEngine.Events;
+using Utils.Editor;
 using Utils.Objects;
 using Utils.Types;
 
 namespace Scenes.Scripts.UI
 {
-    [RequireComponent(typeof(DynamicGrid))]
-    public class OverviewManager : EditorBehavior
+    public class OverviewManager : EditorBehavior, ISubScreen
     {
-        public delegate void FocusChangeDelegate(ADSV_AI activeVehicle);
-
         public CarTopView imagePrefab;
         public ADSV_AI selectedVehicle;
+        public GameObject body;
+        public UnityEvent<ADSV_AI> onViewSelected;
 
         readonly Dictionary<Texture, ADSV_AI> _renderTextures = new();
         readonly List<ADSV_AI> _trackedVehicles = new();
@@ -25,9 +25,9 @@ namespace Scenes.Scripts.UI
         void Awake()
         {
             RefreshComponents();
-            if (Application.isPlaying)
+            if (Application.isPlaying && body)
             {
-                ObjectManagementUtility.KillAllChildren(transform);
+                ObjectManagementUtility.KillAllChildren(body.transform);
             }
             ServiceLocator.instance.TryRegister<OverviewManager>(this);
         }
@@ -35,20 +35,34 @@ namespace Scenes.Scripts.UI
         void OnEnable()
         {
             _gridLayout.OnLayoutChanged += MarkDirty;
+            foreach (var view in _views)
+            {
+                view.OnClicked += HandleViewClicked;
+            }
         }
 
         void OnDisable()
         {
             _gridLayout.OnLayoutChanged -= MarkDirty;
-            foreach (var v in _views)
+            foreach (var view in _views)
             {
-                v.OnClicked -= HandleViewClicked;
+                view.OnClicked -= HandleViewClicked;
             }
         }
 
         void OnRectTransformDimensionsChange()
         {
             MarkDirty();
+        }
+
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
         }
 
         protected override void HandleIsDirty()
@@ -58,11 +72,9 @@ namespace Scenes.Scripts.UI
 
         protected override void RefreshComponents()
         {
-            _gridLayout = gameObject.GetComponent<DynamicGrid>();
+            _gridLayout = body.GetComponent<DynamicGrid>();
             Dirty = true;
         }
-
-        public event FocusChangeDelegate OnFocusChange;
 
         void MarkDirty()
         {
@@ -105,9 +117,13 @@ namespace Scenes.Scripts.UI
                     antiAliasing = 4
                 };
                 v.topDownCamera.targetTexture = t;
+                if (v.topDownCamera.gameObject.TryGetComponent(out CameraStackSynchronizer css))
+                {
+                    css.ForceRefresh();
+                }
 
                 var view = Instantiate(imagePrefab, transform);
-                view.transform.SetParent(transform);
+                view.transform.SetParent(body.transform);
                 view.transform.localScale = Vector3.one;
                 view.image.texture = t;
                 view.OnClicked += HandleViewClicked;
@@ -119,15 +135,11 @@ namespace Scenes.Scripts.UI
 
         void HandleViewClicked(object sender, EventArgs e)
         {
-            foreach (var ctw in _views)
+            foreach (var view in _views)
             {
-                ctw.selected = ctw == (CarTopView)sender;
-                if (ctw.selected)
-                {
-                    selectedVehicle = ctw.ADS;
-                }
+                selectedVehicle = view == (CarTopView)sender ? view.ADS : null;
             }
-            OnFocusChange?.Invoke(selectedVehicle);
+            onViewSelected?.Invoke(selectedVehicle);
         }
     }
 }
