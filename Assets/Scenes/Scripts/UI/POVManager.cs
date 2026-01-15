@@ -62,5 +62,21 @@ namespace Scenes.Scripts.UI
             menu.gameObject.SetActive(false);
             Destroy(_menuInstance.gameObject);
         }
+        
+        // footer actions
+        public void StopCar()
+        {
+
+        }
+
+        public void ContinueCar()
+        {
+
+        }
+
+        public void EmergencyStopCar()
+        {
+
+        }
     }
 }
