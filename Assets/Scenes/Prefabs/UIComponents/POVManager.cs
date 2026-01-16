@@ -1,7 +1,11 @@
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using car_logic;
+using Gameplay;
+using Scenes.Prefabs.UIComponents;
 using UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utils.Objects;
 
@@ -12,12 +16,18 @@ namespace Scenes.Scripts.UI
         public GameObject menu;
         public VideoFeed videoFeed;
         public ListPanel log;
-        public ListPanel actions;
+
+        [FormerlySerializedAs("actions")]
+        public ListPanel actionsPanel;
+
         public ListPanel layers;
+
+        readonly Dictionary<ElementData, Action> _actions = new();
 
         Canvas _canvas;
 
         ADSV_AI _carInstance;
+        Mission _currentMission;
 
         RectTransform _menuInstance;
 
@@ -48,9 +58,19 @@ namespace Scenes.Scripts.UI
         public void LoadMission(ADSV_AI vehicle)
         {
             _carInstance = vehicle;
+            _currentMission = vehicle.currentMission;
+
             videoFeed.SetCamera(_carInstance.povCamera);
-            log.UpdateList(_carInstance.currentMission.history);
-            actions.UpdateList(_carInstance.currentMission.alternativeRoutes.Select(ar => ar.GetData()));
+
+            log.UpdateList(_currentMission.history);
+
+            _actions.Clear();
+            foreach (var ar in _currentMission.alternativeRoutes.routes)
+            {
+                _actions.Add(ar.ElementData(), () => _currentMission.SelectRoute(ar));
+            }
+            actionsPanel.OnItemSelected += ed => { _actions[ed]?.Invoke(); };
+            actionsPanel.UpdateList(_actions.Keys);
         }
 
         public void OnObstacleClicked(IPlayerClickable playerClickable, Vector2 screenPos)

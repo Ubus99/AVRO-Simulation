@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -6,7 +5,7 @@ using UnityEngine.UI;
 using Utils.Lucide;
 using Utils.Types;
 
-namespace Scenes.Scripts.UI
+namespace Scenes.Prefabs.UIComponents
 {
     [ExecuteInEditMode]
     public class ListItem : EditorBehavior
@@ -25,6 +24,9 @@ namespace Scenes.Scripts.UI
         LayoutGroup lowerSection;
 
         [SerializeField]
+        Button button;
+
+        [SerializeField]
         TextMeshProUGUI label;
 
         [Header("Options")]
@@ -34,13 +36,16 @@ namespace Scenes.Scripts.UI
         [SerializeField]
         ElementData itemData;
 
-        //privates
-        Button _button;
         int _lowerLeftPadding;
 
         void Start()
         {
             RefreshComponents();
+        }
+
+        public Button GetButton()
+        {
+            return button;
         }
 
         protected override void HandleIsDirty()
@@ -51,7 +56,7 @@ namespace Scenes.Scripts.UI
 
         protected override void RefreshComponents()
         {
-            _button = GetComponent<Button>();
+            button = GetComponent<Button>();
             _lowerLeftPadding = lowerSection.padding.left;
         }
 
@@ -75,9 +80,7 @@ namespace Scenes.Scripts.UI
             UpdateIconButton(leftButton, itemData.leftIcon);
             UpdateIconButton(rightButton, itemData.rightIcon);
 
-            _button.interactable = itemData.selectable;
-            _button.onClick = itemData.onClicked;
-
+            button.interactable = itemData.selectable;
         }
 
         void UpdateColors()
@@ -102,22 +105,6 @@ namespace Scenes.Scripts.UI
             {
                 button.gameObject.SetActive(false);
             }
-        }
-
-        [Serializable]
-        public struct ElementData
-        {
-            public bool selectable;
-
-            public GlyphData leftIcon;
-
-            public GlyphData rightIcon;
-
-            public string titleText;
-
-            public string labelText;
-
-            public Button.ButtonClickedEvent onClicked;
         }
     }
 }

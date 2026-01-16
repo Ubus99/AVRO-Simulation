@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using car_logic;
 using Scenes.Scripts.Missions;
-using Scenes.Scripts.UI;
+using UI;
 using UnityEngine;
 
 namespace Gameplay
@@ -17,8 +17,8 @@ namespace Gameplay
         public Transform startPoint;
 
         public Transform endPoint;
-        public List<AlternativeRoute> alternativeRoutes = new();
-        public List<ListItem.ElementData> history = new();
+        public AlternativeRouteHelper alternativeRoutes;
+        public List<ElementData> history = new();
 
         protected bool Active;
         public ADSV_AI carInstance { protected set; get; }
@@ -42,7 +42,7 @@ namespace Gameplay
         {
             SpawnCar(true);
             Setup();
-            foreach (var sc in alternativeRoutes)
+            foreach (var sc in alternativeRoutes.routes)
                 sc.gameObject.SetActive(true);
             OnActivated?.Invoke(this, EventArgs.Empty);
             Active = true;
@@ -62,12 +62,17 @@ namespace Gameplay
         {
             CleanUp();
             if (carInstance) Destroy(carInstance.gameObject);
-            foreach (var sc in alternativeRoutes)
+            foreach (var sc in alternativeRoutes.routes)
                 sc.gameObject.SetActive(false);
             OnDeactivated?.Invoke(this, EventArgs.Empty);
             Active = false;
         }
 
         protected abstract void CleanUp();
+
+        public void SelectRoute(AlternativeRoute route)
+        {
+            alternativeRoutes.SelectRoute(route);
+        }
     }
 }

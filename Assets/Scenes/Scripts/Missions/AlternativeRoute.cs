@@ -1,13 +1,12 @@
-using Scenes.Scripts.UI;
+using UI;
 using UnityEngine;
 using UnityEngine.Splines;
-using UnityEngine.UI;
 using Utils.Types;
 
 namespace Scenes.Scripts.Missions
 {
     [ExecuteInEditMode]
-    public class AlternativeRoute : EditorBehavior
+    public class AlternativeRoute : EditorBehavior, IListable
     {
         [Header("Information")] //
         [SerializeField]
@@ -41,6 +40,17 @@ namespace Scenes.Scripts.Missions
             if (vizSettings) vizSettings.OnChanged -= HandleIsDirty;
         }
 
+        public ElementData ElementData()
+        {
+            var data = new ElementData
+            {
+                titleText = name,
+                labelText = informationText,
+                selectable = selectable
+            };
+            return data;
+        }
+
         protected override void HandleIsDirty()
         {
             RefreshComponents();
@@ -55,23 +65,10 @@ namespace Scenes.Scripts.Missions
             route = GetComponentInChildren<SplineContainer>();
         }
 
-        public void SetActive(bool active)
+        public void SetSelected(bool active)
         {
             if (!selectable) return;
             _material.color = active ? vizSettings.activeColor : vizSettings.inactiveColor;
-        }
-
-        public ListItem.ElementData GetData()
-        {
-            var data = new ListItem.ElementData
-            {
-                titleText = name,
-                labelText = informationText,
-                selectable = selectable,
-                onClicked = new Button.ButtonClickedEvent()
-            };
-            data.onClicked.AddListener(() => parent.SetActiveRoute(this));
-            return data;
         }
     }
 }

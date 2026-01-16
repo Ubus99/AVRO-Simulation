@@ -292,6 +292,7 @@ MonoBehaviour:
   rightButton: {fileID: 863098111856120618}
   title: {fileID: 7538257635679857575}
   lowerSection: {fileID: 522227092544580360}
+  button: {fileID: 346660758287378939}
   label: {fileID: 7882140544784805934}
   colors: {fileID: 11400000, guid: f51446168d825454284f8b7d48ebbae9, type: 2}
   itemData:
@@ -300,9 +301,6 @@ MonoBehaviour:
     rightIcon: {fileID: 11400000, guid: 8259268bbc3af9b42ac98fc2e47a99d2, type: 2}
     titleText: test
     labelText: test
-    onClicked:
-      m_PersistentCalls:
-        m_Calls: []
 --- !u!1 &5959586217622661127
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,21 +9,20 @@ namespace Scenes.Scripts.Missions
     [ExecuteInEditMode]
     public class AlternativeRouteHelper : EditorBehavior
     {
-        public List<AlternativeRoute> alternativeRoutes = new();
         Mission _mission;
+        public List<AlternativeRoute> routes { get; } = new();
 
         void LateUpdate()
         {
             if (!_mission) return;
 
-            alternativeRoutes.Clear();
-            alternativeRoutes.AddRange(GetComponentsInChildren<AlternativeRoute>());
-            foreach (var route in alternativeRoutes) route.parent = this;
+            routes.Clear();
+            routes.AddRange(GetComponentsInChildren<AlternativeRoute>());
+            foreach (var route in routes) route.parent = this;
 
-            _mission.alternativeRoutes.Clear();
-            _mission.alternativeRoutes.AddRange(alternativeRoutes);
+            _mission.alternativeRoutes = this;
 
-            foreach (var ar in alternativeRoutes)
+            foreach (var ar in routes)
             {
                 SnapRoute(ar);
             }
@@ -32,6 +31,14 @@ namespace Scenes.Scripts.Missions
         protected override void HandleIsDirty()
         {
             RefreshComponents();
+        }
+
+        public void SelectRoute(AlternativeRoute route)
+        {
+            foreach (var ar in routes)
+            {
+                ar.SetSelected(ar == route);
+            }
         }
 
         protected override void RefreshComponents()
@@ -76,9 +83,9 @@ namespace Scenes.Scripts.Missions
 
         public void SetActiveRoute(AlternativeRoute route)
         {
-            foreach (var ar in alternativeRoutes)
+            foreach (var ar in routes)
             {
-                ar.SetActive(ar == route);
+                ar.SetSelected(ar == route);
             }
         }
     }

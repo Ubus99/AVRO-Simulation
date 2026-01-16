@@ -13,7 +13,7 @@ namespace Scenes.Scripts.UI
         [SerializeField]
         public POVManager povManager;
 
-        readonly List<ISubScreen> subScreens = new();
+        readonly List<ISubScreen> _subScreens = new();
 
         protected override void HandleIsDirty()
         {
@@ -29,14 +29,14 @@ namespace Scenes.Scripts.UI
 
         protected override void RefreshComponents()
         {
-            subScreens.Clear();
-            subScreens.Add(overviewManager.GetComponent<ISubScreen>());
-            subScreens.Add(povManager.GetComponent<ISubScreen>());
+            _subScreens.Clear();
+            _subScreens.Add(overviewManager.GetComponent<ISubScreen>());
+            _subScreens.Add(povManager.GetComponent<ISubScreen>());
         }
 
         public void ActivateScreen(ISubScreen canvas)
         {
-            foreach (var c in subScreens)
+            foreach (var c in _subScreens)
             {
                 if (c == canvas)
                 {

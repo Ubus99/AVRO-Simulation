@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
+using UI;
 using UnityEngine;
-using Utils;
 using Utils.Objects;
 
-namespace Scenes.Scripts.UI
+namespace Scenes.Prefabs.UIComponents
 {
     [ExecuteAlways]
     public class ListPanel : MonoBehaviour
@@ -36,13 +37,16 @@ namespace Scenes.Scripts.UI
             if (buttonRight) buttonRight.SetActive(rightIcon);
         }
 
-        public void UpdateList(IEnumerable<ListItem.ElementData> data)
+        public event Action<ElementData> OnItemSelected;
+
+        public void UpdateList(IEnumerable<ElementData> data)
         {
             ObjectManagementUtility.KillAllChildren(body.transform);
 
             foreach (var ed in data)
             {
                 var li = Instantiate(itemPrefab, body.transform);
+                li.GetButton().onClick.AddListener(() => OnItemSelected?.Invoke(ed));
                 var go = li.gameObject;
 
                 li.SetData(ed);
