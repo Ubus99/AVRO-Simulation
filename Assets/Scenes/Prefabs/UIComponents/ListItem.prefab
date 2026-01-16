@@ -221,8 +221,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 8
     m_Right: 8
-    m_Top: 6
-    m_Bottom: 6
+    m_Top: 8
+    m_Bottom: 8
   m_ChildAlignment: 3
   m_Spacing: 4
   m_ChildForceExpandWidth: 1
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -253,11 +253,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.7830189, g: 0.29178533, b: 0.29178533, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -271,7 +271,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 2544581117674570118}
   m_OnClick:
     m_PersistentCalls:
@@ -293,12 +293,13 @@ MonoBehaviour:
   title: {fileID: 7538257635679857575}
   lowerSection: {fileID: 522227092544580360}
   label: {fileID: 7882140544784805934}
+  colors: {fileID: 11400000, guid: f51446168d825454284f8b7d48ebbae9, type: 2}
   itemData:
     selectable: 0
-    leftIcon: {fileID: 0}
-    rightIcon: {fileID: 0}
-    titleText: 
-    labelText: 
+    leftIcon: {fileID: 11400000, guid: 8259268bbc3af9b42ac98fc2e47a99d2, type: 2}
+    rightIcon: {fileID: 11400000, guid: 8259268bbc3af9b42ac98fc2e47a99d2, type: 2}
+    titleText: test
+    labelText: test
     onClicked:
       m_PersistentCalls:
         m_Calls: []
@@ -313,13 +314,14 @@ GameObject:
   - component: {fileID: 2480859206186606223}
   - component: {fileID: 7246489744617528889}
   - component: {fileID: 7882140544784805934}
+  - component: {fileID: 3505624958316828744}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2480859206186606223
 RectTransform:
   m_ObjectHideFlags: 0
@@ -334,10 +336,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6475451546909443921}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 52.815, y: -0.98894155}
-  m_SizeDelta: {x: 29.63, y: 1.9778831}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7246489744617528889
 CanvasRenderer:
@@ -367,7 +369,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: label
+  m_text: test
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -439,6 +441,26 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3505624958316828744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5959586217622661127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &8475132113697845674
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +592,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Title
+  m_text: test
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -910,6 +932,10 @@ PrefabInstance:
     - target: {fileID: 680254792341854430, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: m_Name
       value: RightIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 680254792341854430, guid: a1737d5908878724e823a75b60394d99, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1623732513273410420, guid: a1737d5908878724e823a75b60394d99, type: 3}
       propertyPath: m_AnchorMax.y

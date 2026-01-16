@@ -21,7 +21,7 @@ namespace Gameplay
         public List<ListItem.ElementData> history = new();
 
         protected bool Active;
-        protected ADSV_AI CarInstance;
+        public ADSV_AI carInstance { protected set; get; }
         public bool completed { get; protected set; }
 
         void Awake()
@@ -50,10 +50,10 @@ namespace Gameplay
 
         void SpawnCar(bool startErrored)
         {
-            CarInstance = Instantiate(carPrefab, startPoint.position + Vector3.up, startPoint.rotation);
-            CarInstance.currentMission = this;
+            carInstance = Instantiate(carPrefab, startPoint.position + Vector3.up, startPoint.rotation);
+            carInstance.currentMission = this;
             if (startErrored)
-                CarInstance.state = States.ErrorDetected;
+                carInstance.state = States.ErrorDetected;
         }
 
         protected abstract void Setup();
@@ -61,7 +61,7 @@ namespace Gameplay
         public void Deactivate()
         {
             CleanUp();
-            if (CarInstance) Destroy(CarInstance.gameObject);
+            if (carInstance) Destroy(carInstance.gameObject);
             foreach (var sc in alternativeRoutes)
                 sc.gameObject.SetActive(false);
             OnDeactivated?.Invoke(this, EventArgs.Empty);

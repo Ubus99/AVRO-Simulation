@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.Lucide;
@@ -27,6 +28,9 @@ namespace Scenes.Scripts.UI
         TextMeshProUGUI label;
 
         [Header("Options")]
+        [SerializeField]
+        ColorGuide colors;
+
         [SerializeField]
         ElementData itemData;
 
@@ -73,6 +77,11 @@ namespace Scenes.Scripts.UI
 
             _button.interactable = itemData.selectable;
             _button.onClick = itemData.onClicked;
+
+        }
+
+        void UpdateColors()
+        {
         }
 
         public void SetData(ElementData data)
@@ -86,7 +95,7 @@ namespace Scenes.Scripts.UI
             if (data)
             {
                 button.gameObject.SetActive(true);
-                button.glyph.unicodeString = data.unicodeString;
+                button.glyph = data;
                 button.UpdateComponents();
             }
             else

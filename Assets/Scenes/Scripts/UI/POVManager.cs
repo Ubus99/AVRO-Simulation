@@ -2,6 +2,7 @@ using System.Linq;
 using car_logic;
 using UI;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils.Objects;
 
 namespace Scenes.Scripts.UI
@@ -15,6 +16,8 @@ namespace Scenes.Scripts.UI
         public ListPanel layers;
 
         Canvas _canvas;
+
+        ADSV_AI _carInstance;
 
         RectTransform _menuInstance;
 
@@ -42,11 +45,12 @@ namespace Scenes.Scripts.UI
             gameObject.SetActive(false);
         }
 
-        public void LoadData(ADSV_AI vehicle)
+        public void LoadMission(ADSV_AI vehicle)
         {
-            videoFeed.SetCamera(vehicle.povCamera);
-            log.UpdateList(vehicle.currentMission.history);
-            actions.UpdateList(vehicle.currentMission.alternativeRoutes.Select(ar => ar.GetData()));
+            _carInstance = vehicle;
+            videoFeed.SetCamera(_carInstance.povCamera);
+            log.UpdateList(_carInstance.currentMission.history);
+            actions.UpdateList(_carInstance.currentMission.alternativeRoutes.Select(ar => ar.GetData()));
         }
 
         public void OnObstacleClicked(IPlayerClickable playerClickable, Vector2 screenPos)
@@ -62,7 +66,7 @@ namespace Scenes.Scripts.UI
             menu.gameObject.SetActive(false);
             Destroy(_menuInstance.gameObject);
         }
-        
+
         // footer actions
         public void StopCar()
         {
@@ -77,6 +81,10 @@ namespace Scenes.Scripts.UI
         public void EmergencyStopCar()
         {
 
+        }
+
+        public void ShowEditMenu(Button origin)
+        {
         }
     }
 }

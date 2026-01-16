@@ -3,7 +3,7 @@ using Utils.Types;
 
 namespace Scenes.Scripts.Missions
 {
-    [CreateAssetMenu(fileName = "Visualisation Setting", menuName = "Visualisation Setting", order = 0)]
+    [CreateAssetMenu(fileName = "Visualisation Setting", menuName = "custom/AIVisualisationSetting", order = 0)]
     [ExecuteAlways]
     public class VizSettings : BetterScriptableObject
     {

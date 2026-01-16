@@ -33,7 +33,7 @@ namespace Scenes.Scripts.Missions
                     break;
 
                 case States.WaitingForAid:
-                    CarInstance.SetTarget(trigger.transform.position + trigger.transform.forward * 2f);
+                    carInstance.SetTarget(trigger.transform.position + trigger.transform.forward * 2f);
                     break;
 
                 default:
@@ -48,7 +48,7 @@ namespace Scenes.Scripts.Missions
 
             obstacle.gameObject.SetActive(true);
 
-            CarInstance.OnStateChangeEvent += HandleStateChanged;
+            carInstance.OnStateChangeEvent += HandleStateChanged;
         }
 
         protected override void CleanUp()
@@ -56,7 +56,7 @@ namespace Scenes.Scripts.Missions
             trigger.gameObject.SetActive(false);
             obstacle.gameObject.SetActive(false);
 
-            if (CarInstance) CarInstance.OnStateChangeEvent -= HandleStateChanged;
+            if (carInstance) carInstance.OnStateChangeEvent -= HandleStateChanged;
         }
     }
 }
