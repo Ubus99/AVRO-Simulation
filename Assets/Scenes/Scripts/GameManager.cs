@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using car_logic;
+using Gameplay;
 using Scenes.Scripts.UI;
 using UnityEngine;
 using Utils.Objects;
 using ZLinq;
+using Logger = Utils.Logger;
 
-[assembly: ZLinqDropIn("Gameplay", DropInGenerateTypes.Collection)]
+[assembly: ZLinqDropIn(null, DropInGenerateTypes.Collection)]
 
-namespace Gameplay
+namespace Scenes.Scripts
 {
     public class GameManager : MonoBehaviour
     {
@@ -35,6 +37,8 @@ namespace Gameplay
             {
                 Destroy(gameObject);
             }
+
+            Logger.instance.Init();
 
             DontDestroyOnLoad(gameObject);
             ServiceLocator.instance.TryRegister<GameManager>(this);

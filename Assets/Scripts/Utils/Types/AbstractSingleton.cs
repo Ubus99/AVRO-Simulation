@@ -1,20 +1,14 @@
-﻿namespace Utils.Types
+﻿using System;
+
+namespace Utils.Types
 {
     public class AbstractSingleton<T> where T : new()
     {
-        static T _instance;
+        static readonly Lazy<T> Instance = new(() => new T());
 
         public static T instance
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new T();
-                }
-                return _instance;
-            }
-            set { _instance = value; }
+            get { return Instance.Value; }
         }
     }
 }
