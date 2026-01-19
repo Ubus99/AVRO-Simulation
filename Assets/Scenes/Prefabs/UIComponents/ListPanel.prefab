@@ -93,7 +93,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 48
   m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 1
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: -1
+  m_MinHeight: 64
   m_PreferredWidth: 1
   m_PreferredHeight: -1
   m_FlexibleWidth: 100
@@ -384,7 +384,7 @@ MonoBehaviour:
   m_PreferredWidth: 1
   m_PreferredHeight: 1
   m_FlexibleWidth: 1
-  m_FlexibleHeight: -1
+  m_FlexibleHeight: 1
   m_LayoutPriority: 1
 --- !u!114 &449322405042405609
 MonoBehaviour:
@@ -430,8 +430,8 @@ MonoBehaviour:
   titleText: {fileID: 4484623760798821632}
   buttonLeft: {fileID: 8449022784206696454}
   buttonRight: {fileID: 4278566024555322401}
-  itemPrefab: {fileID: 0}
-  body: {fileID: 0}
+  itemPrefab: {fileID: 1795462251922295874, guid: 7decd99c4fe246d4cb95c8b13277fa6b, type: 3}
+  body: {fileID: 7076862977666530985}
 --- !u!1 &8423960917376145730
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +443,6 @@ GameObject:
   - component: {fileID: 7693045278223452639}
   - component: {fileID: 9177254822092245985}
   - component: {fileID: 5939291475964997124}
-  - component: {fileID: 2000799291759872306}
   - component: {fileID: 5320656784802098206}
   m_Layer: 5
   m_Name: Header
@@ -512,26 +511,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2000799291759872306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8423960917376145730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: 48
-  m_PreferredWidth: -1
-  m_PreferredHeight: 48
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
 --- !u!114 &5320656784802098206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,10 +524,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
   m_Padding:
-    m_Left: 8
-    m_Right: 8
-    m_Top: 4
-    m_Bottom: 4
+    m_Left: 16
+    m_Right: 16
+    m_Top: 8
+    m_Bottom: 8
   m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
@@ -1909,10 +1888,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 346660758287378939, guid: 7decd99c4fe246d4cb95c8b13277fa6b, type: 3}
       propertyPath: m_Interactable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 522227092544580360, guid: 7decd99c4fe246d4cb95c8b13277fa6b, type: 3}
-      propertyPath: m_Padding.m_Left
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 708358749340185029, guid: 7decd99c4fe246d4cb95c8b13277fa6b, type: 3}

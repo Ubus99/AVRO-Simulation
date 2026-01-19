@@ -75,20 +75,6 @@ namespace Scenes.Scripts.UI
             actionsPanel.UpdateList(_actions.Keys);
         }
 
-        public void OnObstacleClicked(IPlayerClickable playerClickable, Vector2 screenPos)
-        {
-            var container = videoFeed.rectTransform;
-
-        }
-
-        public void OnObstacleMissed(Vector2 pos)
-        {
-            if (!_menuInstance) return;
-
-            menu.gameObject.SetActive(false);
-            Destroy(_menuInstance.gameObject);
-        }
-
         // footer actions
         public void StopCar()
         {
