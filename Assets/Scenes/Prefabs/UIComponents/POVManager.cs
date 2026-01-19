@@ -98,6 +98,7 @@ namespace Scenes.Prefabs.UIComponents
 
         public void ShowEditMenu(RectTransform origin)
         {
+            //position panel
             var corners = new Vector3[4];
             origin.GetWorldCorners(corners);
             var topRight = RectTransformUtility.WorldToScreenPoint(null, corners[2]);
@@ -116,6 +117,10 @@ namespace Scenes.Prefabs.UIComponents
             var offset = menuPanel.rectTransform.rect.size / 2;
             offset.y = -offset.y;
             menuPanel.rectTransform.localPosition = localPoint + offset;
+
+            //load data
+            //_currentMission.GetObstacleData();
+
             menuPanel.Show();
         }
     }

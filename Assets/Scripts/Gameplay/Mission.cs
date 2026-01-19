@@ -74,5 +74,10 @@ namespace Gameplay
         {
             alternativeRoutes.SelectRoute(route);
         }
+
+        public List<ElementData> GetObstacleData(ADSV_Obstacle obstacle)
+        {
+            return new List<ElementData>();
+        }
     }
 }
