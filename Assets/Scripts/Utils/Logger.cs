@@ -30,7 +30,7 @@ namespace Utils
 
         public void LogFormat(LogType logType, Object context, string format, params object[] args)
         {
-            _streamWriter.WriteLine(format, args);
+            _streamWriter.WriteLine($"[{DateTime.Now:hh:mm:ss:ff}] {string.Format(format, args)}");
             _streamWriter.Flush();
             _defaultLogHandler.LogFormat(logType, context, format, args); // log to console also
         }
@@ -44,7 +44,7 @@ namespace Utils
         {
             if (string.IsNullOrEmpty(name))
             {
-                name = $"{DateTime.Now:yyyy-MM-dd_HH-mm}";
+                name = $"{DateTime.Now:yyyy-MM-dd-HH-mm}";
             }
 
             try
