@@ -6,7 +6,6 @@ using Scenes.Prefabs.UIComponents;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 using Utils.Objects;
 
 namespace Scenes.Scripts.UI
@@ -15,9 +14,10 @@ namespace Scenes.Scripts.UI
     {
         public GameObject menu;
         public VideoFeed videoFeed;
-        public ListPanel log;
 
-        [FormerlySerializedAs("actions")]
+        [FormerlySerializedAs("log")]
+        public ListPanel logPanel;
+
         public ListPanel actionsPanel;
 
         public ListPanel layers;
@@ -61,15 +61,15 @@ namespace Scenes.Scripts.UI
             _currentMission = vehicle.currentMission;
 
             videoFeed.SetCamera(_carInstance.povCamera);
-
-            log.UpdateList(_currentMission.history);
+            logPanel.OnItemSelected += (rt, ed) => { ShowEditMenu(rt); };
+            logPanel.UpdateList(_currentMission.history);
 
             _actions.Clear();
             foreach (var ar in _currentMission.alternativeRoutes.routes)
             {
                 _actions.Add(ar.ElementData(), () => _currentMission.SelectRoute(ar));
             }
-            actionsPanel.OnItemSelected += ed => { _actions[ed]?.Invoke(); };
+            actionsPanel.OnItemSelected += (rt, ed) => { _actions[ed]?.Invoke(); };
             actionsPanel.UpdateList(_actions.Keys);
         }
 
@@ -103,7 +103,7 @@ namespace Scenes.Scripts.UI
 
         }
 
-        public void ShowEditMenu(Button origin)
+        public void ShowEditMenu(RectTransform origin)
         {
         }
     }

@@ -37,7 +37,7 @@ namespace Scenes.Prefabs.UIComponents
             if (buttonRight) buttonRight.SetActive(rightIcon);
         }
 
-        public event Action<ElementData> OnItemSelected;
+        public event Action<RectTransform, ElementData> OnItemSelected;
 
         public void UpdateList(IEnumerable<ElementData> data)
         {
@@ -46,7 +46,7 @@ namespace Scenes.Prefabs.UIComponents
             foreach (var ed in data)
             {
                 var li = Instantiate(itemPrefab, body.transform);
-                li.GetButton().onClick.AddListener(() => OnItemSelected?.Invoke(ed));
+                li.GetButton().onClick.AddListener(() => OnItemSelected?.Invoke(li.transform as RectTransform, ed));
                 var go = li.gameObject;
 
                 li.SetData(ed);
