@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
+using Scenes.Scripts.UI;
 using UI;
 using UnityEngine;
 using Utils.Types;
 
-namespace Scenes.Scripts.UI
+namespace Scenes.Prefabs.UIComponents
 {
     public class ScreenManager : EditorBehavior
     {
@@ -18,13 +20,16 @@ namespace Scenes.Scripts.UI
         protected override void HandleIsDirty()
         {
             RefreshComponents();
-            overviewManager.Show();
             overviewManager.onViewSelected.AddListener(car =>
             {
                 ActivateScreen(povManager);
                 povManager.LoadMission(car);
             });
-            povManager.Hide();
+        }
+
+        void Start()
+        {
+            ActivateScreen(overviewManager);
         }
 
         protected override void RefreshComponents()

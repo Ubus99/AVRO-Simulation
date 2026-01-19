@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 159671126880641526, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 159671126880641526, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
       propertyPath: m_SizeDelta.x
@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 159671126880641526, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17709.734
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 159671126880641526, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1048,6 +1048,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6289479391829915344, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6349890363850842030, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1431,6 +1435,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7159353768026556188, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6478832965951316716}
+    - targetCorrespondingSourceObject: {fileID: 7076862977666530985, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 9080252415791455612}
+    - targetCorrespondingSourceObject: {fileID: 7076862977666530985, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 3730509463859561139}
   m_SourcePrefab: {fileID: 100100000, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
 --- !u!1 &6780493384745429699 stripped
 GameObject:
@@ -1456,3 +1466,41 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7076862977666530985, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
   m_PrefabInstance: {fileID: 4414095665642139103}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9080252415791455612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6878146706615948150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adb30198aa32dd140b5750692dd48104, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Nobi.UiRoundedCorners::Nobi.UiRoundedCorners.ImageWithRoundedCorners
+  radius: 16
+  image: {fileID: 7641127190328351503}
+--- !u!114 &3730509463859561139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6878146706615948150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
+  m_ShowMaskGraphic: 1
+--- !u!114 &7641127190328351503 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6289479391829915344, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
+  m_PrefabInstance: {fileID: 4414095665642139103}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6878146706615948150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image

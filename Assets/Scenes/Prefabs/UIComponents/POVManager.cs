@@ -2,17 +2,20 @@ using System;
 using System.Collections.Generic;
 using car_logic;
 using Gameplay;
-using Scenes.Prefabs.UIComponents;
+using Scenes.Scripts.UI;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Utils.Objects;
 
-namespace Scenes.Scripts.UI
+namespace Scenes.Prefabs.UIComponents
 {
     public class POVManager : MonoBehaviour, ISubScreen
     {
-        public GameObject menu;
+        [FormerlySerializedAs("menu")]
+        public ListPanel menuPanel;
+
         public VideoFeed videoFeed;
 
         [FormerlySerializedAs("log")]
@@ -40,6 +43,7 @@ namespace Scenes.Scripts.UI
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            menuPanel.Hide();
             ServiceLocator.instance.TryGet<OverviewManager>(out var overviewManager);
         }
 
@@ -55,6 +59,7 @@ namespace Scenes.Scripts.UI
             Debug.Log($"Hiding {name}");
             videoFeed.Hide();
             gameObject.SetActive(false);
+            menuPanel.Hide();
         }
 
         public void LoadMission(ADSV_AI vehicle)
@@ -93,6 +98,25 @@ namespace Scenes.Scripts.UI
 
         public void ShowEditMenu(RectTransform origin)
         {
+            var corners = new Vector3[4];
+            origin.GetWorldCorners(corners);
+            var topRight = RectTransformUtility.WorldToScreenPoint(null, corners[2]);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            menuPanel.transform.parent as RectTransform,
+            topRight,
+            null,
+            out var localPoint);
+
+            if (origin.TryGetComponent(out LayoutGroup layoutGroup))
+            {
+                // var padding = layoutGroup.padding;
+                // topRight += new Vector2(padding.right, padding.top);
+            }
+
+            var offset = menuPanel.rectTransform.rect.size / 2;
+            offset.y = -offset.y;
+            menuPanel.rectTransform.localPosition = localPoint + offset;
+            menuPanel.Show();
         }
     }
 }

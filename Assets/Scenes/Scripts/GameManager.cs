@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using car_logic;
 using Gameplay;
+using Scenes.Prefabs.UIComponents;
 using Scenes.Scripts.UI;
 using UnityEngine;
 using Utils.Objects;
