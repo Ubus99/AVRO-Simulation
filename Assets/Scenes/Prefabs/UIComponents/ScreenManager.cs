@@ -36,6 +36,7 @@ namespace Scenes.Scripts.UI
 
         public void ActivateScreen(ISubScreen canvas)
         {
+            Debug.Log($"trying to activate screen {canvas}");
             foreach (var c in _subScreens)
             {
                 if (c == canvas)

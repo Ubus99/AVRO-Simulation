@@ -41,6 +41,7 @@ namespace Scenes.Prefabs.UIComponents
 
         public void UpdateList(IEnumerable<ElementData> data)
         {
+            Debug.Log($"Updating List {title} in {name}");
             ObjectManagementUtility.KillAllChildren(body.transform);
 
             foreach (var ed in data)

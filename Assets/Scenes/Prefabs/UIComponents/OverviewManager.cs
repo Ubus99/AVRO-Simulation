@@ -54,11 +54,13 @@ namespace Scenes.Scripts.UI
 
         public void Show()
         {
+            Debug.Log($"Showing {name}");
             gameObject.SetActive(true);
         }
 
         public void Hide()
         {
+            Debug.Log($"Hiding {name}");
             gameObject.SetActive(false);
         }
 

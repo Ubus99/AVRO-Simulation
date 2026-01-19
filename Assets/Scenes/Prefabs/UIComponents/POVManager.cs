@@ -45,12 +45,14 @@ namespace Scenes.Scripts.UI
 
         public void Show()
         {
+            Debug.Log($"Showing {name}");
             gameObject.SetActive(true);
             videoFeed.Show();
         }
 
         public void Hide()
         {
+            Debug.Log($"Hiding {name}");
             videoFeed.Hide();
             gameObject.SetActive(false);
         }

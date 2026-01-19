@@ -41,7 +41,7 @@ namespace car_logic
             if (t - _lastMsgMillis < 1 && !stateChanged)
                 return;
 
-            Debug.Log($"car in {state.ToString()} state");
+            Debug.Log($"{name} in {state.ToString()} state");
             _lastMsgMillis = t;
         }
 
@@ -51,7 +51,7 @@ namespace car_logic
             if (t - _lastMsgMillis < 1 && !stateChanged)
                 return;
 
-            Debug.Log($"car entering {state.ToString()} state");
+            Debug.Log($"{name} entering {state.ToString()} state");
             _lastMsgMillis = t;
         }
 
@@ -61,7 +61,7 @@ namespace car_logic
             if (t - _lastMsgMillis < 1 && !stateChanged)
                 return;
 
-            Debug.Log($"car exiting {state.ToString()} state");
+            Debug.Log($"{name} exiting {state.ToString()} state");
             _lastMsgMillis = t;
         }
     }
