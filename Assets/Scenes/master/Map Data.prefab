@@ -2385,10 +2385,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 461c0402b6146844f9e248c73b83fc99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  alternativeRoutes:
-  - {fileID: 7547140204154986069}
-  - {fileID: 494662803714484986}
-  - {fileID: 8436022142749910320}
 --- !u!1 &2524279746728296086
 GameObject:
   m_ObjectHideFlags: 0
@@ -4483,10 +4479,17 @@ MonoBehaviour:
   carPrefab: {fileID: 7842990661033774574, guid: 2b0758a6c0554fa49a2523f868600f70, type: 3}
   startPoint: {fileID: 8000745969003913651}
   endPoint: {fileID: 4848962972023019827}
-  alternativeRoutes:
-  - {fileID: 7547140204154986069}
-  - {fileID: 494662803714484986}
-  - {fileID: 8436022142749910320}
+  alternativeRoutes: {fileID: 0}
+  history:
+  - type: 0
+    timestamp: 12:27
+    description: Street 1
+  - type: 3
+    timestamp: 12:27
+    description: Obstacle Detected
+  - type: 2
+    timestamp: 14:45
+    description: Street 2
   trigger: {fileID: 1129850450867891785}
   obstacle: {fileID: 9161707901318226420}
 --- !u!1 &4254556991735514069

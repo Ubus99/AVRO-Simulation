@@ -25,7 +25,7 @@ namespace Scenes.Prefabs.UIComponents
 
         public ListPanel layers;
 
-        readonly Dictionary<ListElementData, Action> _actions = new();
+        readonly Dictionary<IListElement, Action> _actions = new();
 
         Canvas _canvas;
 

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a99cd72f37be406e8eefa3510ad76966, type: 3}
+  m_Name: IconAtlas
+  m_EditorClassIdentifier: CustomUIHelpers::UI.IconAtlas
+  glyphsList:
+  - {fileID: 11400000, guid: 071fb4b6636067141861ff6042327e88, type: 2}
+  - {fileID: 11400000, guid: 00d4cc4e976db624c81c35d784efaa9d, type: 2}
+  - {fileID: 11400000, guid: 7b2d76343f4d7854f8a58a6b00261e21, type: 2}
+  - {fileID: 11400000, guid: c08656784f04f5d4ca14d102adbb4c8d, type: 2}
+  - {fileID: 11400000, guid: 79c900f1eca6b644fae5ddefbb069fc9, type: 2}
+  - {fileID: 11400000, guid: 53d5e6eb4d976194cb212937f5b15572, type: 2}
+  - {fileID: 11400000, guid: f5d429be9da20764db661c8d78c54ae0, type: 2}
+  - {fileID: 11400000, guid: 9234b31ac45c9b3448c65ff09aceaf21, type: 2}
+  - {fileID: 11400000, guid: 15e5113fc3f486c468bbdd804f4882fc, type: 2}
+  - {fileID: 11400000, guid: 77f5a31aab54be143803983de91a5d64, type: 2}
+  - {fileID: 11400000, guid: 8259268bbc3af9b42ac98fc2e47a99d2, type: 2}
+  - {fileID: 11400000, guid: baeea8354e43a0a41955806dcb3f8eda, type: 2}

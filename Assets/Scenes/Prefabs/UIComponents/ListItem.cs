@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -31,16 +32,34 @@ namespace Scenes.Prefabs.UIComponents
 
         [Header("Options")]
         [SerializeField]
-        ColorGuide colors;
+        bool selectable;
 
         [SerializeField]
-        ListElementData itemData;
+        string titleText;
 
+        [SerializeField]
+        string labelText;
+
+        [SerializeField]
+        GlyphData rightIcon;
+        
+        [SerializeField]
+        GlyphData leftIcon;
+
+        [SerializeField]
+        ColorGuide colors;
+
+        // private
         int _lowerLeftPadding;
-
+        
         void Start()
         {
             RefreshComponents();
+        }
+
+        public bool Equals(IListElement other)
+        {
+            throw new NotImplementedException();
         }
 
         public Button GetButton()
@@ -62,34 +81,35 @@ namespace Scenes.Prefabs.UIComponents
 
         public void ToggleSelectable()
         {
-            itemData.selectable = !itemData.selectable;
+            selectable = !selectable;
         }
 
         void Refresh()
         {
-            if (title) title.text = itemData.titleText;
+            if (title) title.text = titleText;
 
             if (label)
             {
-                label.gameObject.SetActive(itemData.labelText != "");
-                label.text = itemData.labelText;
+                label.gameObject.SetActive(labelText != "");
+                label.text = labelText;
             }
 
-            lowerSection.padding.left = itemData.leftIcon ? _lowerLeftPadding : 0;
+            lowerSection.padding.left = leftIcon ? _lowerLeftPadding : 0;
 
-            UpdateIconButton(leftButton, itemData.leftIcon);
-            UpdateIconButton(rightButton, itemData.rightIcon);
+            UpdateIconButton(leftButton, leftIcon);
+            UpdateIconButton(rightButton, rightIcon);
 
-            button.interactable = itemData.selectable;
+            button.interactable = selectable;
         }
 
-        void UpdateColors()
+        public void SetData(IListElement data)
         {
-        }
-
-        public void SetData(ListElementData data)
-        {
-            itemData = data;
+            selectable = data.selectable;
+            titleText = data.titleText;
+            labelText = data.labelText;
+            leftIcon = data.leftIcon;
+            rightIcon = data.rightIcon;
+            
             Dirty = true;
         }
 

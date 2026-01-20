@@ -1,12 +1,13 @@
 using UI;
 using UnityEngine;
 using UnityEngine.Splines;
+using Utils.Lucide;
 using Utils.Types;
 
 namespace Scenes.Scripts.Missions
 {
     [ExecuteInEditMode]
-    public class AlternativeRoute : EditorBehavior, IListable
+    public class AlternativeRoute : EditorBehavior
     {
         [Header("Information")] //
         [SerializeField]
@@ -40,14 +41,9 @@ namespace Scenes.Scripts.Missions
             if (vizSettings) vizSettings.OnChanged -= HandleIsDirty;
         }
 
-        public ListElementData ElementData()
+        public IListElement ElementData()
         {
-            var data = new AlternativeRouteListElement
-            {
-                titleText = name,
-                labelText = informationText,
-                selectable = selectable
-            };
+            var data = new AlternativeRouteListElement(name, informationText, selectable);
             return data;
         }
 
@@ -71,8 +67,29 @@ namespace Scenes.Scripts.Missions
             _material.color = active ? vizSettings.activeColor : vizSettings.inactiveColor;
         }
 
-        public class AlternativeRouteListElement : ListElementData
+        public class AlternativeRouteListElement : IListElement
         {
+            public AlternativeRouteListElement(string titleText, string labelText, bool selectable)
+            {
+                this.labelText = labelText;
+                this.selectable = selectable;
+                this.titleText = titleText;
+            }
+
+            public bool selectable { get; }
+
+            public GlyphData leftIcon
+            {
+                get { return null; }
+            }
+
+            public GlyphData rightIcon
+            {
+                get { return null; }
+            }
+
+            public string titleText { get; }
+            public string labelText { get; }
         }
     }
 }

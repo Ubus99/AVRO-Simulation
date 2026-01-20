@@ -52,9 +52,9 @@ namespace Scenes.Prefabs.UIComponents
             gameObject.SetActive(false);
         }
 
-        public event Action<RectTransform, ListElementData> OnItemSelected;
+        public event Action<RectTransform, IListElement> OnItemSelected;
 
-        public void UpdateList(IEnumerable<ListElementData> data)
+        public void UpdateList(IEnumerable<IListElement> data)
         {
             Debug.Log($"Updating List {title} in {name}");
             ObjectManagementUtility.KillAllChildren(body.transform);

@@ -4,6 +4,7 @@ using car_logic;
 using Scenes.Scripts.Missions;
 using UI;
 using UnityEngine;
+using Utils.Lucide;
 
 namespace Gameplay
 {
@@ -20,7 +21,7 @@ namespace Gameplay
         public AlternativeRouteHelper alternativeRoutes;
 
         [SerializeField]
-        List<HistoryListElement> _history = new();
+        List<HistoryListElement> history;
 
         protected bool Active;
         public ADSV_AI carInstance { protected set; get; }
@@ -77,19 +78,80 @@ namespace Gameplay
             alternativeRoutes.SelectRoute(route);
         }
 
-        public IEnumerable<ListElementData> GetObstacleData(ADSV_Obstacle obstacle)
+        public IEnumerable<IListElement> GetObstacleData(ADSV_Obstacle obstacle)
         {
-            return new List<ListElementData>();
+            return new List<IListElement>();
         }
 
         public IEnumerable<HistoryListElement> GetHistory()
         {
-            return _history;
+            return history;
         }
 
         [Serializable]
-        public class HistoryListElement : ListElementData
+        public class HistoryListElement : IListElement
         {
+            public enum Type
+            {
+                Start,
+                Waypoint,
+                Goal,
+                Error
+            }
+
+            [SerializeField]
+            Type type;
+
+            [SerializeField]
+            string timestamp;
+
+            [SerializeField]
+            string description;
+
+            IconAtlas _iconAtlas = IconAtlas.instance;
+
+            public bool selectable
+            {
+                get
+                {
+                    return type switch
+                    {
+                        Type.Start or Type.Waypoint or Type.Goal => false,
+                        Type.Error => true,
+                        _ => throw new ArgumentOutOfRangeException()
+                    };
+                }
+            }
+
+            public GlyphData leftIcon
+            {
+                get
+                {
+                    return type switch
+                    {
+                        Type.Start => _iconAtlas.glyphs["route"],
+                        Type.Waypoint => _iconAtlas.glyphs["route"],
+                        Type.Goal => _iconAtlas.glyphs["route"],
+                        Type.Error => _iconAtlas.glyphs["triangle-alert"],
+                        _ => throw new ArgumentOutOfRangeException()
+                    };
+                }
+            }
+
+            public GlyphData rightIcon
+            {
+                get { return type == Type.Error ? _iconAtlas.glyphs["pencil"] : null; }
+            }
+
+            public string titleText
+            {
+                get { return $"[{timestamp}] {type.ToString()}"; }
+            }
+
+            public string labelText
+            {
+                get { return description; }
+            }
         }
     }
 }
