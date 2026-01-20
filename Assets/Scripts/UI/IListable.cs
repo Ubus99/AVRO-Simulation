@@ -5,23 +5,22 @@ namespace UI
 {
     public interface IListable
     {
-        public ElementData ElementData();
+        public ListElementData ElementData();
     }
 
-    [Serializable]
-    public struct ElementData : IEquatable<ElementData>
+    public abstract class ListElementData : IEquatable<ListElementData>
     {
-        public bool selectable;
+        public bool selectable { get; protected set; }
 
-        public GlyphData leftIcon;
+        public GlyphData leftIcon { get; protected set; }
 
-        public GlyphData rightIcon;
+        public GlyphData rightIcon { get; protected set; }
 
-        public string titleText;
+        public string titleText { get; protected set; }
 
-        public string labelText;
+        public string labelText { get; protected set; }
 
-        public bool Equals(ElementData other)
+        public bool Equals(ListElementData other)
         {
             return selectable == other.selectable &&
                    Equals(leftIcon, other.leftIcon) &&
@@ -32,7 +31,7 @@ namespace UI
 
         public override bool Equals(object obj)
         {
-            return obj is ElementData other && Equals(other);
+            return obj is ListElementData other && Equals(other);
         }
 
         public override int GetHashCode()

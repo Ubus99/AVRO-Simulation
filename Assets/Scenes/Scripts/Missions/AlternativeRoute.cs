@@ -40,9 +40,9 @@ namespace Scenes.Scripts.Missions
             if (vizSettings) vizSettings.OnChanged -= HandleIsDirty;
         }
 
-        public ElementData ElementData()
+        public ListElementData ElementData()
         {
-            var data = new ElementData
+            var data = new AlternativeRouteListElement
             {
                 titleText = name,
                 labelText = informationText,
@@ -69,6 +69,10 @@ namespace Scenes.Scripts.Missions
         {
             if (!selectable) return;
             _material.color = active ? vizSettings.activeColor : vizSettings.inactiveColor;
+        }
+
+        public class AlternativeRouteListElement : ListElementData
+        {
         }
     }
 }

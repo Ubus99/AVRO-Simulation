@@ -18,7 +18,9 @@ namespace Gameplay
 
         public Transform endPoint;
         public AlternativeRouteHelper alternativeRoutes;
-        public List<ElementData> history = new();
+
+        [SerializeField]
+        List<HistoryListElement> _history = new();
 
         protected bool Active;
         public ADSV_AI carInstance { protected set; get; }
@@ -75,9 +77,19 @@ namespace Gameplay
             alternativeRoutes.SelectRoute(route);
         }
 
-        public List<ElementData> GetObstacleData(ADSV_Obstacle obstacle)
+        public IEnumerable<ListElementData> GetObstacleData(ADSV_Obstacle obstacle)
         {
-            return new List<ElementData>();
+            return new List<ListElementData>();
+        }
+
+        public IEnumerable<HistoryListElement> GetHistory()
+        {
+            return _history;
+        }
+
+        [Serializable]
+        public class HistoryListElement : ListElementData
+        {
         }
     }
 }

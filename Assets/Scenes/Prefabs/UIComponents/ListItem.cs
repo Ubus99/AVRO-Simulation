@@ -34,7 +34,7 @@ namespace Scenes.Prefabs.UIComponents
         ColorGuide colors;
 
         [SerializeField]
-        ElementData itemData;
+        ListElementData itemData;
 
         int _lowerLeftPadding;
 
@@ -87,7 +87,7 @@ namespace Scenes.Prefabs.UIComponents
         {
         }
 
-        public void SetData(ElementData data)
+        public void SetData(ListElementData data)
         {
             itemData = data;
             Dirty = true;

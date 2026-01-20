@@ -25,7 +25,7 @@ namespace Scenes.Prefabs.UIComponents
 
         public ListPanel layers;
 
-        readonly Dictionary<ElementData, Action> _actions = new();
+        readonly Dictionary<ListElementData, Action> _actions = new();
 
         Canvas _canvas;
 
@@ -69,7 +69,7 @@ namespace Scenes.Prefabs.UIComponents
 
             videoFeed.SetCamera(_carInstance.povCamera);
             logPanel.OnItemSelected += (rt, ed) => { ShowEditMenu(rt); };
-            logPanel.UpdateList(_currentMission.history);
+            logPanel.UpdateList(_currentMission.GetHistory());
 
             _actions.Clear();
             foreach (var ar in _currentMission.alternativeRoutes.routes)
