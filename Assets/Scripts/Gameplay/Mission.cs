@@ -129,9 +129,9 @@ namespace Gameplay
                 {
                     return type switch
                     {
-                        Type.Start => _iconAtlas.glyphs["route"],
+                        Type.Start => _iconAtlas.glyphs["map-pin"],
                         Type.Waypoint => _iconAtlas.glyphs["route"],
-                        Type.Goal => _iconAtlas.glyphs["route"],
+                        Type.Goal => _iconAtlas.glyphs["map-pin"],
                         Type.Error => _iconAtlas.glyphs["triangle-alert"],
                         _ => throw new ArgumentOutOfRangeException()
                     };
