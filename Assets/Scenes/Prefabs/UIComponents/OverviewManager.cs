@@ -8,7 +8,7 @@ using Utils.Editor;
 using Utils.Objects;
 using Utils.Types;
 
-namespace Scenes.Scripts.UI
+namespace Scenes.Prefabs.UIComponents
 {
     public class OverviewManager : EditorBehavior, ISubScreen
     {

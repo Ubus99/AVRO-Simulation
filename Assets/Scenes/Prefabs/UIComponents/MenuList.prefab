@@ -252,14 +252,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672816351902960394, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1672816351902960394, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1741837464454010970, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1479,7 +1471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Nobi.UiRoundedCorners::Nobi.UiRoundedCorners.ImageWithRoundedCorners
   radius: 16
-  image: {fileID: 7641127190328351503}
+  image: {fileID: 0}
 --- !u!114 &3730509463859561139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1493,14 +1485,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
   m_ShowMaskGraphic: 1
---- !u!114 &7641127190328351503 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6289479391829915344, guid: ecd6de7c89800254b9c2f283e8e55a68, type: 3}
-  m_PrefabInstance: {fileID: 4414095665642139103}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6878146706615948150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image

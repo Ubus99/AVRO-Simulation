@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using car_logic;
 using Gameplay;
-using Scenes.Scripts.UI;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -78,6 +77,11 @@ namespace Scenes.Prefabs.UIComponents
             }
             actionsPanel.OnItemSelected += (rt, ed) => { _actions[ed]?.Invoke(); };
             actionsPanel.UpdateList(_actions.Keys);
+
+            // might need to move if there are ever multiple obstacles
+            var data = _currentMission.GetObstacleData();
+            menuPanel.OnItemSelected += (rt, ed) => { (ed as Mission.ObstacleActionListElement)?.Apply(); };
+            menuPanel.UpdateList(data); 
         }
 
         // footer actions
@@ -98,6 +102,9 @@ namespace Scenes.Prefabs.UIComponents
 
         public void ShowEditMenu(RectTransform origin)
         {
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(menuPanel.rectTransform);
+
             //position panel
             var corners = new Vector3[4];
             origin.GetWorldCorners(corners);
@@ -108,18 +115,9 @@ namespace Scenes.Prefabs.UIComponents
             null,
             out var localPoint);
 
-            if (origin.TryGetComponent(out LayoutGroup layoutGroup))
-            {
-                // var padding = layoutGroup.padding;
-                // topRight += new Vector2(padding.right, padding.top);
-            }
-
             var offset = menuPanel.rectTransform.rect.size / 2;
             offset.y = -offset.y;
             menuPanel.rectTransform.localPosition = localPoint + offset;
-
-            //load data
-            //_currentMission.GetObstacleData();
 
             menuPanel.Show();
         }

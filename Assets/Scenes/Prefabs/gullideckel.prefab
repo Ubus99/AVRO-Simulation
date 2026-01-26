@@ -88,6 +88,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &1715458694106250693
 PrefabInstance:
@@ -177,6 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da26d06f35b4a842a60b596f72c5e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  availableStates: 000000000100000002000000
 --- !u!65 &1401082498872769423
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -42,7 +42,7 @@ namespace Scenes.Prefabs.UIComponents
 
         [SerializeField]
         GlyphData rightIcon;
-        
+
         [SerializeField]
         GlyphData leftIcon;
 
@@ -51,7 +51,7 @@ namespace Scenes.Prefabs.UIComponents
 
         // private
         int _lowerLeftPadding;
-        
+
         void Start()
         {
             RefreshComponents();
@@ -100,6 +100,8 @@ namespace Scenes.Prefabs.UIComponents
             UpdateIconButton(rightButton, rightIcon);
 
             button.interactable = selectable;
+
+            // LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
         }
 
         public void SetData(IListElement data)
@@ -109,8 +111,8 @@ namespace Scenes.Prefabs.UIComponents
             labelText = data.labelText;
             leftIcon = data.leftIcon;
             rightIcon = data.rightIcon;
-            
-            Dirty = true;
+
+            Refresh();
         }
 
         static void UpdateIconButton(LucideLoader button, GlyphData data)

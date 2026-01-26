@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using car_logic;
 using Gameplay;
 using UnityEngine;
+using ZLinq;
 
 namespace Scenes.Scripts.Missions
 {
@@ -10,7 +12,7 @@ namespace Scenes.Scripts.Missions
         [Header("Mission Specifics")]
         public StreetEvent trigger;
 
-        public GameObject obstacle;
+        public AdsObstacle obstacle;
 
         void Update()
         {
@@ -49,6 +51,7 @@ namespace Scenes.Scripts.Missions
             obstacle.gameObject.SetActive(true);
 
             carInstance.OnStateChangeEvent += HandleStateChanged;
+            obstacle.OnStateChangedEvent += HandleObstacleChanged;
         }
 
         protected override void CleanUp()
@@ -57,6 +60,17 @@ namespace Scenes.Scripts.Missions
             obstacle.gameObject.SetActive(false);
 
             if (carInstance) carInstance.OnStateChangeEvent -= HandleStateChanged;
+            obstacle.OnStateChangedEvent -= HandleObstacleChanged;
+        }
+
+        public override IEnumerable<ObstacleActionListElement> GetObstacleData()
+        {
+            return obstacle.GetAvailableStates()
+                .Select(state => new ObstacleActionListElement(state, obstacle)).ToList();
+        }
+
+        void HandleObstacleChanged(AdsObstacle adsObstacle, AdsObstacle.State state)
+        {
         }
     }
 }

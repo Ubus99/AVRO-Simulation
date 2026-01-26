@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Scenes.Scripts.UI;
 using UI;
 using UnityEngine;
 using Utils.Types;
@@ -17,6 +15,11 @@ namespace Scenes.Prefabs.UIComponents
 
         readonly List<ISubScreen> _subScreens = new();
 
+        void Start()
+        {
+            ActivateScreen(overviewManager);
+        }
+
         protected override void HandleIsDirty()
         {
             RefreshComponents();
@@ -25,11 +28,6 @@ namespace Scenes.Prefabs.UIComponents
                 ActivateScreen(povManager);
                 povManager.LoadMission(car);
             });
-        }
-
-        void Start()
-        {
-            ActivateScreen(overviewManager);
         }
 
         protected override void RefreshComponents()

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using car_logic;
 using Gameplay;
 using Scenes.Prefabs.UIComponents;
-using Scenes.Scripts.UI;
 using UnityEngine;
 using Utils.Objects;
 using ZLinq;
@@ -39,7 +38,10 @@ namespace Scenes.Scripts
                 Destroy(gameObject);
             }
 
-            Logger.instance.Init();
+            if (Application.isPlaying)
+            {
+                Logger.instance.Init();
+            }
 
             DontDestroyOnLoad(gameObject);
             ServiceLocator.instance.TryRegister<GameManager>(this);

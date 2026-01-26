@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UI;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils.Objects;
 
 namespace Scenes.Prefabs.UIComponents
@@ -64,7 +65,6 @@ namespace Scenes.Prefabs.UIComponents
                 var li = Instantiate(itemPrefab, body.transform);
                 li.name = $"Item_{ed.titleText}";
                 li.GetButton().onClick.AddListener(() => OnItemSelected?.Invoke(li.transform as RectTransform, ed));
-                var go = li.gameObject;
 
                 li.SetData(ed);
             }

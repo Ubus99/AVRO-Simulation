@@ -78,10 +78,7 @@ namespace Gameplay
             alternativeRoutes.SelectRoute(route);
         }
 
-        public IEnumerable<IListElement> GetObstacleData(ADSV_Obstacle obstacle)
-        {
-            return new List<IListElement>();
-        }
+        public abstract IEnumerable<ObstacleActionListElement> GetObstacleData();
 
         public IEnumerable<HistoryListElement> GetHistory()
         {
@@ -151,6 +148,49 @@ namespace Gameplay
             public string labelText
             {
                 get { return description; }
+            }
+        }
+
+        [Serializable]
+        public class ObstacleActionListElement : IListElement
+        {
+            AdsObstacle _obstacle;
+            AdsObstacle.State _state;
+
+            public ObstacleActionListElement(AdsObstacle.State state, AdsObstacle obstacle)
+            {
+                _obstacle = obstacle;
+                _state = state;
+            }
+
+            public bool selectable
+            {
+                get { return true; }
+            }
+
+            public GlyphData leftIcon
+            {
+                get { return null; }
+            }
+
+            public GlyphData rightIcon
+            {
+                get { return null; }
+            }
+
+            public string titleText
+            {
+                get { return _state.ToString(); }
+            }
+
+            public string labelText
+            {
+                get { return ""; }
+            }
+
+            public void Apply()
+            {
+                _obstacle.SetState(_state);
             }
         }
     }
