@@ -105,8 +105,6 @@ namespace Gameplay
             [SerializeField]
             string description;
 
-            IconAtlas _iconAtlas = IconAtlas.instance;
-
             public bool selectable
             {
                 get
@@ -124,12 +122,13 @@ namespace Gameplay
             {
                 get
                 {
+                    var atlas = IconAtlas.instance;
                     return type switch
                     {
-                        Type.Start => _iconAtlas.glyphs["map-pin"],
-                        Type.Waypoint => _iconAtlas.glyphs["route"],
-                        Type.Goal => _iconAtlas.glyphs["map-pin"],
-                        Type.Error => _iconAtlas.glyphs["triangle-alert"],
+                        Type.Start => atlas.glyphs["map-pin"],
+                        Type.Waypoint => atlas.glyphs["route"],
+                        Type.Goal => atlas.glyphs["map-pin"],
+                        Type.Error => atlas.glyphs["triangle-alert"],
                         _ => throw new ArgumentOutOfRangeException()
                     };
                 }
@@ -137,7 +136,11 @@ namespace Gameplay
 
             public GlyphData rightIcon
             {
-                get { return type == Type.Error ? _iconAtlas.glyphs["pencil"] : null; }
+                get
+                {
+                    var atlas = IconAtlas.instance;
+                    return type == Type.Error ? atlas.glyphs["pencil"] : null;
+                }
             }
 
             public string titleText
