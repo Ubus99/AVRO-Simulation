@@ -1,0 +1,18 @@
+﻿@startuml
+
+!include ./Scripts/Missions.puml
+!include ./UI/CarUI.puml
+
+class GameManager{
+    - Mission[] Missions
+    - CarView carView
+    
+    - void LoadMissions()
+}
+
+' relations
+
+GameManager --> Mission
+GameManager --> carView
+
+@enduml

@@ -1,0 +1,19 @@
+﻿@startuml
+
+class Mission {
+    - MissionState[] states
+    
+    - static IListData StateToList(MissionState state)
+}
+
+class MissionState {
+   + Texture mainImage
+   + String Title
+   + String description
+}
+
+' relations
+
+Mission --> MissionState
+
+@enduml

@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using Mono.Collections.Generic;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Utils.Objects
 {

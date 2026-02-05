@@ -1,0 +1,19 @@
+﻿@startuml
+
+class ListItemData{
+
+}
+
+class ListItemController {
+    
+}
+
+class ListController {
+    
+}
+
+class CarView {
+    ListController listA
+}
+
+@enduml

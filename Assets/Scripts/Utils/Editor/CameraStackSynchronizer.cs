@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Utils.Types;
@@ -33,7 +32,7 @@ namespace Utils.Editor
                 cam.transform.localScale = Vector3.one;
 
                 cam.useOcclusionCulling = _primaryCamera.useOcclusionCulling;
-                
+
                 cam.targetTexture = _primaryCamera.targetTexture;
                 cam.rect = _primaryCamera.rect;
                 cam.targetDisplay = _primaryCamera.targetDisplay;
