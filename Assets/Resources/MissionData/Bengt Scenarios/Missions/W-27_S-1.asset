@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.MissionSo
   map: {fileID: 2800000, guid: 7e1b5edec3eddfa4d9e3c591705623e2, type: 3}
   route: {fileID: 2800000, guid: deaf9ee6e5b0c844f91d49e0109b7073, type: 3}
+  correctSubState: 0
   subStates:
   - mainTexture: {fileID: 2800000, guid: b2655eba0e741bb4da2ae441f926565d, type: 3}
     actionName: 0
-    actionDescription: 0
+    actionDescription: 4
   - mainTexture: {fileID: 2800000, guid: 9dc5fc4ffac465042a60f963cd5c774f, type: 3}
-    actionName: 0
-    actionDescription: 0
+    actionName: 2
+    actionDescription: 3

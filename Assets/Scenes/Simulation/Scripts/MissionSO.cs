@@ -31,8 +31,7 @@ namespace Scenes.Simulation.Scripts
             Reroute = 4,
             WaitForObstacleToClear = 5,
             PrioritizeOriginalRoadSignage = 6,
-            PrioritizeCurrentRoadSignage = 7,
-            
+            PrioritizeCurrentRoadSignage = 7
         }
 
         [SerializeField]
@@ -40,7 +39,10 @@ namespace Scenes.Simulation.Scripts
 
         [SerializeField]
         Texture2D route;
-
+        
+        [SerializeField]
+        int correctSubState;
+        
         [SerializeField]
         List<MissionSubState> subStates = new();
 

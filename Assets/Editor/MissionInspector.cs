@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Image = UnityEngine.UIElements.Image;
 
 namespace Editor
 {
@@ -10,23 +11,53 @@ namespace Editor
     [CanEditMultipleObjects]
     public class MissionInspector : UnityEditor.Editor
     {
-        public override VisualElement CreateInspectorGUI()
+        static void SubStateSection(VisualElement root, SerializedProperty correctStateProperty,
+            SerializedProperty listProperty)
         {
-            var root = new VisualElement();
+            var correctStateField = new PropertyField();
+            correctStateField.BindProperty(correctStateProperty);
+            root.Add(correctStateField);
 
-            var mapImageProperty = serializedObject.FindProperty("map");
-            var routeImageProperty = serializedObject.FindProperty("route");
-            var subStateListProperty = serializedObject.FindProperty("subStates");
+            root.Add(new ListView
+            {
+                showFoldoutHeader = true,
+                headerTitle = "Sub-States",
+                showAddRemoveFooter = false,
+                reorderable = false,
+                virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight,
 
-            var mapImageField = new ObjectField
+                // how many elements
+                itemsSource = new int[listProperty.arraySize],
+
+                // create row
+                makeItem = () => new PropertyField(),
+
+                // bind row
+                bindItem = (e, i) => { ((PropertyField)e).BindProperty(listProperty.GetArrayElementAtIndex(i)); }
+            });
+        }
+
+        static void UpdateImage(Image image, GeometryChangedEvent evt)
+        {
+            if (image.image is not Texture2D { width: > 0 } tex)
+                return;
+
+            var targetWidth = evt.newRect.width; // available width
+            var scaledHeight = targetWidth * ((float)tex.height / tex.width);
+            image.style.height = new StyleLength(new Length(scaledHeight, LengthUnit.Pixel));
+        }
+
+        static void AssignableImageSection(VisualElement root, SerializedProperty imageProperty)
+        {
+            var imageField = new ObjectField
             {
                 objectType = typeof(Texture2D),
                 allowSceneObjects = false
             };
-            mapImageField.BindProperty(mapImageProperty);
+            imageField.BindProperty(imageProperty);
 
             // draw map
-            var mapImage = new Image
+            var image = new Image
             {
                 scaleMode = ScaleMode.ScaleToFit,
                 style =
@@ -36,12 +67,22 @@ namespace Editor
                     maxHeight = 256,
                     flexShrink = 0
                 },
-                image = mapImageProperty.objectReferenceValue as Texture2D
+                image = imageProperty.objectReferenceValue as Texture2D
             };
 
-            mapImageField.RegisterValueChangedCallback(_ =>
-                mapImage.image = mapImageProperty.objectReferenceValue as Texture2D);
+            imageField.RegisterValueChangedCallback(_ =>
+                image.image = imageProperty.objectReferenceValue as Texture2D);
 
+            root.RegisterCallback<GeometryChangedEvent, Image>((evt, img) =>
+                UpdateImage(img, evt),
+            image);
+
+            root.Add(imageField);
+            root.Add(image);
+        }
+
+        static void ImageSection(VisualElement root, SerializedProperty imageProperty)
+        {
             // draw route
             var routeImage = new Image
             {
@@ -53,52 +94,28 @@ namespace Editor
                     maxHeight = 128,
                     flexShrink = 0
                 },
-                image = routeImageProperty.objectReferenceValue as Texture2D
+                image = imageProperty.objectReferenceValue as Texture2D
             };
 
-            // When the container gets a layout width, calculate pixel height to preserve aspect ratio.
-            root.RegisterCallback<GeometryChangedEvent>(evt =>
-            {
+            root.RegisterCallback<GeometryChangedEvent, Image>((evt, image) =>
+                UpdateImage(image, evt),
+            routeImage);
 
-                UpdateImage(mapImage);
-                UpdateImage(routeImage);
-                return;
-
-                void UpdateImage(Image image)
-                {
-                    if (image.image is not Texture2D { width: > 0 } tex)
-                        return;
-
-                    var targetWidth = evt.newRect.width; // available width
-                    var scaledHeight = targetWidth * ((float)tex.height / tex.width);
-                    image.style.height = new StyleLength(new Length(scaledHeight, LengthUnit.Pixel));
-                }
-            });
-
-            root.Add(mapImageField);
-            root.Add(mapImage);
             root.Add(routeImage);
+        }
 
-            root.Add(new ListView
-            {
-                showFoldoutHeader = true,
-                headerTitle = "Substates",
-                showAddRemoveFooter = false,
-                reorderable = false,
-                virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight,
+        public override VisualElement CreateInspectorGUI()
+        {
+            var root = new VisualElement();
 
-                // how many elements
-                itemsSource = new int[subStateListProperty.arraySize],
+            var mapImageProperty = serializedObject.FindProperty("map");
+            var routeImageProperty = serializedObject.FindProperty("route");
+            var correctStateProperty = serializedObject.FindProperty("correctSubState");
+            var subStateListProperty = serializedObject.FindProperty("subStates");
 
-                // create row
-                makeItem = () => new PropertyField(),
-
-                // bind row
-                bindItem = (e, i) =>
-                {
-                    ((PropertyField)e).BindProperty(subStateListProperty.GetArrayElementAtIndex(i));
-                }
-            });
+            AssignableImageSection(root, mapImageProperty);
+            AssignableImageSection(root, routeImageProperty);
+            SubStateSection(root, correctStateProperty, subStateListProperty);
 
             root.Bind(serializedObject);
 
