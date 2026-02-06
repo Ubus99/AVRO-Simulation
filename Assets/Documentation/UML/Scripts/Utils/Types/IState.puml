@@ -1,0 +1,7 @@
+@startuml
+interface IState {
+    +  <<event>> OnExit : EventHandler<IState> 
+    +  <<event>> OnEntry : EventHandler 
+    +  <<event>> OnDo : EventHandler 
+}
+@enduml

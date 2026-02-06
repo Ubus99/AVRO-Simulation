@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6ae67ff2074af3b6bcca59833fba76, type: 3}
+  m_Name: W-1_S-1
+  m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.MissionSo
+  map: {fileID: 2800000, guid: 7aa0f3ba99b75864196201132e1a4ec2, type: 3}
+  route: {fileID: 2800000, guid: 1c7148c9f20dab4499e2032dbb1caa23, type: 3}
+  subStates:
+  - mainTexture: {fileID: 2800000, guid: 11974feba3a64a84eb69fba7ea56e2c3, type: 3}
+    actionName: Turn Left
+    actionDescription: 
+  - mainTexture: {fileID: 2800000, guid: 60b67d219bc52ba448f67cc624a569ea, type: 3}
+    actionName: Go Straight
+    actionDescription: 
+  - mainTexture: {fileID: 2800000, guid: 1668cba6065ad324c97cb5a475678089, type: 3}
+    actionName: Turn Right
+    actionDescription: 

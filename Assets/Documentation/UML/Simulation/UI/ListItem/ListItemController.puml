@@ -1,0 +1,10 @@
+@startuml
+class ListItemController {
+    + LoadVisualElement(visualElement:VisualElement) : void
+    + SetData(data:ListItemData) : void
+}
+ListItemController --> "_leftImage" Image
+ListItemController --> "_mainText" Label
+ListItemController --> "_rightImage" Image
+ListItemController --> "_supportText" Label
+@enduml

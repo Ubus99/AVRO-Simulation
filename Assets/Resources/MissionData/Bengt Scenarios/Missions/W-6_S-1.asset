@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6ae67ff2074af3b6bcca59833fba76, type: 3}
+  m_Name: W-6_S-1
+  m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.MissionSo
+  map: {fileID: 2800000, guid: 7aa0f3ba99b75864196201132e1a4ec2, type: 3}
+  route: {fileID: 2800000, guid: 16e5b946781899e4182a4d5d1747bc35, type: 3}
+  subStates:
+  - mainTexture: {fileID: 2800000, guid: 636c3549c96a56340aacc8da6c05ac3e, type: 3}
+    actionName: Take left passage
+    actionDescription: 
+  - mainTexture: {fileID: 2800000, guid: 90244693623d6004e867e99fa648e376, type: 3}
+    actionName: Take right passage
+    actionDescription: 

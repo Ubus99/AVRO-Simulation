@@ -1,0 +1,14 @@
+﻿@startuml
+hide empty members
+remove MonoBehaviour
+remove ScriptableObject
+remove VisualTreeAsset
+hide interface
+
+!include .\\Scripts\MissionSO.puml
+!include .\\Scripts\NewGameManager.puml
+!include .\\UI\CarView.puml
+!include .\\UI\ListController.puml
+!include .\\UI\ListItem\ListItemController.puml
+!include .\\UI\ListItem\ListItemData.puml
+@enduml

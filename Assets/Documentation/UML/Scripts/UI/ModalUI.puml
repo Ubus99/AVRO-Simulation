@@ -1,0 +1,17 @@
+@startuml
+class ModalUI {
+    + secondsShown : float = 5
+    - _hovering : bool
+    - _timestamp : float
+    - Update() : void
+    - OnEnable() : void
+    + OnPointerEnter(eventData:PointerEventData) : void
+    + OnPointerExit(eventData:PointerEventData) : void
+    + Show() : void
+    + Hide() : void
+}
+MonoBehaviour <|-- ModalUI
+IPointerExitHandler <|-- ModalUI
+IPointerEnterHandler <|-- ModalUI
+ISubScreen <|-- ModalUI
+@enduml

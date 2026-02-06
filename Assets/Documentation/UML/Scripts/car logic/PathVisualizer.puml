@@ -1,0 +1,6 @@
+@startuml
+class PathVisualizer {
+    + SetPath(path:List<Vector3>) : void
+}
+MonoBehaviour <|-- PathVisualizer
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class "AbstractSingleton`1"<T> {
+    + {static} instance : T <<get>>
+}
+class "Lazy`1"<T> {
+}
+"AbstractSingleton`1" o-> "Instance<T>" "Lazy`1"
+@enduml

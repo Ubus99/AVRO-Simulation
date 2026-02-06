@@ -1,0 +1,15 @@
+@startuml
+class IconAtlas {
+    - Awake() : void
+    - OnValidate() : void
+}
+class "ScriptableSingleton`1"<T> {
+}
+class "List`1"<T> {
+}
+class "SerializedDictionary`2"<T1,T2> {
+}
+"ScriptableSingleton`1" "<IconAtlas>" <|-- IconAtlas
+IconAtlas o-> "glyphsList<GlyphData>" "List`1"
+IconAtlas o-> "glyphs<string,GlyphData>" "SerializedDictionary`2"
+@enduml

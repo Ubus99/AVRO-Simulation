@@ -1,0 +1,10 @@
+@startuml
+class StreetEvent {
+    - OnDrawGizmos() : void
+    - OnTriggerEnter(other:Collider) : void
+    - OnValidate() : void
+}
+MonoBehaviour <|-- StreetEvent
+StreetEvent --> "parent" Mission
+StreetEvent --> "_trigger" Collider
+@enduml

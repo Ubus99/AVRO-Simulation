@@ -1,0 +1,8 @@
+@startuml
+class "WeightedPool`1"<T> {
+    + DrawRandom() : T
+}
+class "SerializedDictionary`2"<T1,T2> {
+}
+"SerializedDictionary`2" "<T,float>" <|-- "WeightedPool`1"
+@enduml

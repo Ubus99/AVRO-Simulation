@@ -1,0 +1,16 @@
+@startuml
+class NavMeshFollower {
+    - Awake() : void
+    - Update() : void
+    - FixedUpdate() : void
+    - OnDrawGizmos() : void
+    + <<override>> GetTargetSpeed() : float
+    + GetBaseSpeed() : float
+    + <<override>> SetTargetSpeed(speed:float) : void
+    + <<override>> SetTargetLocation(position:Vector3) : void
+    + <<override>> Halt() : void
+}
+AbstractFollower <|-- NavMeshFollower
+NavMeshFollower --> "_agent" NavMeshAgent
+NavMeshFollower --> "_pathVisualizer" PathVisualizer
+@enduml

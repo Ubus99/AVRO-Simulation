@@ -1,0 +1,11 @@
+@startuml
+class StreetManager {
+    - Awake() : void
+    - Start() : void
+    + GetClosestSpline(worldPoint:Vector3) : (SplineContainer container, float progress)
+}
+class "List`1"<T> {
+}
+MonoBehaviour <|-- StreetManager
+StreetManager o-> "_splineContainers<SplineContainer>" "List`1"
+@enduml

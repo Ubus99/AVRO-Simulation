@@ -1,0 +1,17 @@
+@startuml
+class DebugCharacterController {
+    + speed : float = 1
+    - Start() : void
+    - Update() : void
+    + OnMove(context:InputAction.CallbackContext) : void
+    + OnLook(context:InputAction.CallbackContext) : void
+    + OnFire(context:InputAction.CallbackContext) : void
+}
+MonoBehaviour <|-- DebugCharacterController
+DebugCharacterController o-> "lookSpeed" Vector2
+DebugCharacterController --> "_camera" Camera
+DebugCharacterController --> "_characterController" CharacterController
+DebugCharacterController --> "_mouseDelta" Vector2
+DebugCharacterController --> "_movementDirection" Vector3
+DebugCharacterController --> "_playerInput" PlayerInput
+@enduml

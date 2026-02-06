@@ -1,0 +1,13 @@
+@startuml
+interface IListElement {
+    + selectable : bool <<get>>
+    + titleText : string <<get>>
+    + labelText : string <<get>>
+    Equals(other:IListElement) : bool
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<IListElement>" <|-- IListElement
+IListElement --> "leftIcon" GlyphData
+IListElement --> "rightIcon" GlyphData
+@enduml

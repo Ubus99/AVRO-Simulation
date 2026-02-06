@@ -1,0 +1,5 @@
+@startuml
+class GUIUtils <<static>> {
+    + {static} PlaceAt(element:RectTransform, screenPoint:Vector2, canvas:Canvas, parent:RectTransform, clampToPanel:bool) : void
+}
+@enduml

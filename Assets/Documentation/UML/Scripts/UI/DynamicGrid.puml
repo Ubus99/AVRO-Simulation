@@ -1,0 +1,15 @@
+@startuml
+class DynamicGrid {
+    - UpdateGrid() : void
+    {static} - FactorPairs(n:int) : List<Vector2Int>
+    + <<override>> CalculateLayoutInputHorizontal() : void
+    + <<override>> CalculateLayoutInputVertical() : void
+    + <<override>> SetLayoutHorizontal() : void
+    + <<override>> SetLayoutVertical() : void
+    - SetChildSize() : void
+}
+LayoutGroup <|-- DynamicGrid
+DynamicGrid o-> "spacing" Vector2Int
+DynamicGrid --> "_grid" Vector2Int
+DynamicGrid o-> "cellSize" Vector2Int
+@enduml

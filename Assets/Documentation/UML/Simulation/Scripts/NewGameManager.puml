@@ -1,0 +1,10 @@
+@startuml
+class NewGameManager {
+    - Start() : void
+    - Update() : void
+}
+class "List`1"<T> {
+}
+MonoBehaviour <|-- NewGameManager
+NewGameManager --> "missions<object>" "List`1"
+@enduml

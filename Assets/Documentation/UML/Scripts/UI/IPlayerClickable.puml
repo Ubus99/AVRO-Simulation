@@ -1,0 +1,5 @@
+@startuml
+interface IPlayerClickable {
+    + ClickOn(source:object, position:Vector2) : void
+}
+@enduml

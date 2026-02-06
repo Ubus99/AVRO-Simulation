@@ -1,0 +1,13 @@
+@startuml
+class ColorGuide {
+    # <<override>> HandleChanged() : void
+}
+BetterScriptableObject <|-- ColorGuide
+ColorGuide o-> "textColor" Color
+ColorGuide o-> "layer1Color" Color
+ColorGuide o-> "layer2Color" Color
+ColorGuide o-> "layer3Color" Color
+ColorGuide o-> "selectedColor" Color
+ColorGuide o-> "hoverColor" Color
+ColorGuide o-> "disabledColor" Color
+@enduml

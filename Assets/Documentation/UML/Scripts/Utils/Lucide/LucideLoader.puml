@@ -1,0 +1,14 @@
+@startuml
+class LucideLoader {
+    - Awake() : void
+    - OnDisable() : void
+    # <<override>> HandleIsDirty() : void
+    # <<override>> RefreshComponents() : void
+    + UpdateComponents() : void
+}
+EditorBehavior <|-- LucideLoader
+LucideLoader --> "glyph" GlyphData
+LucideLoader o-> "glyphColor" Color
+LucideLoader --> "_button" Button
+LucideLoader --> "_text" TextMeshProUGUI
+@enduml

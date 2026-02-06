@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
+         editor-extension-mode="False">
+    <Style src="project://database/Assets/Resources/MainStyle.uss?fileID=7433441132597879392&amp;guid=7bc33ff846e8b9241a0405236116a2bc&amp;type=3#MainStyle"/>
+    <Style src="project://database/Assets/Scenes/Simulation/UI/ListItem/ListItem.uss?fileID=7433441132597879392&amp;guid=f8fc6d7cfcd81a2419b95d0830db471d&amp;type=3#ListItem"/>
+    <ui:VisualElement name="CarView" style="flex-grow: 1; height: 64px;">
+        <ui:VisualElement name="Header" style="flex-grow: 0; height: 64px;"/>
+        <ui:VisualElement name="Body"
+                          style="flex-grow: 1; flex-direction: row; align-items: stretch; align-self: auto; justify-content: space-between;">
+            <ui:ListView
+                    item-template="project://database/Assets/Scenes/Simulation/UI/ListItem/ListItem.uxml?fileID=9197481963319205126&amp;guid=fa649713d186e9d4dba59988616d0ed8&amp;type=3#ListItem"
+                    binding-source-selection-mode="Manual"
+                    data-source="project://database/Assets/Resources/missionData/samples/sample%20list%20Item.asset?fileID=11400000&amp;guid=e11062d6c2230634dadc89eb972bd4bb&amp;type=2#sample list Item"
+                    data-source-type="Scenes.Simulation.UI.ListItem.ListItemData, Assembly-CSharp" style="width: 25%;"/>
+            <ui:VisualElement name="Content"
+                              style="flex-grow: 1; align-self: stretch; background-color: rgb(255, 0, 226);"/>
+            <ui:ListView name="actions-list" style="width: 25%;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="Footer" style="flex-grow: 0; height: 64px;"/>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,15 @@
+@startuml
+class SplineAbstractFollower {
+    - Awake() : void
+    - Update() : void
+    - OnDrawGizmos() : void
+    + <<override>> GetTargetSpeed() : float
+    + GetBaseSpeed() : float
+    + <<override>> SetTargetSpeed(speed:float) : void
+    + <<override>> SetTargetLocation(position:Vector3) : void
+    + <<override>> Halt() : void
+}
+AbstractFollower <|-- SplineAbstractFollower
+SplineAbstractFollower --> "_agent" CarAI
+SplineAbstractFollower --> "_pathVisualizer" PathVisualizer
+@enduml

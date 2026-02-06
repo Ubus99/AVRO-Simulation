@@ -1,0 +1,13 @@
+@startuml
+class PrefabGrid {
+    + gridSize : float = 100
+    + dirty : bool
+    - Update() : void
+}
+class "List`1"<T> {
+}
+MonoBehaviour <|-- PrefabGrid
+PrefabGrid --> "scenePrefab" GameObject
+PrefabGrid --> "grid" Vector2Int
+PrefabGrid o-> "_instances<GameObject>" "List`1"
+@enduml

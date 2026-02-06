@@ -1,0 +1,22 @@
+@startuml
+class StreetNet {
+    - _dirty : bool
+    - Start() : void
+    - Update() : void
+    - OnValidate() : void
+    - UpdateStreets() : void
+    - AddBranch(name:string, knot1:BezierKnot, knot2:BezierKnot) : SplineContainer
+    - AddTrigger(pos:Vector3, a:Street.Address, spline:SplineContainer) : void
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+MonoBehaviour <|-- StreetNet
+StreetNet --> "streets<Street>" "List`1"
+StreetNet --> "junctions" GameObject
+StreetNet --> "nodes" GameObject
+StreetNet --> "triggerPrefab" JunctionTrigger
+StreetNet --> "streetVizPrefab" GameObject
+StreetNet o-> "_junctionTriggers<Street.Address,JunctionTrigger>" "Dictionary`2"
+@enduml

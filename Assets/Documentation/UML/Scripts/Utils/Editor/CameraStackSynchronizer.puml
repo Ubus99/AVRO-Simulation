@@ -1,0 +1,13 @@
+@startuml
+class CameraStackSynchronizer {
+    - Awake() : void
+    + ForceRefresh() : void
+    # <<override>> HandleIsDirty() : void
+    # <<override>> RefreshComponents() : void
+}
+class "List`1"<T> {
+}
+EditorBehavior <|-- CameraStackSynchronizer
+CameraStackSynchronizer o-> "_secondaryCameras<Camera>" "List`1"
+CameraStackSynchronizer --> "_primaryCamera" Camera
+@enduml

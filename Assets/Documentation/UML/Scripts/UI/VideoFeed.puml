@@ -1,0 +1,32 @@
+@startuml
+class VideoFeed {
+    + sphereCastRadius : float = 0.2f
+    - _dirty : bool
+    # <<override>> Awake() : void
+    - Update() : void
+    # <<override>> OnRectTransformDimensionsChange() : void
+    # <<override>> OnValidate() : void
+    + OnPointerClick(eventData:PointerEventData) : void
+    + Show() : void
+    + Hide() : void
+    + <<override>> Rebuild(executing:CanvasUpdate) : void
+    + <<override>> LayoutComplete() : void
+    + <<override>> GraphicUpdateComplete() : void
+    - UpdateCamera() : void
+    {static} - ToScreenRect(rectTransform:RectTransform, canvas:Canvas, cam:Camera) : Rect
+    + SetCamera(cam:Camera) : void
+}
+class "UnityEvent`2"<T1,T2> {
+}
+class "UnityEvent`1"<T> {
+}
+Graphic <|-- VideoFeed
+IPointerClickHandler <|-- VideoFeed
+ISubScreen <|-- VideoFeed
+VideoFeed --> "feedCamera" Camera
+VideoFeed --> "onClick<IPlayerClickable,Vector2>" "UnityEvent`2"
+VideoFeed --> "onMiss<Vector2>" "UnityEvent`1"
+VideoFeed --> "_baseColor" Color
+VideoFeed --> "_canvas" Canvas
+VideoFeed --> "_rectTransform" RectTransform
+@enduml

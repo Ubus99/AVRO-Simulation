@@ -1,0 +1,5 @@
+@startuml
+class SplineHelper <<static>> {
+    + {static} GetClosestPoint(splineContainer:SplineContainer, worldPoint:Vector3, closestPoint:Vector3, distance:float, t:float) : void
+}
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+class MissionSo {
+}
+class "List`1"<T> {
+}
+struct MissionSubState {
+    + actionName : string
+    + actionDescription : string
+    + ToListData() : ListItemData
+}
+ScriptableObject <|-- MissionSo
+MissionSo o-> "subStates<MissionSubState>" "List`1"
+MissionSo --> "options<ListItemData>" "List`1"
+MissionSo +-- MissionSubState
+MissionSubState --> "leftIcon" VectorImage
+MissionSubState --> "rightIcon" VectorImage
+MissionSubState --> "mainTexture" Texture2D
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+class ListController {
+    + ListController()
+    + InitializeList(root:VisualElement, itemTemplate:VisualTreeAsset) : void
+    - FillList() : void
+    - OnItemSelected(enumerable:IEnumerable<object>) : void
+}
+class "List`1"<T> {
+}
+ListController o-> "_listData<ListItemData>" "List`1"
+ListController --> "_itemTemplate" VisualTreeAsset
+ListController --> "_listView" ListView
+@enduml
