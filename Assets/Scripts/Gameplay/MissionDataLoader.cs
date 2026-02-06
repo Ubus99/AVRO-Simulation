@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 namespace Gameplay
 {
-    [CreateAssetMenu]
+    [FilePath("Resources/MissionData/DataLoader.dat", FilePathAttribute.Location.PreferencesFolder)]
     public class MissionDataLoader : ScriptableSingleton<MissionDataLoader>
     {
         [SerializeField]
@@ -19,6 +19,11 @@ namespace Gameplay
         public SerializedDictionary<string, Texture2D> textures
         {
             get { return _textures; }
+        }
+
+        void OnDisable()
+        {
+            Save(true);
         }
 
         void OnValidate()
@@ -98,9 +103,9 @@ namespace Gameplay
             }
 
             // Create missing missions
-            const string folder = "Assets/Resources/MissionData/Missions";
+            const string folder = "Assets/Resources/MissionData/Bengt Scenarios/Missions";
             if (!AssetDatabase.IsValidFolder(folder))
-                AssetDatabase.CreateFolder("Assets/Resources/MissionData", "Missions");
+                AssetDatabase.CreateFolder("Assets/Resources/Bengt Scenarios/MissionData", "Missions");
 
             foreach (var id in expectedMissionIds)
             {
@@ -114,7 +119,7 @@ namespace Gameplay
                 missions.Add(mso);
             }
 
-            missions.Sort();
+            missions.Sort((mso1, mso2) => string.Compare(mso1.name, mso2.name, StringComparison.Ordinal));
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

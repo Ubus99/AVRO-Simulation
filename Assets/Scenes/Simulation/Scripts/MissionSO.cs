@@ -4,7 +4,6 @@ using System.Linq;
 using Gameplay;
 using Scenes.Simulation.UI.ListItem;
 using UnityEngine;
-using UnityEngine.UIElements;
 using ZLinq;
 
 namespace Scenes.Simulation.Scripts
@@ -12,6 +11,30 @@ namespace Scenes.Simulation.Scripts
     [CreateAssetMenu]
     public class MissionSo : ScriptableObject
     {
+        public enum AdsAction
+        {
+            GoStraight = 0,
+            GoLeft = 1,
+            GoRight = 2,
+            TurnLeft = 3,
+            TurnRight = 4,
+            PassToTheRight = 5,
+            PassToTheLeft = 6
+        }
+
+        public enum OddChange
+        {
+            None = 0,
+            AllowUsingOppositeLane = 1,
+            IgnoreSignage = 2,
+            DeclarePlannedRouteValid = 3,
+            Reroute = 4,
+            WaitForObstacleToClear = 5,
+            PrioritizeOriginalRoadSignage = 6,
+            PrioritizeCurrentRoadSignage = 7,
+            
+        }
+
         [SerializeField]
         Texture2D map;
 
@@ -34,7 +57,8 @@ namespace Scenes.Simulation.Scripts
                 Debug.LogWarning("MissionDataLoader.instance is null");
                 return;
             }
-            var images = loader.textures.Where(kvp => kvp.Key.StartsWith(name))
+            var images = loader.textures
+                .Where(kvp => kvp.Key.StartsWith(name)) // belongs to the same mission
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             SyncLists(images);
@@ -45,25 +69,28 @@ namespace Scenes.Simulation.Scripts
             if (images == null) throw new ArgumentNullException(nameof(images));
             if (subStates == null) throw new ArgumentNullException(nameof(subStates));
 
+            if (images.Count == 0)
+                subStates.Clear();
+
+            // iterate all exising states
             for (var i = subStates.Count - 1; i >= 0; i--)
             {
-                var entry = subStates[i];
-                var id = entry.id ?? string.Empty;
+                var ss = subStates[i];
 
-                if (images.TryGetValue(id, out var texture))
+                // no matching image
+                if (images.All(kvp => kvp.Value != ss.mainTexture))
                 {
-                    // Set the struct's image by replacing the list element
-                    entry.mainTexture = texture;
-                    entry.id = name;
-                    subStates[i] = entry;
-
-                    // mark sprite consumed so we can add only remaining sprites later
-                    images.Remove(id);
-                }
-                else
-                {
-                    // No matching sprite: remove this struct
                     subStates.RemoveAt(i);
+                }
+            }
+
+            for (var i = images.Count - 1; i >= 0; i--)
+            {
+                var kvp = images.ElementAt(i);
+
+                if (subStates.Any(state => state.mainTexture == kvp.Value))
+                {
+                    images.Remove(kvp.Key);
                 }
             }
 
@@ -76,7 +103,7 @@ namespace Scenes.Simulation.Scripts
                 }
                 else
                 {
-                    subStates.Add(new MissionSubState { id = name, mainTexture = kv.Value });
+                    subStates.Add(new MissionSubState { mainTexture = kv.Value });
                 }
             }
         }
@@ -84,21 +111,14 @@ namespace Scenes.Simulation.Scripts
         [Serializable]
         public struct MissionSubState
         {
-            public string id;
-
-            public VectorImage leftIcon;
-            public VectorImage rightIcon;
-
             public Texture2D mainTexture;
-            public string actionName;
-            public string actionDescription;
+            public AdsAction actionName;
+            public OddChange actionDescription;
 
             public ListItemData ToListData()
             {
                 return new ListItemData
                 {
-                    LeftImage = leftIcon,
-                    RightImage = rightIcon,
                     MainText = "",
                     SupportText = ""
                 };
