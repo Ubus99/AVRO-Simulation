@@ -4,7 +4,7 @@ using System.Linq;
 using Gameplay;
 using Scenes.Simulation.UI.ListItem;
 using UnityEngine;
-using ZLinq;
+using UnityEngine.UIElements;
 
 namespace Scenes.Simulation.Scripts
 {
@@ -39,16 +39,16 @@ namespace Scenes.Simulation.Scripts
 
         [SerializeField]
         Texture2D route;
-        
+
         [SerializeField]
         int correctSubState;
-        
+
         [SerializeField]
         List<MissionSubState> subStates = new();
 
-        public List<ListItemData> options
+        public List<MissionSubState> options
         {
-            get { return Enumerable.ToList(subStates.Select(mss => mss.ToListData()).ToList()); }
+            get { return subStates; }
         }
 
         void OnValidate()
@@ -111,19 +111,55 @@ namespace Scenes.Simulation.Scripts
         }
 
         [Serializable]
-        public struct MissionSubState
+        public struct MissionSubState : IListItemData
         {
             public Texture2D mainTexture;
             public AdsAction actionName;
             public OddChange actionDescription;
-
-            public ListItemData ToListData()
+            
+            public VectorImage leftImage
             {
-                return new ListItemData
-                {
-                    MainText = "",
-                    SupportText = ""
-                };
+                get { return null; }
+            }
+
+            public VectorImage rightImage
+            {
+                get { return null; }
+            }
+
+            public string mainText
+            {
+                get { return actionName.ToString(); }
+            }
+
+            public string supportText
+            {
+                get { return actionDescription.ToString(); }
+            }
+
+            public bool Equals(MissionSubState other)
+            {
+                return Equals(mainTexture, other.mainTexture) && actionName == other.actionName &&
+                       actionDescription == other.actionDescription;
+            }
+
+            public bool Equals(IListItemData other)
+            {
+                return other != null &&
+                       mainText == other.mainText &&
+                       supportText == other.supportText &&
+                       leftImage == other.leftImage &&
+                       rightImage == other.rightImage;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is MissionSubState other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(mainTexture, (int)actionName, (int)actionDescription);
             }
         }
     }

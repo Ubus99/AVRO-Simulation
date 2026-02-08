@@ -83,7 +83,6 @@ namespace Editor
 
         static void ImageSection(VisualElement root, SerializedProperty imageProperty)
         {
-            // draw route
             var routeImage = new Image
             {
                 scaleMode = ScaleMode.ScaleToFit,

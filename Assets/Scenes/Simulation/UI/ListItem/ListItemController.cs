@@ -18,14 +18,14 @@ namespace Scenes.Simulation.UI.ListItem
             _supportText = visualElement.Q<Label>("support-text");
         }
 
-        public void SetData(ListItemData data)
+        public void SetData(IListItemData data)
         {
             if (_leftImage != null)
-                _leftImage.vectorImage = data.LeftImage;
+                _leftImage.vectorImage = data.leftImage;
             if (_rightImage != null)
-                _rightImage.vectorImage = data.RightImage;
-            _mainText.text = data.MainText;
-            _supportText.text = data.SupportText;
+                _rightImage.vectorImage = data.rightImage;
+            _mainText.text = data.mainText;
+            _supportText.text = data.supportText;
         }
     }
 }

@@ -1,0 +1,13 @@
+using System;
+using UnityEngine.UIElements;
+
+namespace Scenes.Simulation.UI.ListItem
+{
+    public interface IListItemData : IEquatable<IListItemData>
+    {
+        public VectorImage leftImage { get; }
+        public VectorImage rightImage { get; }
+        public string mainText { get; }
+        public string supportText { get; }
+    }
+}
