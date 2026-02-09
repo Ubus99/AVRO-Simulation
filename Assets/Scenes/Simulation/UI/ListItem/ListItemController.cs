@@ -1,3 +1,5 @@
+using System;
+using UI;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UIElements.Image;
 
@@ -12,20 +14,30 @@ namespace Scenes.Simulation.UI.ListItem
 
         public void LoadVisualElement(VisualElement visualElement)
         {
-            _leftImage = visualElement.Q<Image>("left-image");
-            _rightImage = visualElement.Q<Image>("right-image");
+            _leftImage = visualElement.Q<Image>("left-icon");
+            _rightImage = visualElement.Q<Image>("right-icon");
             _mainText = visualElement.Q<Label>("main-text");
             _supportText = visualElement.Q<Label>("support-text");
         }
 
         public void SetData(IListItemData data)
         {
-            if (_leftImage != null)
-                _leftImage.vectorImage = data.leftImage;
-            if (_rightImage != null)
-                _rightImage.vectorImage = data.rightImage;
+            UpdateIcon(_leftImage, data.leftImage, "hideable");
+            UpdateIcon(_rightImage, data.rightImage, "hideable2");
             _mainText.text = data.mainText;
             _supportText.text = data.supportText;
+        }
+
+        static void UpdateIcon(Image target, VectorImage icon, string group = null)
+        {
+            var elements = target.panel.visualTree.Query<VisualElement>(className: group).ToList();
+            if (elements.Count == 0)
+            {
+                throw new ArgumentNullException();
+            }
+
+            GUIUtils.ToggleHidden(elements, !icon);
+            target.vectorImage = icon;
         }
     }
 }

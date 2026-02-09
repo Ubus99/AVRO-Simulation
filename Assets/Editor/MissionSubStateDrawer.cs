@@ -22,38 +22,44 @@ namespace Editor
                 }
             };
 
-            var label = new Label(((Texture2D)imageProperty.objectReferenceValue).name);
-
-            var image = new Image
+            if (!imageProperty.objectReferenceValue)
             {
-                scaleMode = ScaleMode.ScaleToFit,
-                style =
+                root.Add(new Label("Emergency State"));
+            }
+            else
+            {
+                var image = new Image
                 {
-                    width = new StyleLength(Length.Percent(100)),
-                    height = new StyleLength(StyleKeyword.Auto),
-                    flexShrink = 0
-                },
-                image = (Texture2D)imageProperty.objectReferenceValue
-            };
+                    scaleMode = ScaleMode.ScaleToFit,
+                    style =
+                    {
+                        width = new StyleLength(Length.Percent(100)),
+                        height = new StyleLength(StyleKeyword.Auto),
+                        flexShrink = 0
+                    },
+                    image = (Texture2D)imageProperty.objectReferenceValue
+                };
+
+                // When the container gets a layout width, calculate pixel height to preserve aspect ratio.
+                root.RegisterCallback<GeometryChangedEvent>(evt =>
+                {
+                    if (image.image is not Texture2D { width: > 0 } tex)
+                        return;
+
+                    var targetWidth = evt.newRect.width; // available width
+                    var scaledHeight = targetWidth * ((float)tex.height / tex.width);
+                    image.style.height = new StyleLength(new Length(scaledHeight, LengthUnit.Pixel));
+                });
+
+                root.Add(new Label(((Texture2D)imageProperty.objectReferenceValue).name));
+                root.Add(image);
+            }
 
             var actionName = new PropertyField(property.FindPropertyRelative("actionName"));
             var actionDescription = new PropertyField(property.FindPropertyRelative("actionDescription"));
 
-            root.Add(label);
-            root.Add(image);
             root.Add(actionName);
             root.Add(actionDescription);
-
-            // When the container gets a layout width, calculate pixel height to preserve aspect ratio.
-            root.RegisterCallback<GeometryChangedEvent>(evt =>
-            {
-                if (image.image is not Texture2D { width: > 0 } tex)
-                    return;
-
-                var targetWidth = evt.newRect.width; // available width
-                var scaledHeight = targetWidth * ((float)tex.height / tex.width);
-                image.style.height = new StyleLength(new Length(scaledHeight, LengthUnit.Pixel));
-            });
 
             root.Bind(property.serializedObject);
 

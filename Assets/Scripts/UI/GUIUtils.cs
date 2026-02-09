@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace UI
 {
@@ -11,7 +13,7 @@ namespace UI
             // LayoutRebuilder.ForceRebuildLayoutImmediate(parent);
             // LayoutRebuilder.ForceRebuildLayoutImmediate(element);
 
-            var localPoint = screenPoint ;// / canvas.transform.lossyScale;
+            var localPoint = screenPoint; // / canvas.transform.lossyScale;
 
             if (clampToPanel)
             {
@@ -36,6 +38,15 @@ namespace UI
                 element.localPosition = new Vector3(localPoint.x, localPoint.y, element.localPosition.z);
             }
             element.SetParent(parent, true);
+        }
+
+        public static void ToggleHidden(List<VisualElement> elements, bool isHidden)
+        {
+            foreach (var ve in elements)
+            {
+                if (isHidden) ve.AddToClassList("hidden");
+                else ve.RemoveFromClassList("hidden");
+            }
         }
     }
 }

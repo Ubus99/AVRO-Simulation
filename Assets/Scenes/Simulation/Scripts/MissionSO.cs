@@ -19,7 +19,8 @@ namespace Scenes.Simulation.Scripts
             TurnLeft = 3,
             TurnRight = 4,
             PassToTheRight = 5,
-            PassToTheLeft = 6
+            PassToTheLeft = 6,
+            Stop = 7
         }
 
         public enum OddChange
@@ -31,8 +32,15 @@ namespace Scenes.Simulation.Scripts
             Reroute = 4,
             WaitForObstacleToClear = 5,
             PrioritizeOriginalRoadSignage = 6,
-            PrioritizeCurrentRoadSignage = 7
+            PrioritizeCurrentRoadSignage = 7,
+            NoValidPaths = 8
         }
+
+        static readonly MissionSubState EmergencyState = new()
+        {
+            actionName = AdsAction.Stop,
+            actionDescription = OddChange.NoValidPaths
+        };
 
         [SerializeField]
         Texture2D map;
@@ -108,6 +116,11 @@ namespace Scenes.Simulation.Scripts
                     subStates.Add(new MissionSubState { mainTexture = kv.Value });
                 }
             }
+
+            if (!subStates.Contains(EmergencyState))
+            {
+                subStates.Add(EmergencyState);
+            }
         }
 
         [Serializable]
@@ -116,7 +129,7 @@ namespace Scenes.Simulation.Scripts
             public Texture2D mainTexture;
             public AdsAction actionName;
             public OddChange actionDescription;
-            
+
             public VectorImage leftImage
             {
                 get { return null; }
