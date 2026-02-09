@@ -5,10 +5,10 @@ using UnityEngine.UIElements;
 
 namespace Scenes.Simulation.UI
 {
-    public class ListController : IDisposable
+    public class ListController<T> : IDisposable where T : IListItemData
     {
         readonly VisualTreeAsset _itemTemplate;
-        readonly List<IListItemData> _listData = new();
+        readonly List<T> _listData = new();
         readonly ListView _listView;
 
         public ListController(VisualElement root, VisualTreeAsset itemTemplate)
@@ -59,7 +59,7 @@ namespace Scenes.Simulation.UI
         }
 
         // PUBLIC API: update the list contents later on
-        public void UpdateList(IEnumerable<IListItemData> newItems)
+        public void UpdateList(IEnumerable<T> newItems)
         {
             if (newItems == null) throw new ArgumentNullException(nameof(newItems));
 
@@ -68,13 +68,13 @@ namespace Scenes.Simulation.UI
             RefreshListView();
         }
 
-        public void AddItem(IListItemData item)
+        public void AddItem(T item)
         {
             _listData.Add(item);
             RefreshListView();
         }
 
-        public bool RemoveItem(IListItemData item)
+        public bool RemoveItem(T item)
         {
             var removed = _listData.Remove(item);
             if (removed) RefreshListView();
@@ -102,9 +102,11 @@ namespace Scenes.Simulation.UI
             _listView.SetSelection(idx);
         }
 
-        public IListItemData GetSelectedItem()
+        public T GetSelectedItem()
         {
-            return (IListItemData)_listView.selectedItem;
+            if (_listView.selectedItem is T data) return data;
+            //else
+            throw new InvalidCastException();
         }
 
         void OnItemSelected(IEnumerable<object> enumerable)

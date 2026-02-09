@@ -121,6 +121,24 @@ namespace Scenes.Simulation.Scripts
             {
                 subStates.Add(EmergencyState);
             }
+
+            // update old notation
+            if (correctSubState == -1)
+            {
+                correctSubState = subStates.Count - 1;
+            }
+        }
+
+        public bool Complete(MissionSubState missionSubState)
+        {
+            var idx = subStates.IndexOf(missionSubState);
+            if (idx == correctSubState)
+            {
+                Debug.Log($"Mission {name} Completed successfully");
+                return true;
+            }
+            Debug.Log($"Mission {name} Completed unsuccessfully");
+            return false;
         }
 
         [Serializable]
