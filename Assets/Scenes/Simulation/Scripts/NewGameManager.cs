@@ -9,6 +9,10 @@ namespace Scenes.Simulation.Scripts
 {
     public class NewGameManager : MonoBehaviour
     {
+        const string MissionNameKey = "missionName";
+        const string MissionStateKey = "lastMissionState";
+        const string MissionEventKey = "missionEvent";
+
         readonly List<MissionSo> _missions = new();
 
         readonly Queue<MissionSo> _missionsQueue = new();
@@ -28,10 +32,17 @@ namespace Scenes.Simulation.Scripts
             {
                 throw new Exception("Could not find CSV Logger");
             }
-            _csvLogger.RegistrationEvent += () => _csvLogger.TryRegister("mission");
-            _csvLogger.RestartLogging("test");
+            _csvLogger.RegistrationEvent += RegisterMessages;
+            _csvLogger.RestartLogging(DateTime.Now.ToString("dd-MM-yyyy_HH-mm"));
 
             NextMission();
+        }
+
+        void RegisterMessages()
+        {
+            _csvLogger.TryRegister(MissionNameKey);
+            _csvLogger.TryRegister(MissionStateKey);
+            _csvLogger.TryRegister(MissionEventKey);
         }
 
         MissionSo GetRandomMission()
@@ -41,7 +52,7 @@ namespace Scenes.Simulation.Scripts
 
         void OnMissionCompleted(MissionSo.MissionSubState missionSubState)
         {
-            _currentMission.Complete(missionSubState);
+            _csvLogger.TryLog(MissionStateKey, _currentMission.Complete(missionSubState) ? "success" : "failed");
 
             NextMission();
         }
@@ -50,7 +61,8 @@ namespace Scenes.Simulation.Scripts
         {
             _currentMission = _missionsQueue.Count == 0 ? GetRandomMission() : _missionsQueue.Dequeue();
             GameplayEvents.changeMissionEvent?.Invoke(_currentMission);
-            _csvLogger.TryLog("mission", _currentMission.name);
+            _csvLogger.TryLog(MissionNameKey, _currentMission.name);
+            _csvLogger.TryLog(MissionEventKey, "nextMission");
         }
     }
 }

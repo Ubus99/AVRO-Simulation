@@ -10,6 +10,8 @@ namespace Scenes.Simulation.UI
 {
     public class CarView : MonoBehaviour
     {
+        const string MissionStateKey = "SubState";
+
         [SerializeField]
         VisualTreeAsset actionItemTemplate;
 
@@ -37,7 +39,7 @@ namespace Scenes.Simulation.UI
             {
                 throw new Exception("Could not find CSV logger");
             }
-            _csvLogger.RegistrationEvent += () => _csvLogger.TryRegister("SubState");
+            _csvLogger.RegistrationEvent += () => _csvLogger.TryRegister(MissionStateKey);
 
             GameplayEvents.changeMissionEvent += LoadMission;
         }
@@ -70,7 +72,7 @@ namespace Scenes.Simulation.UI
         void SwitchSubStateView(IListItemData obj)
         {
             var subState = obj as MissionSo.MissionSubState? ?? default;
-            _csvLogger.TryLog("SubState", subState.actionName.ToString());
+            _csvLogger.TryLog(MissionStateKey, subState.actionName.ToString());
             _mainImage.image = subState.mainTexture;
         }
     }

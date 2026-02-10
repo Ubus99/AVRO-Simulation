@@ -5,6 +5,7 @@ using Gameplay;
 using Scenes.Simulation.UI.ListItem;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Utils;
 
 namespace Scenes.Simulation.Scripts
 {
@@ -160,12 +161,12 @@ namespace Scenes.Simulation.Scripts
 
             public string mainText
             {
-                get { return actionName.ToString(); }
+                get { return actionName.ToString().ToSentenceCase(); }
             }
 
             public string supportText
             {
-                get { return actionDescription.ToString(); }
+                get { return actionDescription.ToString().ToSentenceCase(); }
             }
 
             public bool Equals(MissionSubState other)

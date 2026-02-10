@@ -1,0 +1,9 @@
+timestamp,SubState,missionName,missionState,missionEvent
+10:45:38:8297,,W-30_S-1,,nextMission
+10:45:45:1525,,W-44_S-2,failed,nextMission
+10:45:49:8555,GoStraight,,,
+10:45:50:2269,TurnRight,,,
+10:45:50:6963,TurnLeft,,,
+10:45:51:4348,,W-58_S-2,success,nextMission
+10:45:51:8104,,W-6_S-1,success,nextMission
+10:45:52:2108,,W-31_S-1,success,nextMission

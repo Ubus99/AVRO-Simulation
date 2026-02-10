@@ -15,13 +15,14 @@ namespace Utils
         readonly DataTable _data = new() { Columns = { "timestamp" } };
         readonly Dictionary<string, string> _frameData = new();
         bool _empty;
+        string _fileName;
 
         string _filePath;
 
         void Awake()
         {
-            _filePath = Path.Combine(Application.dataPath, "logs", "log.csv");
-            Directory.CreateDirectory(Path.GetDirectoryName(_filePath) ?? string.Empty);
+            _filePath = Path.Combine(Application.dataPath, "logs");
+            Directory.CreateDirectory(_filePath);
 
             ServiceLocator.instance.TryRegister<CSVLogger>(this);
             enabled = false;
@@ -41,7 +42,7 @@ namespace Utils
             }
             _empty = true;
 
-            using var writer = new StreamWriter(_filePath);
+            using var writer = new StreamWriter(Path.Join(_filePath, $"{_fileName}.csv"));
             using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
 
             var columnNames = _data.Columns.Cast<DataColumn>().Select(column => column.ColumnName).ToArray();
@@ -74,9 +75,12 @@ namespace Utils
 
         public void RestartLogging(string newName)
         {
-            enabled = true;
+            _fileName = newName;
             _data.Clear();
+            
             RegistrationEvent?.Invoke();
+            
+            enabled = true;
         }
 
         public bool TryRegister(string key)
