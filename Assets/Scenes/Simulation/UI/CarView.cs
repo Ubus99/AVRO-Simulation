@@ -3,6 +3,8 @@ using Scenes.Simulation.Scripts;
 using Scenes.Simulation.UI.ListItem;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Utils;
+using Utils.Objects;
 
 namespace Scenes.Simulation.UI
 {
@@ -13,13 +15,13 @@ namespace Scenes.Simulation.UI
 
         ListController<MissionSo.MissionSubState> _actionListController;
         Button _confirmButton;
+        CSVLogger _csvLogger;
         Image _mainImage;
 
-        void OnEnable()
+        void Awake()
         {
             var uiDocument = GetComponent<UIDocument>();
             var root = uiDocument.rootVisualElement;
-
 
             _mainImage = root.Q<Image>("mainImage");
 
@@ -27,14 +29,22 @@ namespace Scenes.Simulation.UI
 
             _confirmButton = root.Q<Button>("confirm-button");
             _confirmButton.clicked += CompleteMission;
+        }
 
+        void Start()
+        {
+            if (!ServiceLocator.instance.TryGet(out _csvLogger))
+            {
+                throw new Exception("Could not find CSV logger");
+            }
+            _csvLogger.RegistrationEvent += () => _csvLogger.TryRegister("SubState");
 
             GameplayEvents.changeMissionEvent += LoadMission;
         }
 
         void OnDisable()
         {
-            _confirmButton.clicked -= CompleteMission;
+            if (_confirmButton != null) _confirmButton.clicked -= CompleteMission;
 
             GameplayEvents.changeMissionEvent -= LoadMission;
         }
@@ -47,7 +57,7 @@ namespace Scenes.Simulation.UI
 
             _actionListController.UpdateList(mission.options);
             _actionListController.SelectItem(0);
-            _actionListController.ItemSelectedEvent += UpdateImage;
+            _actionListController.ItemSelectedEvent += SwitchSubStateView;
 
             ReloadedEvent?.Invoke();
         }
@@ -57,9 +67,11 @@ namespace Scenes.Simulation.UI
             GameplayEvents.missionCompletedEvent?.Invoke(_actionListController.GetSelectedItem());
         }
 
-        void UpdateImage(IListItemData obj)
+        void SwitchSubStateView(IListItemData obj)
         {
-            _mainImage.image = ((MissionSo.MissionSubState)obj).mainTexture;
+            var subState = obj as MissionSo.MissionSubState? ?? default;
+            _csvLogger.TryLog("SubState", subState.actionName.ToString());
+            _mainImage.image = subState.mainTexture;
         }
     }
 }

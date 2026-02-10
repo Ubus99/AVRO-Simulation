@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
+using Utils.Objects;
 using Random = UnityEngine.Random;
 
 namespace Scenes.Simulation.Scripts
@@ -9,6 +12,7 @@ namespace Scenes.Simulation.Scripts
         readonly List<MissionSo> _missions = new();
 
         readonly Queue<MissionSo> _missionsQueue = new();
+        CSVLogger _csvLogger;
         MissionSo _currentMission;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,6 +24,13 @@ namespace Scenes.Simulation.Scripts
 
         void Start()
         {
+            if (!ServiceLocator.instance.TryGet(out _csvLogger))
+            {
+                throw new Exception("Could not find CSV Logger");
+            }
+            _csvLogger.RegistrationEvent += () => _csvLogger.TryRegister("mission");
+            _csvLogger.RestartLogging("test");
+
             NextMission();
         }
 
@@ -37,9 +48,9 @@ namespace Scenes.Simulation.Scripts
 
         void NextMission()
         {
-
             _currentMission = _missionsQueue.Count == 0 ? GetRandomMission() : _missionsQueue.Dequeue();
-            GameplayEvents.changeMissionEvent.Invoke(_currentMission);
+            GameplayEvents.changeMissionEvent?.Invoke(_currentMission);
+            _csvLogger.TryLog("mission", _currentMission.name);
         }
     }
 }
