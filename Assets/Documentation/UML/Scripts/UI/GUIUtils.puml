@@ -1,5 +1,6 @@
 @startuml
 class GUIUtils <<static>> {
     + {static} PlaceAt(element:RectTransform, screenPoint:Vector2, canvas:Canvas, parent:RectTransform, clampToPanel:bool) : void
+    + {static} ToggleHidden(elements:List<VisualElement>, isHidden:bool) : void
 }
 @enduml

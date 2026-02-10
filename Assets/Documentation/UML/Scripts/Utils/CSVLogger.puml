@@ -1,0 +1,21 @@
+@startuml
+class CSVLogger {
+    - _empty : bool
+    - _fileName : string
+    {static} <<readonly>> - LogBasePath : string
+    - fullPath : string <<get>>
+    - Awake() : void
+    - LateUpdate() : void
+    {static} - JoinDataTable(table:DataTable, dictionary:Dictionary<string, string>) : void
+    + RestartLogging(newName:string) : void
+    + TryRegister(key:string) : bool
+    + TryRegister(keys:string[]) : bool
+    + TryLog(key:string, message:string) : bool
+    +  <<event>> RegistrationEvent : Action 
+}
+class "Dictionary`2"<T1,T2> {
+}
+MonoBehaviour <|-- CSVLogger
+CSVLogger o-> "_data" DataTable
+CSVLogger o-> "_frameData<string,string>" "Dictionary`2"
+@enduml

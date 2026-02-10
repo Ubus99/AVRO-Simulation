@@ -1,0 +1,86 @@
+﻿using System;
+using Scenes.Simulation.UI.ListItem;
+using UnityEngine;
+using UnityEngine.UIElements;
+using Utils;
+
+namespace Scenes.Simulation.Scripts
+{
+    [Serializable]
+    public struct MissionSubState : IListItemData
+    {
+        public enum AdsAction
+        {
+            GoStraight = 0,
+            GoLeft = 1,
+            GoRight = 2,
+            TurnLeft = 3,
+            TurnRight = 4,
+            PassToTheRight = 5,
+            PassToTheLeft = 6,
+            Stop = 7
+        }
+
+        public enum OddChange
+        {
+            None = 0,
+            AllowUsingOppositeLane = 1,
+            IgnoreSignage = 2,
+            DeclarePlannedRouteValid = 3,
+            Reroute = 4,
+            WaitForObstacleToClear = 5,
+            PrioritizeOriginalRoadSignage = 6,
+            PrioritizeCurrentRoadSignage = 7,
+            NoValidPaths = 8
+        }
+
+        public Texture2D mainTexture;
+        public AdsAction actionName;
+        public OddChange actionDescription;
+
+        public VectorImage leftImage
+        {
+            get { return null; }
+        }
+
+        public VectorImage rightImage
+        {
+            get { return null; }
+        }
+
+        public string mainText
+        {
+            get { return actionName.ToString().ToSentenceCase(); }
+        }
+
+        public string supportText
+        {
+            get { return actionDescription.ToString().ToSentenceCase(); }
+        }
+
+        public bool Equals(MissionSubState other)
+        {
+            return Equals(mainTexture, other.mainTexture) && actionName == other.actionName &&
+                   actionDescription == other.actionDescription;
+        }
+
+        public bool Equals(IListItemData other)
+        {
+            return other != null &&
+                   mainText == other.mainText &&
+                   supportText == other.supportText &&
+                   leftImage == other.leftImage &&
+                   rightImage == other.rightImage;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is MissionSubState other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(mainTexture, (int)actionName, (int)actionDescription);
+        }
+    }
+}

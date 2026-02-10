@@ -1,0 +1,11 @@
+@startuml
+class IconAtlasRegistry <<static>> {
+    {static} - Init() : void
+    + {static} Register(atlas:IconAtlas) : void
+    + {static} Unregister(atlas:IconAtlas) : void
+    + {static} Get(atlasName:string) : IconAtlas
+}
+class "Dictionary`2"<T1,T2> {
+}
+IconAtlasRegistry o-> "Atlases<string,IconAtlas>" "Dictionary`2"
+@enduml

@@ -1,8 +1,0 @@
-@startuml
-struct ListItemData {
-    + MainText : string
-    + SupportText : string
-}
-ListItemData --> "LeftImage" VectorImage
-ListItemData --> "RightImage" VectorImage
-@enduml

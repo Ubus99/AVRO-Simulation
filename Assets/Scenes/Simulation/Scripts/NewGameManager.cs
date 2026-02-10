@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 using Utils.Objects;
+using Logger = Utils.Logger;
 using Random = UnityEngine.Random;
 
 namespace Scenes.Simulation.Scripts
@@ -19,10 +20,16 @@ namespace Scenes.Simulation.Scripts
         CSVLogger _csvLogger;
         MissionSo _currentMission;
 
+        Logger _logger;
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Awake()
         {
+            _logger = Logger.instance;
+            _logger.Init();
+
             _missions.AddRange(Resources.LoadAll<MissionSo>("MissionData/Bengt Scenarios/Missions"));
+
             GameplayEvents.missionCompletedEvent += OnMissionCompleted;
         }
 
@@ -50,7 +57,7 @@ namespace Scenes.Simulation.Scripts
             return _missions[Random.Range(0, _missions.Count)];
         }
 
-        void OnMissionCompleted(MissionSo.MissionSubState missionSubState)
+        void OnMissionCompleted(MissionSubState missionSubState)
         {
             _csvLogger.TryLog(MissionStateKey, _currentMission.Complete(missionSubState) ? "success" : "failed");
 

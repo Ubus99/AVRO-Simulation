@@ -1,25 +1,24 @@
 ﻿@startuml
 hide empty members
+hide interface
 remove MonoBehaviour
 remove ScriptableObject
 remove VisualTreeAsset
-hide interface
+remove Texture2D
+remove VectorImage
+remove Image
+remove Label
 
 !include .\\DebugCharacterController.puml
 !include .\\car logic\AbstractFollower.puml
-!include .\\car logic\ADSV_AI.puml
 !include .\\car logic\BaseStateMachine.puml
 !include .\\car logic\CarTarget.puml
 !include .\\car logic\NavigationProvider.puml
 !include .\\car logic\NavMeshCaster.puml
-!include .\\car logic\NavMeshFollower.puml
 !include .\\car logic\PathVisualizer.puml
 !include .\\car logic\SplineAbstractFollower.puml
-!include .\\Gameplay\CarManager.puml
-!include .\\Gameplay\Mission.puml
-!include .\\Gameplay\MissionController.puml
+!include .\\Gameplay\MissionDataLoader.puml
 !include .\\Gameplay\PrefabGrid.puml
-!include .\\Gameplay\StreetEvent.puml
 !include .\\Streets\JunctionTrigger.puml
 !include .\\Streets\Street.puml
 !include .\\Streets\StreetManager.puml
@@ -27,15 +26,19 @@ hide interface
 !include .\\UI\ColorGuide.puml
 !include .\\UI\DynamicGrid.puml
 !include .\\UI\GUIUtils.puml
-!include .\\UI\IconAtlas.puml
 !include .\\UI\IListElement.puml
 !include .\\UI\IPlayerClickable.puml
 !include .\\UI\ISubScreen.puml
 !include .\\UI\ModalUI.puml
 !include .\\UI\VideoFeed.puml
+!include .\\Utils\CSVLogger.puml
 !include .\\Utils\Logger.puml
 !include .\\Utils\SplineHelper.puml
+!include .\\Utils\StringUtils.puml
 !include .\\Utils\TransformUtility.puml
+!include .\\UI\Icons\IconAtlas.puml
+!include .\\UI\Icons\IconAtlasPostprocessor.puml
+!include .\\UI\Icons\IconAtlasRegistry.puml
 !include .\\Utils\Editor\CameraStackSynchronizer.puml
 !include .\\Utils\Editor\NavMeshSnap.puml
 !include .\\Utils\Lucide\GlyphData.puml

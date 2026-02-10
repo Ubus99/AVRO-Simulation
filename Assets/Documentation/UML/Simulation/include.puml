@@ -1,14 +1,21 @@
 ﻿@startuml
 hide empty members
+hide interface
 remove MonoBehaviour
 remove ScriptableObject
 remove VisualTreeAsset
-hide interface
+remove Texture2D
+remove VectorImage
+remove Image
+remove Label
 
+!include .\\Scripts\GameplayEvents.puml
+!include .\\Scripts\HumanInputObserver.puml
 !include .\\Scripts\MissionSO.puml
+!include .\\Scripts\MissionSubState.puml
 !include .\\Scripts\NewGameManager.puml
-!include .\\UI\CarView.puml
+!include .\\UI\CarViewController.puml
 !include .\\UI\ListController.puml
+!include .\\UI\ListItem\IListItemData.puml
 !include .\\UI\ListItem\ListItemController.puml
-!include .\\UI\ListItem\ListItemData.puml
 @enduml

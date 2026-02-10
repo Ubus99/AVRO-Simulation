@@ -1,0 +1,9 @@
+@startuml
+class HumanInputObserver {
+    <<const>> - PointerPositionKey : string = "PointerPosition"
+    - Start() : void
+    - Update() : void
+}
+MonoBehaviour <|-- HumanInputObserver
+HumanInputObserver --> "_csvLogger" CSVLogger
+@enduml

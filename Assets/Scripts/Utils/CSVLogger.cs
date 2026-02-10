@@ -17,12 +17,20 @@ namespace Utils
         bool _empty;
         string _fileName;
 
-        string _filePath;
+#if UNITY_EDITOR
+        static readonly string LogBasePath = Path.Combine(Application.dataPath, "logs");
+#else
+        static readonly string LogBasePath = Path.Combine(Application.persistentDataPath, "logs");
+#endif
+
+        string fullPath
+        {
+            get { return Path.Join(LogBasePath, $"{_fileName}.csv"); }
+        }
 
         void Awake()
         {
-            _filePath = Path.Combine(Application.dataPath, "logs");
-            Directory.CreateDirectory(_filePath);
+            Directory.CreateDirectory(LogBasePath);
 
             ServiceLocator.instance.TryRegister<CSVLogger>(this);
             enabled = false;
@@ -42,7 +50,7 @@ namespace Utils
             }
             _empty = true;
 
-            using var writer = new StreamWriter(Path.Join(_filePath, $"{_fileName}.csv"));
+            using var writer = new StreamWriter(fullPath);
             using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
 
             var columnNames = _data.Columns.Cast<DataColumn>().Select(column => column.ColumnName).ToArray();
@@ -77,9 +85,9 @@ namespace Utils
         {
             _fileName = newName;
             _data.Clear();
-            
+
             RegistrationEvent?.Invoke();
-            
+
             enabled = true;
         }
 

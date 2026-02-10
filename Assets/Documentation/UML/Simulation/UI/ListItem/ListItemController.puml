@@ -1,7 +1,8 @@
 @startuml
 class ListItemController {
     + LoadVisualElement(visualElement:VisualElement) : void
-    + SetData(data:ListItemData) : void
+    + SetData(data:IListItemData) : void
+    {static} - UpdateIcon(target:Image, icon:VectorImage, group:string) : void
 }
 ListItemController --> "_leftImage" Image
 ListItemController --> "_mainText" Label

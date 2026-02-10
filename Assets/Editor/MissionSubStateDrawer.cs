@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Editor
 {
-    [CustomPropertyDrawer(typeof(MissionSo.MissionSubState))]
+    [CustomPropertyDrawer(typeof(MissionSubState))]
     public class MissionSubStateDrawer : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)

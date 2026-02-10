@@ -13,11 +13,17 @@ $ScanDirectories = @(
 # PlantUML directives to ensure appear directly after @startuml in include.puml
 # Add or remove lines here; each item is a PlantUML statement (not a comment).
 $PlantUmlHeaderLines = @(
-    "hide empty members",
+    "hide empty members",,
+    "hide interface"
+    
     "remove MonoBehaviour",
     "remove ScriptableObject",
     "remove VisualTreeAsset",
-    "hide interface"
+    
+    "remove Texture2D",
+    "remove VectorImage",
+    "remove Image",
+    "remove Label"
 )
 
 # Additional flags passed to puml-gen

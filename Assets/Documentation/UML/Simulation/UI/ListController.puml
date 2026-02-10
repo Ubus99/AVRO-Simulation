@@ -1,13 +1,22 @@
 @startuml
-class ListController {
-    + ListController()
-    + InitializeList(root:VisualElement, itemTemplate:VisualTreeAsset) : void
-    - FillList() : void
+class "ListController`1"<T> {
+    + ListController(root:VisualElement, itemTemplate:VisualTreeAsset)
+    + Dispose() : void
+    +  <<event>> ItemSelectedEvent : Action<IListItemData> 
+    - ConfigureListView() : void
+    + UpdateList(newItems:IEnumerable<T>) : void
+    + AddItem(item:T) : void
+    + RemoveItem(item:T) : bool
+    + Clear() : void
+    - RefreshListView() : void
+    + SelectItem(idx:int) : void
+    + GetSelectedItem() : T
     - OnItemSelected(enumerable:IEnumerable<object>) : void
 }
 class "List`1"<T> {
 }
-ListController o-> "_listData<ListItemData>" "List`1"
-ListController --> "_itemTemplate" VisualTreeAsset
-ListController --> "_listView" ListView
+IDisposable <|-- "ListController`1"
+"ListController`1" --> "_itemTemplate" VisualTreeAsset
+"ListController`1" o-> "_listData<T>" "List`1"
+"ListController`1" --> "_listView" ListView
 @enduml

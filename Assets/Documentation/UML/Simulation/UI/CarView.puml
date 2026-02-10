@@ -1,8 +1,0 @@
-@startuml
-class CarView {
-    - OnEnable() : void
-    + LoadMission() : void
-}
-MonoBehaviour <|-- CarView
-CarView --> "actionItemTemplate" VisualTreeAsset
-@enduml

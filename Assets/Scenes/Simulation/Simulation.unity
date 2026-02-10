@@ -199,6 +199,7 @@ GameObject:
   - component: {fileID: 1703591600}
   - component: {fileID: 1703591599}
   - component: {fileID: 1703591601}
+  - component: {fileID: 1703591602}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -245,6 +246,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35475d129ab6433086390d3d2788faf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Utils::Utils.CSVLogger
+--- !u!114 &1703591602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1703591598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93b710c16695e5b4d903c8b6f68f7691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1985926029
 GameObject:
   m_ObjectHideFlags: 0

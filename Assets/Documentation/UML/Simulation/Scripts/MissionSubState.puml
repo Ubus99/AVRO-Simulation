@@ -1,0 +1,39 @@
+@startuml
+struct MissionSubState {
+    + mainText : string <<get>>
+    + supportText : string <<get>>
+    + Equals(other:MissionSubState) : bool
+    + Equals(other:IListItemData) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> GetHashCode() : int
+}
+enum AdsAction {
+    GoStraight= 0,
+    GoLeft= 1,
+    GoRight= 2,
+    TurnLeft= 3,
+    TurnRight= 4,
+    PassToTheRight= 5,
+    PassToTheLeft= 6,
+    Stop= 7,
+}
+enum OddChange {
+    None= 0,
+    AllowUsingOppositeLane= 1,
+    IgnoreSignage= 2,
+    DeclarePlannedRouteValid= 3,
+    Reroute= 4,
+    WaitForObstacleToClear= 5,
+    PrioritizeOriginalRoadSignage= 6,
+    PrioritizeCurrentRoadSignage= 7,
+    NoValidPaths= 8,
+}
+IListItemData <|-- MissionSubState
+MissionSubState --> "mainTexture" Texture2D
+MissionSubState --> "actionName" AdsAction
+MissionSubState --> "actionDescription" OddChange
+MissionSubState --> "leftImage" VectorImage
+MissionSubState --> "rightImage" VectorImage
+MissionSubState +-- AdsAction
+MissionSubState +-- OddChange
+@enduml

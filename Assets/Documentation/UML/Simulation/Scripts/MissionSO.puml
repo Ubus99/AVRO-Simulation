@@ -1,18 +1,23 @@
 @startuml
 class MissionSo {
+    - correctSubState : int
+    - OnValidate() : void
+    + Equals(other:IListItemData) : bool
+    + mainText : string <<get>>
+    + supportText : string <<get>> = null
+    - SyncLists(images:Dictionary<string, Texture2D>) : void
+    + Complete(missionSubState:MissionSubState) : bool
 }
 class "List`1"<T> {
 }
-struct MissionSubState {
-    + actionName : string
-    + actionDescription : string
-    + ToListData() : ListItemData
-}
 ScriptableObject <|-- MissionSo
+IListItemData <|-- MissionSo
+MissionSo o-> "EmergencyState" MissionSubState
+MissionSo --> "map" Texture2D
+MissionSo --> "route" Texture2D
 MissionSo o-> "subStates<MissionSubState>" "List`1"
-MissionSo --> "options<ListItemData>" "List`1"
-MissionSo +-- MissionSubState
-MissionSubState --> "leftIcon" VectorImage
-MissionSubState --> "rightIcon" VectorImage
-MissionSubState --> "mainTexture" Texture2D
+MissionSo --> "_icons" IconAtlas
+MissionSo --> "options<MissionSubState>" "List`1"
+MissionSo --> "leftImage" VectorImage
+MissionSo --> "rightImage" VectorImage
 @enduml

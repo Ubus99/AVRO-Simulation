@@ -1,0 +1,11 @@
+@startuml
+interface IListItemData {
+    + mainText : string <<get>>
+    + supportText : string <<get>>
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<IListItemData>" <|-- IListItemData
+IListItemData --> "leftImage" VectorImage
+IListItemData --> "rightImage" VectorImage
+@enduml

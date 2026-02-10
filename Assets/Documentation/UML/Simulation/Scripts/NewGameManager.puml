@@ -1,10 +1,23 @@
 @startuml
 class NewGameManager {
+    <<const>> - MissionNameKey : string = "missionName"
+    <<const>> - MissionStateKey : string = "lastMissionState"
+    <<const>> - MissionEventKey : string = "missionEvent"
+    - Awake() : void
     - Start() : void
-    - Update() : void
+    - RegisterMessages() : void
+    - GetRandomMission() : MissionSo
+    - OnMissionCompleted(missionSubState:MissionSubState) : void
+    - NextMission() : void
 }
 class "List`1"<T> {
 }
+class "Queue`1"<T> {
+}
 MonoBehaviour <|-- NewGameManager
-NewGameManager --> "missions<object>" "List`1"
+NewGameManager o-> "_missions<MissionSo>" "List`1"
+NewGameManager o-> "_missionsQueue<MissionSo>" "Queue`1"
+NewGameManager --> "_csvLogger" CSVLogger
+NewGameManager --> "_currentMission" MissionSo
+NewGameManager --> "_logger" Logger
 @enduml

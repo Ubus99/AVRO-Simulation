@@ -14,7 +14,12 @@ namespace Utils
     public class Logger : AbstractSingleton<Logger>, ILogHandler, IDisposable
     {
         const string FileExtension = ".log";
+        
+#if UNITY_EDITOR
+        static readonly string LogBasePath = Path.Combine(Application.dataPath, "logs");
+#else
         static readonly string LogBasePath = Path.Combine(Application.persistentDataPath, "logs");
+#endif
 
         readonly ILogHandler _defaultLogHandler = Debug.unityLogger.logHandler;
 

@@ -1,0 +1,16 @@
+@startuml
+class IconAtlas {
+    + resourcesFolder : string
+    - OnEnable() : void
+    - OnDisable() : void
+    + Build() : void
+    - RebuildCache() : void
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ScriptableObject <|-- IconAtlas
+IconAtlas o-> "images<VectorImage>" "List`1"
+IconAtlas --> "_cache<string,VectorImage>" "Dictionary`2"
+@enduml
