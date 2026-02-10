@@ -14,11 +14,19 @@ namespace Scenes.Simulation.Scripts
         const string MissionStateKey = "lastMissionState";
         const string MissionEventKey = "missionEvent";
 
+        [SerializeField]
+        float gameSpeed = 5;
+
+        [SerializeField]
+        int maxMissions = 10;
+
         readonly List<MissionSo> _missions = new();
 
         readonly Queue<MissionSo> _missionsQueue = new();
         CSVLogger _csvLogger;
         MissionSo _currentMission;
+
+        float _lastMissionCreationTime;
 
         Logger _logger;
 
@@ -43,6 +51,16 @@ namespace Scenes.Simulation.Scripts
             _csvLogger.RestartLogging(DateTime.Now.ToString("dd-MM-yyyy_HH-mm"));
 
             NextMission();
+        }
+
+        void FixedUpdate()
+        {
+            if (!(Time.timeSinceLevelLoad - _lastMissionCreationTime > gameSpeed) || _missionsQueue.Count >= maxMissions)
+                return;
+
+            _missionsQueue.Enqueue(GetRandomMission());
+            _lastMissionCreationTime = Time.timeSinceLevelLoad;
+            GameplayEvents.missionQueueUpdateEvent?.Invoke(_missionsQueue);
         }
 
         void RegisterMessages()

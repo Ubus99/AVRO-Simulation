@@ -1,6 +1,6 @@
 @startuml
 class "ListController`1"<T> {
-    + ListController(root:VisualElement, itemTemplate:VisualTreeAsset)
+    + ListController(root:VisualElement, itemTemplate:VisualTreeAsset, name:string)
     + Dispose() : void
     +  <<event>> ItemSelectedEvent : Action<IListItemData> 
     - ConfigureListView() : void
@@ -10,6 +10,7 @@ class "ListController`1"<T> {
     + Clear() : void
     - RefreshListView() : void
     + SelectItem(idx:int) : void
+    + SelectItem(item:T) : void
     + GetSelectedItem() : T
     - OnItemSelected(enumerable:IEnumerable<object>) : void
 }

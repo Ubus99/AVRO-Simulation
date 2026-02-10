@@ -3,8 +3,12 @@ class NewGameManager {
     <<const>> - MissionNameKey : string = "missionName"
     <<const>> - MissionStateKey : string = "lastMissionState"
     <<const>> - MissionEventKey : string = "missionEvent"
+    - gameSpeed : float = 5
+    - maxMissions : int = 10
+    - _lastMissionCreationTime : float
     - Awake() : void
     - Start() : void
+    - FixedUpdate() : void
     - RegisterMessages() : void
     - GetRandomMission() : MissionSo
     - OnMissionCompleted(missionSubState:MissionSubState) : void

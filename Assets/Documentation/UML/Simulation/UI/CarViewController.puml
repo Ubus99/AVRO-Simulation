@@ -5,6 +5,7 @@ class CarViewController {
     - Start() : void
     - OnDisable() : void
     +  <<event>> ReloadedEvent : Action 
+    - SetMissions(missions:IEnumerable<MissionSo>) : void
     - LoadMission(mission:MissionSo) : void
     - CompleteMission() : void
     - SwitchSubStateView(obj:IListItemData) : void
@@ -12,8 +13,9 @@ class CarViewController {
 class "ListController`1"<T> {
 }
 MonoBehaviour <|-- CarViewController
-CarViewController --> "actionItemTemplate" VisualTreeAsset
+CarViewController --> "itemTemplate" VisualTreeAsset
 CarViewController --> "_actionListController<MissionSubState>" "ListController`1"
+CarViewController --> "_carListController<MissionSo>" "ListController`1"
 CarViewController --> "_confirmButton" Button
 CarViewController --> "_csvLogger" CSVLogger
 CarViewController --> "_mainImage" Image

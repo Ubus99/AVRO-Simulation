@@ -10,10 +10,12 @@ namespace Scenes.Simulation.UI.ListItem
         Image _leftImage;
         Label _mainText;
         Image _rightImage;
+        VisualElement _selfRoot;
         Label _supportText;
 
         public void LoadVisualElement(VisualElement visualElement)
         {
+            _selfRoot = visualElement;
             _leftImage = visualElement.Q<Image>("left-icon");
             _rightImage = visualElement.Q<Image>("right-icon");
             _mainText = visualElement.Q<Label>("main-text");
@@ -28,9 +30,9 @@ namespace Scenes.Simulation.UI.ListItem
             _supportText.text = data.supportText;
         }
 
-        static void UpdateIcon(Image target, VectorImage icon, string group = null)
+        void UpdateIcon(Image target, VectorImage icon, string group = null)
         {
-            var elements = target.panel.visualTree.Query<VisualElement>(className: group).ToList();
+            var elements = _selfRoot.Query<VisualElement>(className: group).ToList();
             if (elements.Count == 0)
             {
                 throw new ArgumentNullException();

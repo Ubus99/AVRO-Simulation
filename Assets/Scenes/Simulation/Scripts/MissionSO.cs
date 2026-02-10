@@ -64,12 +64,12 @@ namespace Scenes.Simulation.Scripts
 
         public VectorImage leftImage
         {
-            get { return _icons["chevron-right"]; }
+            get { return null; }
         }
 
         public VectorImage rightImage
         {
-            get { return null; }
+            get { return _icons["chevron-right"]; }
         }
 
         public string mainText

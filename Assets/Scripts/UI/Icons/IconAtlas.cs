@@ -1,7 +1,6 @@
 ﻿// IconAtlas.cs
 
-using System.Collections.Generic;
-using System.Linq;
+using AYellowpaper.SerializedCollections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -15,23 +14,19 @@ namespace UI.Icons
         public string resourcesFolder;
 
         [SerializeField]
-        List<VectorImage> images = new();
-
-        Dictionary<string, VectorImage> _cache;
+        SerializedDictionary<string, VectorImage> cache = new();
 
         public VectorImage this[string key]
         {
             get
             {
-                if (_cache == null) RebuildCache();
-                _cache.TryGetValue(name, out var v);
-                return v;
+                cache.TryGetValue(key, out var vi);
+                return vi;
             }
         }
 
         void OnEnable()
         {
-            RebuildCache();
             IconAtlasRegistry.Register(this);
         }
 
@@ -50,7 +45,7 @@ namespace UI.Icons
 
         public void Build()
         {
-            images.Clear();
+            cache.Clear();
 
 #if UNITY_EDITOR
             // Editor: load via AssetDatabase for reliability
@@ -64,25 +59,16 @@ namespace UI.Icons
             {
                 var path = AssetDatabase.GUIDToAssetPath(guid);
                 var img = AssetDatabase.LoadAssetAtPath<VectorImage>(path);
-                if (img) images.Add(img);
+                cache.Add(img.name, img);
             }
 
             EditorUtility.SetDirty(this);
 
 #else
             // Player: load via Resources
-            images.AddRange(Resources.LoadAll<VectorImage>(resourcesFolder));
+            foreach(var img in Resources.LoadAll<VectorImage>(resourcesFolder))
+                cache.Add(name, img);
 #endif
-
-            RebuildCache();
-        }
-
-        void RebuildCache()
-        {
-            _cache = new Dictionary<string, VectorImage>();
-
-            foreach (var img in images.Where(img => img))
-                _cache[img.name] = img;
         }
     }
 }

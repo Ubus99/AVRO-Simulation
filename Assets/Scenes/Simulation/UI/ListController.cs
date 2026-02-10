@@ -11,10 +11,10 @@ namespace Scenes.Simulation.UI
         readonly List<T> _listData = new();
         readonly ListView _listView;
 
-        public ListController(VisualElement root, VisualTreeAsset itemTemplate)
+        public ListController(VisualElement root, VisualTreeAsset itemTemplate, string name)
         {
             _itemTemplate = itemTemplate;
-            _listView = root.Q<ListView>("actions-list");
+            _listView = root.Q<ListView>(name);
 
             // ensure we don't double-subscribe if InitializeList is called more than once
             _listView.selectionChanged -= OnItemSelected;
@@ -50,8 +50,6 @@ namespace Scenes.Simulation.UI
             {
                 if (i >= 0 && i < _listData.Count)
                     (element.userData as ListItemController)?.SetData(_listData[i]);
-                else
-                    (element.userData as ListItemController)?.SetData(null);
             };
 
             _listView.fixedItemHeight = 80;
@@ -100,6 +98,11 @@ namespace Scenes.Simulation.UI
         public void SelectItem(int idx)
         {
             _listView.SetSelection(idx);
+        }
+
+        public void SelectItem(T item)
+        {
+            SelectItem(_listData.IndexOf(item));
         }
 
         public T GetSelectedItem()
