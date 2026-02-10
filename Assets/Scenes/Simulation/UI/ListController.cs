@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Scenes.Simulation.UI.ListItem;
 using UnityEngine.UIElements;
 
@@ -91,6 +92,8 @@ namespace Scenes.Simulation.UI
 
             // reassign itemsSource to ensure the ListView picks up changed Count,
             // then force a visual refresh of visible items.
+            if (_listData.FirstOrDefault() is { } item)
+                _listView.fixedItemHeight = item.approximateHeight;
             _listView.itemsSource = _listData;
             _listView.RefreshItems();
         }

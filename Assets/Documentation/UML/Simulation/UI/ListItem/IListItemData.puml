@@ -2,6 +2,7 @@
 interface IListItemData {
     + mainText : string <<get>>
     + supportText : string <<get>>
+    + approximateHeight : int <<get>>
 }
 class "IEquatable`1"<T> {
 }

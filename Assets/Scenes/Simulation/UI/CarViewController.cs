@@ -23,6 +23,7 @@ namespace Scenes.Simulation.UI
         Button _confirmButton;
         CSVLogger _csvLogger;
         Image _mainImage;
+        Image _mapImage;
 
         void Awake()
         {
@@ -30,6 +31,7 @@ namespace Scenes.Simulation.UI
             var root = uiDocument.rootVisualElement;
 
             _mainImage = root.Q<Image>("mainImage");
+            _mapImage = root.Q<Image>("mapView");
 
             _actionListController = new ListController<MissionSubState>(root, itemTemplate, "actions-list");
             _carListController = new ListController<MissionSo>(root, itemTemplate, "car-list");
@@ -72,6 +74,7 @@ namespace Scenes.Simulation.UI
         void LoadMission(MissionSo mission)
         {
             _mainImage.image = mission.options[0].mainTexture;
+            _mapImage.image = mission.GetRouteTexture();
 
             _actionListController.UpdateList(mission.options);
             _actionListController.SelectItem(0);

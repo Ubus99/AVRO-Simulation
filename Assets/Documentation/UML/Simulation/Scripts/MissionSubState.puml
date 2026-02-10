@@ -2,6 +2,7 @@
 struct MissionSubState {
     + mainText : string <<get>>
     + supportText : string <<get>>
+    + approximateHeight : int <<get>>
     + Equals(other:MissionSubState) : bool
     + Equals(other:IListItemData) : bool
     + <<override>> Equals(obj:object) : bool

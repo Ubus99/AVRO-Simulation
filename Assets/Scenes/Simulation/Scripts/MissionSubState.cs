@@ -58,6 +58,11 @@ namespace Scenes.Simulation.Scripts
             get { return actionDescription.ToString().ToSentenceCase(); }
         }
 
+        public int approximateHeight
+        {
+            get { return 80; }
+        }
+
         public bool Equals(MissionSubState other)
         {
             return Equals(mainTexture, other.mainTexture) && actionName == other.actionName &&

@@ -9,5 +9,7 @@ namespace Scenes.Simulation.UI.ListItem
         public VectorImage rightImage { get; }
         public string mainText { get; }
         public string supportText { get; }
+
+        public int approximateHeight { get; }
     }
 }

@@ -19,4 +19,5 @@ CarViewController --> "_carListController<MissionSo>" "ListController`1"
 CarViewController --> "_confirmButton" Button
 CarViewController --> "_csvLogger" CSVLogger
 CarViewController --> "_mainImage" Image
+CarViewController --> "_mapImage" Image
 @enduml

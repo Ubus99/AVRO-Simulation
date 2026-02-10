@@ -5,6 +5,8 @@ class MissionSo {
     + Equals(other:IListItemData) : bool
     + mainText : string <<get>>
     + supportText : string <<get>> = null
+    + approximateHeight : int <<get>>
+    + GetRouteTexture() : Texture2D
     - SyncLists(images:Dictionary<string, Texture2D>) : void
     + Complete(missionSubState:MissionSubState) : bool
 }
@@ -13,9 +15,9 @@ class "List`1"<T> {
 ScriptableObject <|-- MissionSo
 IListItemData <|-- MissionSo
 MissionSo o-> "EmergencyState" MissionSubState
-MissionSo --> "map" Texture2D
 MissionSo --> "route" Texture2D
 MissionSo o-> "subStates<MissionSubState>" "List`1"
+MissionSo --> "map" Texture2D
 MissionSo --> "_icons" IconAtlas
 MissionSo --> "options<MissionSubState>" "List`1"
 MissionSo --> "leftImage" VectorImage

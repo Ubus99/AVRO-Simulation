@@ -19,9 +19,6 @@ namespace Scenes.Simulation.Scripts
         };
 
         [SerializeField]
-        Texture2D map;
-
-        [SerializeField]
         Texture2D route;
 
         [SerializeField]
@@ -29,6 +26,9 @@ namespace Scenes.Simulation.Scripts
 
         [SerializeField]
         List<MissionSubState> subStates = new();
+
+        [SerializeField]
+        Texture2D map;
 
         IconAtlas _icons;
 
@@ -78,6 +78,16 @@ namespace Scenes.Simulation.Scripts
         }
 
         public string supportText { get; } = null;
+
+        public int approximateHeight
+        {
+            get { return 64; }
+        }
+
+        public Texture2D GetRouteTexture()
+        {
+            return route;
+        }
 
         void SyncLists(Dictionary<string, Texture2D> images)
         {
