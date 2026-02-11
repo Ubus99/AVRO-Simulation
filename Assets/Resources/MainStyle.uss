@@ -37,8 +37,14 @@
 
 .rounded {
     border-radius: 8px;
+    overflow: hidden;
 }
 
 .textHero {
     font-size: 28px;
+}
+
+
+
+.unity-base-field__aligned {
 }

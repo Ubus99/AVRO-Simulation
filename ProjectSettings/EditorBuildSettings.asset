@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Archive/Scenes/Default/demo_city_night.unity
-    guid: f1831b6be7f89714f83273d9d38459e1
+    path: Assets/Scenes/Bootstrap/BootstrapScene.unity
+    guid: cf7ab49bcd506c848812623a0ec14ccb
+  - enabled: 1
+    path: Assets/Scenes/Simulation/Simulation.unity
+    guid: 6cb2f2a5e7c7be344a785cf58183517d
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: c066c426aaefe4541999a616d05675cb, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
