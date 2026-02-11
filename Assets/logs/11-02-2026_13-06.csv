@@ -1,0 +1,5 @@
+timestamp,SubState,missionName,lastMissionState,missionEvent
+13:06:56:9428,PassToTheLeft,W-15_S-1,,nextMission
+13:07:04:2194,Stop,,,
+13:07:04:7840,PassToTheLeft,,,
+13:10:00:3278,,,failed,

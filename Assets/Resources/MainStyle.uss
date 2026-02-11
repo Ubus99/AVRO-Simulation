@@ -1,11 +1,44 @@
 :root {
-    background-color: rgb(255, 255, 255);
+    --mainTextColor: rgb(13, 13, 13);
+    --bgColor1: rgb(255, 255, 255);
+    --bgColor2: rgb(229, 229, 229);
+    --bgColorEmpty: rgb(51, 51, 51);
+    --borderColor1: rgb(26, 26, 26);
+    color: var(--mainTextColor);
+    border-top-color: var(--borderColor1);
+    border-bottom-color: var(--borderColor1);
+    border-left-color: var(--borderColor1);
+    border-right-color: var(--borderColor1);
 }
 
 .toolBar {
-    background-color: rgb(229, 229, 229);
+    background-color: var(--bgColor2);
 }
 
 .hidden {
     display: none;
+}
+
+.bgLevel1 {
+    background-color: var(--bgColor1);
+}
+
+.bgLevel2 {
+    background-color: var(--bgColor2);
+}
+
+.bgEmpty {
+    background-color: var(--bgColorEmpty);
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.rounded {
+    border-radius: 8px;
+}
+
+.textHero {
+    font-size: 28px;
 }

@@ -187,7 +187,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0917aa8f5d011c542ac8c932a45956e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  actionItemTemplate: {fileID: 9197481963319205126, guid: fa649713d186e9d4dba59988616d0ed8, type: 3}
+  motivationalImage: {fileID: 7388822144124034973, guid: 785ddd49ea80a1042a09afe12cc0e886, type: 3}
+  itemTemplate: {fileID: 9197481963319205126, guid: fa649713d186e9d4dba59988616d0ed8, type: 3}
 --- !u!1 &1703591598
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,6 +220,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c62931c64ebef214b9946ec5767f3760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.NewGameManager
+  gameSpeed: 5
+  maxMissions: 10
 --- !u!4 &1703591600
 Transform:
   m_ObjectHideFlags: 0

@@ -1,0 +1,51 @@
+[01:53:54:70] Log File created @D:/Users/sxlga/Documents/Studium/Master/Semester 3/AVRO Simulation/Assets\logs\2026-02-11-13-53.log
+[01:53:55:40] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:53:55:41] loaded mission W-29_S-1 onto Screen
+[01:54:01:84] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:54:02:40] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:54:02:85] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:54:03:31] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:54:04:84] Mission W-29_S-1 Completed successfully
+[01:54:04:85] loaded motivational message onto Screen
+[01:54:24:03] loaded mission W-13_S-1 onto Screen
+[01:54:26:35] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:54:26:74] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:54:27:51] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:54:27:84] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:54:28:20] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:54:38:53] Mission W-13_S-1 Completed unsuccessfully
+[01:54:38:54] loaded motivational message onto Screen
+[01:54:40:86] switching to sub-state: Scenes.Simulation.Scripts.MissionSubState
+[01:54:40:86] loaded mission W-17_S-2 onto Screen
+[01:54:41:41] loaded mission W-5_S-1 onto Screen
+[01:54:41:86] loaded mission W-13_S-1 onto Screen
+[01:54:42:39] loaded mission W-5_S-1 onto Screen
+[01:54:42:79] loaded mission W-27_S-1 onto Screen
+[01:54:43:23] loaded mission W-58_S-2 onto Screen
+[01:54:43:74] loaded mission W-1_S-1 onto Screen
+[01:54:44:17] loaded mission W-13_S-1 onto Screen
+[01:54:44:53] loaded mission W-58_S-2 onto Screen
+[01:54:44:93] loaded mission W-27_S-1 onto Screen
+[01:54:45:33] loaded mission W-17_S-2 onto Screen
+[01:54:45:78] loaded mission W-5_S-1 onto Screen
+[01:54:47:04] Mission W-5_S-1 Completed successfully
+[01:54:47:04] loaded motivational message onto Screen
+[01:54:48:50] loaded mission W-13_S-1 onto Screen
+[01:54:49:54] Mission W-13_S-1 Completed successfully
+[01:54:49:54] loaded motivational message onto Screen
+[01:54:50:26] loaded mission W-58_S-2 onto Screen
+[01:54:51:51] Mission W-58_S-2 Completed successfully
+[01:54:51:51] loaded motivational message onto Screen
+[01:54:52:28] loaded mission W-27_S-1 onto Screen
+[01:54:53:36] Mission W-27_S-1 Completed successfully
+[01:54:53:37] loaded motivational message onto Screen
+[01:54:53:96] loaded mission W-27_S-1 onto Screen
+[01:54:55:13] Mission W-27_S-1 Completed successfully
+[01:54:55:13] loaded motivational message onto Screen
+[01:54:55:69] loaded mission W-13_S-1 onto Screen
+[01:54:56:64] Mission W-13_S-1 Completed successfully
+[01:54:56:64] loaded motivational message onto Screen
+[01:54:58:32] loaded mission W-1_S-1 onto Screen
+[01:54:58:40] loaded mission W-32_S-1 onto Screen
+[01:55:00:05] Mission W-32_S-1 Completed successfully
+[01:55:00:05] loaded motivational message onto Screen

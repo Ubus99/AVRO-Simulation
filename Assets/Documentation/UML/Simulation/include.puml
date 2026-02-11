@@ -11,8 +11,8 @@ remove Label
 
 !include .\\Scripts\GameplayEvents.puml
 !include .\\Scripts\HumanInputObserver.puml
-!include .\\Scripts\MissionSO.puml
 !include .\\Scripts\MissionSubState.puml
+!include .\\Scripts\MissionSO.puml
 !include .\\Scripts\NewGameManager.puml
 !include .\\UI\CarViewController.puml
 !include .\\UI\ListController.puml

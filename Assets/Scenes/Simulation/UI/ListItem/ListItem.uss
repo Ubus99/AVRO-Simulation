@@ -14,7 +14,6 @@
     align-items: flex-start;
 }
 
-
 .item-heading {
     font-size: 16px;
     -unity-font-style: bold;
@@ -25,8 +24,17 @@
 .lucide-icon {
     width: 48px;
     height: 48px;
-    padding-top: 16px;
-    padding-right: 16px;
-    padding-bottom: 16px;
-    padding-left: 16px;
+    padding: 16px;
+}
+
+.unity-collection-view__item {
+    background-color: rgb(255, 255, 255);
+}
+
+.unity-collection-view__item:hover {
+    background-color: rgb(229, 229, 229);
+}
+
+.unity-collection-view__item--selected {
+    background-color: rgb(242, 242, 242);
 }

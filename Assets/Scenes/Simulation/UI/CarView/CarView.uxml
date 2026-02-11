@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="Content" src="project://database/Assets/Scenes/Simulation/UI/CarView/Content.uxml?fileID=9197481963319205126&amp;guid=dc4b28bbabdd6ae419f377b4d56b02a1&amp;type=3#Content"/>
+    <Style src="project://database/Assets/Resources/MainStyle.uss?fileID=7433441132597879392&amp;guid=7bc33ff846e8b9241a0405236116a2bc&amp;type=3#MainStyle"/>
+    <Style src="project://database/Assets/Scenes/Simulation/UI/ListItem/ListItem.uss?fileID=7433441132597879392&amp;guid=f8fc6d7cfcd81a2419b95d0830db471d&amp;type=3#ListItem"/>
+    <ui:VisualElement name="CarView" style="flex-grow: 1; height: 64px;">
+        <ui:VisualElement name="Header" class="toolBar" style="flex-grow: 0; height: 64px;"/>
+        <ui:VisualElement name="Body" style="flex-grow: 1; flex-direction: row; align-items: stretch; align-self: auto; justify-content: space-between; height: 100%;">
+            <ui:ListView item-template="project://database/Assets/Scenes/Simulation/UI/ListItem/ListItem.uxml?fileID=9197481963319205126&amp;guid=fa649713d186e9d4dba59988616d0ed8&amp;type=3#ListItem" binding-source-selection-mode="Manual" data-source="" data-source-type="Scenes.Simulation.UI.ListItem.ListItemData, Assembly-CSharp" name="car-list" class="bgLevel1" style="width: 25%;"/>
+            <ui:Instance template="Content" name="Content" class="bgEmpty" style="flex-grow: 1; justify-content: space-around; width: 100%;"/>
+            <ui:VisualElement class="bgLevel1" style="width: 25%;">
+                <ui:ListView name="actions-list" style="flex-grow: 1;"/>
+                <ui:Button text="Confirm" double-click-selects-word="false" triple-click-selects-line="false" name="confirm-button" class="rounded"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Footer" class="toolBar" style="flex-grow: 0; height: 64px;"/>
+    </ui:VisualElement>
+</ui:UXML>

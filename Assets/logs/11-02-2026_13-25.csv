@@ -1,0 +1,7 @@
+timestamp,SubState,missionName,lastMissionState,missionEvent
+13:25:50:7872,GoStraight,W-51_S-1,,nextMission
+13:25:54:5236,,,success,
+13:26:17:8920,Stop,,,
+13:26:18:7050,GoStraight,,,
+13:26:19:1459,Stop,,,
+13:26:19:5725,GoStraight,,,

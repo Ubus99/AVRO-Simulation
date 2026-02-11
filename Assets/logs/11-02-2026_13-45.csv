@@ -1,0 +1,7 @@
+timestamp,SubState,missionName,lastMissionState,missionEvent
+13:45:49:8041,TurnRight,W-14_S-1,,nextMission
+13:46:24:9803,TurnLeft,,,
+13:46:25:4987,Stop,,,
+13:46:25:9204,TurnRight,,,
+13:46:26:3483,TurnLeft,,,
+13:46:26:9867,TurnLeft,,,

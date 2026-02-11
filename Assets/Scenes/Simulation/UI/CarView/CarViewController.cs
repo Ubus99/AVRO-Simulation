@@ -8,11 +8,14 @@ using UnityEngine.UIElements;
 using Utils;
 using Utils.Objects;
 
-namespace Scenes.Simulation.UI
+namespace Scenes.Simulation.UI.CarView
 {
     public class CarViewController : MonoBehaviour
     {
         const string MissionStateKey = "SubState";
+
+        [SerializeField]
+        VectorImage motivationalImage;
 
         [FormerlySerializedAs("actionItemTemplate")]
         [SerializeField]
@@ -21,20 +24,24 @@ namespace Scenes.Simulation.UI
         ListController<MissionSubState> _actionListController;
         ListController<MissionSo> _carListController;
         Button _confirmButton;
+        ContentController _contentController;
         CSVLogger _csvLogger;
-        Image _mainImage;
-        Image _mapImage;
 
         void Awake()
         {
             var uiDocument = GetComponent<UIDocument>();
             var root = uiDocument.rootVisualElement;
 
-            _mainImage = root.Q<Image>("mainImage");
-            _mapImage = root.Q<Image>("mapView");
-
             _actionListController = new ListController<MissionSubState>(root, itemTemplate, "actions-list");
+            _actionListController.ItemSelectedEvent += SwitchSubStateView;
+
             _carListController = new ListController<MissionSo>(root, itemTemplate, "car-list");
+            _carListController.ItemSelectedEvent += data =>
+            {
+                GameplayEvents.missionSelectedEvent?.Invoke(data as MissionSo);
+            };
+
+            _contentController = new ContentController(root);
 
             _confirmButton = root.Q<Button>("confirm-button");
             _confirmButton.clicked += CompleteMission;
@@ -48,7 +55,7 @@ namespace Scenes.Simulation.UI
             }
             _csvLogger.RegistrationEvent += () => _csvLogger.TryRegister(MissionStateKey);
 
-            GameplayEvents.changeMissionEvent += LoadMission;
+            GameplayEvents.missionSelectedEvent += LoadMission;
             GameplayEvents.missionQueueUpdateEvent += SetMissions;
         }
 
@@ -56,7 +63,7 @@ namespace Scenes.Simulation.UI
         {
             if (_confirmButton != null) _confirmButton.clicked -= CompleteMission;
 
-            GameplayEvents.changeMissionEvent -= LoadMission;
+            GameplayEvents.missionSelectedEvent -= LoadMission;
             GameplayEvents.missionQueueUpdateEvent -= SetMissions;
         }
 
@@ -65,27 +72,36 @@ namespace Scenes.Simulation.UI
         void SetMissions(IEnumerable<MissionSo> missions)
         {
             _carListController.UpdateList(missions);
-            _carListController.ItemSelectedEvent += data =>
-            {
-                GameplayEvents.changeMissionEvent?.Invoke(data as MissionSo);
-            };
         }
 
         void LoadMission(MissionSo mission)
         {
-            _mainImage.image = mission.options[0].mainTexture;
-            _mapImage.image = mission.GetRouteTexture();
+            _contentController.LoadData(mission);
+            _confirmButton.SetEnabled(mission);
+            
+            if (mission)
+            {
+                _carListController.SelectItem(mission);
+                
+                _actionListController.UpdateList(mission.options);
+                _actionListController.SelectItem(0);
+                
+                Debug.Log($"loaded mission {mission.name} onto Screen");
+            }
+            else
+            {
+                _actionListController.Clear();
+                
+                Debug.Log("loaded motivational message onto Screen");
+            }
 
-            _actionListController.UpdateList(mission.options);
-            _actionListController.SelectItem(0);
-            _actionListController.ItemSelectedEvent += SwitchSubStateView;
 
             ReloadedEvent?.Invoke();
         }
 
         void CompleteMission()
         {
-            GameplayEvents.missionCompletedEvent?.Invoke(_actionListController.GetSelectedItem());
+            GameplayEvents.missionSubmittedEvent?.Invoke(_actionListController.GetSelectedItem());
         }
 
         void SwitchSubStateView(IListItemData obj)
@@ -93,9 +109,10 @@ namespace Scenes.Simulation.UI
             var subState = obj as MissionSubState? ?? default;
             if (subState.mainTexture)
             {
-                _mainImage.image = subState.mainTexture;
+                _contentController.SetMainImage(subState.mainTexture);
             }
 
+            Debug.Log($"switching to sub-state: {subState}");
             _csvLogger.TryLog(MissionStateKey, subState.actionName.ToString());
         }
     }
