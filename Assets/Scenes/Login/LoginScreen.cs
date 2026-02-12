@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Scenes.Simulation.Scripts;
+using Gameplay;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UIElements.Button;
@@ -12,10 +12,10 @@ namespace Scenes.Login
     {
         IntegerField _idField;
 
-        GameplayEvents.Input[] _inputOptions;
+        GameplayGlobals.Input[] _inputOptions;
         Button _loginButton;
         DropdownField _modeSelection;
-        GameplayEvents.Severity[] _severityOptions;
+        GameplayGlobals.Severity[] _severityOptions;
 
         void Awake()
         {
@@ -25,22 +25,25 @@ namespace Scenes.Login
             _idField = root.Q<IntegerField>("IDField");
 
             _loginButton = root.Q<Button>("ConfirmButton");
+            _loginButton.SetEnabled(false);
             _loginButton.clicked += SubmitForm;
 
             _modeSelection = root.Q<DropdownField>("ScenarioDropdown");
-            _inputOptions = Enumerable.ToArray(EnumerateEnumValues<GameplayEvents.Input>());
-            _severityOptions = Enumerable.ToArray(EnumerateEnumValues<GameplayEvents.Severity>());
+            _inputOptions = Enumerable.ToArray(EnumerateEnumValues<GameplayGlobals.Input>());
+            _severityOptions = Enumerable.ToArray(EnumerateEnumValues<GameplayGlobals.Severity>());
 
             foreach (var input in _inputOptions)
             foreach (var severity in _severityOptions)
             {
                 _modeSelection.choices.Add($"variant {_modeSelection.choices.Count.ToString()}");
             }
+
+            _modeSelection.RegisterValueChangedCallback(evt => { _loginButton.SetEnabled(true); });
         }
 
         void OnDisable()
         {
-            _loginButton!.clicked -= SubmitForm;
+            if (_loginButton != null) _loginButton!.clicked -= SubmitForm;
         }
 
         void SubmitForm()
@@ -48,7 +51,8 @@ namespace Scenes.Login
             var index = _modeSelection.index;
             var input = _inputOptions[index / _severityOptions.Length];
             var severity = _severityOptions[index % _severityOptions.Length];
-            GameplayEvents.startSimulationEvent?.Invoke(_idField.value, input, severity);
+            GameplayGlobals.setGameMode?.Invoke(_idField.value, input, severity);
+            GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Simulation);
         }
 
         static IEnumerable<T> EnumerateEnumValues<T>()

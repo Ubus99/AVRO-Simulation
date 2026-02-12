@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using Scenes.Simulation.Scripts;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils;
 using Utils.Objects;
 using Logger = Utils.Logger;
@@ -9,16 +10,22 @@ namespace Gameplay
 {
     public class NewGameManager : MonoBehaviour
     {
+        [Header("Settings")]
         [SerializeField]
-        bool simulationStarted;
+        GameplayGlobals.Scenes mode;
 
         [SerializeField]
-        float gameSpeed = 5;
+        float gameSpeedEasy = 5;
+
+        [SerializeField]
+        float gameSpeedHard = 1;
 
         [SerializeField]
         int maxMissions = 10;
 
         CSVLogger _csvLogger;
+
+        float _currentGameSpeed;
 
         float _lastMissionCreationTime;
 
@@ -32,7 +39,8 @@ namespace Gameplay
             _logger = Logger.instance;
             _logger.Init();
 
-            GameplayEvents.startSimulationEvent += StartSimulationEvent;
+            GameplayGlobals.setGameMode += SetGameMode;
+            GameplayGlobals.switchSceneEvent += SwitchScene;
         }
 
         void Start()
@@ -51,12 +59,28 @@ namespace Gameplay
             UpdateMissionQueue();
         }
 
+        void SwitchScene(GameplayGlobals.Scenes scene)
+        {
+            mode = scene;
+            switch (scene)
+            {
+                case GameplayGlobals.Scenes.Login:
+                    SceneManager.LoadScene("Login");
+                    break;
+                case GameplayGlobals.Scenes.Simulation:
+                    SceneManager.LoadScene("Simulation");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(scene), scene, null);
+            }
+        }
+
         void UpdateMissionQueue()
         {
-            if (!simulationStarted) return;
+            if (mode != GameplayGlobals.Scenes.Simulation) return;
 
             var timeSinceLastMissionCreation = Time.timeSinceLevelLoad - _lastMissionCreationTime;
-            if (!(timeSinceLastMissionCreation > gameSpeed)) return;
+            if (!(timeSinceLastMissionCreation > _currentGameSpeed)) return;
 
             if (_missionManager.TryAddMission())
             {
@@ -65,9 +89,17 @@ namespace Gameplay
             }
         }
 
-        void StartSimulationEvent(int id, GameplayEvents.Input inputMethod, GameplayEvents.Severity severity)
+        void SetGameMode(int id, GameplayGlobals.Input inputMethod, GameplayGlobals.Severity severity)
         {
-            simulationStarted = true;
+            GameplayGlobals.currentInput = inputMethod;
+            GameplayGlobals.currentSeverity = severity;
+
+            _currentGameSpeed = severity switch
+            {
+                GameplayGlobals.Severity.Easy => gameSpeedEasy,
+                GameplayGlobals.Severity.Hard => gameSpeedHard,
+                _ => throw new ArgumentOutOfRangeException(nameof(severity), severity, null)
+            };
             _missionManager.SetNextOrRandom();
         }
     }

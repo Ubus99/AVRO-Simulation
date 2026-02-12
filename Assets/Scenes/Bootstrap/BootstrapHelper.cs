@@ -38,7 +38,7 @@ namespace Scenes.Bootstrap
 
         void BootstrapPlayer()
         {
-            var gos = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            var gos = GameObject.FindGameObjectsWithTag("bootstrap");
             foreach (var go in gos) DontDestroyOnLoad(go); // mark bootstrap scene save
 
             SceneManager.LoadScene(Path.GetFileNameWithoutExtension(_targetPath));

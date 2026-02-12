@@ -108,6 +108,11 @@ namespace Scenes.Simulation.UI
             SelectItem(_listData.IndexOf(item));
         }
 
+        public void ClearSelection()
+        {
+            _listView.ClearSelection();
+        }
+
         public T GetSelectedItem()
         {
             if (_listView.selectedItem is T data) return data;

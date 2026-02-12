@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gameplay;
 using Scenes.Simulation.Scripts;
 using Scenes.Simulation.UI.ListItem;
 using UnityEngine;
@@ -38,7 +39,7 @@ namespace Scenes.Simulation.UI.CarView
             _carListController = new ListController<MissionSo>(root, itemTemplate, "car-list");
             _carListController.ItemSelectedEvent += data =>
             {
-                GameplayEvents.missionSelectedEvent?.Invoke(data as MissionSo);
+                GameplayGlobals.missionSelectedEvent?.Invoke(data as MissionSo);
             };
 
             _contentController = new ContentController(root);
@@ -55,16 +56,18 @@ namespace Scenes.Simulation.UI.CarView
             }
             _csvLogger.RegistrationEvent += () => _csvLogger.TryRegister(MissionStateKey);
 
-            GameplayEvents.missionSelectedEvent += LoadMission;
-            GameplayEvents.missionQueueUpdateEvent += SetMissions;
+            GameplayGlobals.missionSelectedEvent += LoadMission;
+            GameplayGlobals.missionQueueUpdateEvent += SetMissions;
+
+            LoadMission(null);
         }
 
         void OnDisable()
         {
             if (_confirmButton != null) _confirmButton.clicked -= CompleteMission;
 
-            GameplayEvents.missionSelectedEvent -= LoadMission;
-            GameplayEvents.missionQueueUpdateEvent -= SetMissions;
+            GameplayGlobals.missionSelectedEvent -= LoadMission;
+            GameplayGlobals.missionQueueUpdateEvent -= SetMissions;
         }
 
         public event Action ReloadedEvent;
@@ -72,36 +75,36 @@ namespace Scenes.Simulation.UI.CarView
         void SetMissions(IEnumerable<MissionSo> missions)
         {
             _carListController.UpdateList(missions);
+            _carListController.ClearSelection();
         }
 
         void LoadMission(MissionSo mission)
         {
             _contentController.LoadData(mission);
             _confirmButton.SetEnabled(mission);
-            
+
             if (mission)
             {
                 _carListController.SelectItem(mission);
-                
+
                 _actionListController.UpdateList(mission.options);
                 _actionListController.SelectItem(0);
-                
+
                 Debug.Log($"loaded mission {mission.name} onto Screen");
             }
             else
             {
                 _actionListController.Clear();
-                
+
                 Debug.Log("loaded motivational message onto Screen");
             }
-
-
+            
             ReloadedEvent?.Invoke();
         }
 
         void CompleteMission()
         {
-            GameplayEvents.missionSubmittedEvent?.Invoke(_actionListController.GetSelectedItem());
+            GameplayGlobals.missionSubmittedEvent?.Invoke(_actionListController.GetSelectedItem());
         }
 
         void SwitchSubStateView(IListItemData obj)

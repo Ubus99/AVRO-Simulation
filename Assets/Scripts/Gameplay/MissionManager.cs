@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Gameplay;
 using UnityEngine;
 using Utils;
 using Random = UnityEngine.Random;
@@ -27,16 +28,16 @@ namespace Scenes.Simulation.Scripts
             _csvLogger = csvLogger;
             _csvLogger.RegistrationEvent += RegisterMessages;
 
-            GameplayEvents.missionSelectedEvent += OnChangeMissionEvent;
-            GameplayEvents.missionSubmittedEvent += OnMissionSubmitted;
+            GameplayGlobals.missionSelectedEvent += OnChangeMissionEvent;
+            GameplayGlobals.missionSubmittedEvent += OnMissionSubmitted;
         }
 
         public List<MissionSo> queue { get; } = new();
 
         public void Dispose()
         {
-            GameplayEvents.missionSelectedEvent -= OnChangeMissionEvent;
-            GameplayEvents.missionSubmittedEvent -= OnMissionSubmitted;
+            GameplayGlobals.missionSelectedEvent -= OnChangeMissionEvent;
+            GameplayGlobals.missionSubmittedEvent -= OnMissionSubmitted;
         }
 
         void RegisterMessages()
@@ -56,7 +57,17 @@ namespace Scenes.Simulation.Scripts
             if (queue.Count >= _maxMissions) return false;
 
             queue.Add(GetRandomMission());
-            GameplayEvents.missionQueueUpdateEvent?.Invoke(queue);
+            GameplayGlobals.missionQueueUpdateEvent?.Invoke(queue);
+            return true;
+        }
+
+        public bool TryRemoveMission(MissionSo mission)
+        {
+            if (queue.Count <= 0) return false;
+            if (!queue.Contains(mission)) return false;
+
+            queue.Remove(mission);
+            GameplayGlobals.missionQueueUpdateEvent?.Invoke(queue);
             return true;
         }
 
@@ -69,9 +80,9 @@ namespace Scenes.Simulation.Scripts
         {
             _csvLogger.TryLog(MissionStateKey, _currentMission.Complete(missionSubState) ? "success" : "failed");
 
-            queue.Remove(_currentMission);
+            TryRemoveMission(_currentMission);
             _currentMission = null;
-            GameplayEvents.missionSelectedEvent?.Invoke(_currentMission);
+            GameplayGlobals.missionSelectedEvent?.Invoke(_currentMission);
         }
 
         public void SetNextOrRandom()
@@ -81,7 +92,7 @@ namespace Scenes.Simulation.Scripts
 
             _currentMission = queue[0];
 
-            GameplayEvents.missionSelectedEvent?.Invoke(_currentMission);
+            GameplayGlobals.missionSelectedEvent?.Invoke(_currentMission);
             _csvLogger.TryLog(MissionNameKey, _currentMission.name);
             _csvLogger.TryLog(MissionEventKey, "nextMission");
         }
