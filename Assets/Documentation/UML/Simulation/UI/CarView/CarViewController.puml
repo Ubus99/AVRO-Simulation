@@ -1,0 +1,24 @@
+@startuml
+class CarViewController {
+    + CarViewController(root:VisualElement, itemTemplate:VisualTreeAsset)
+    + UpdateMissionList(missions:IList<MissionSo>) : void
+    + ShowMission(mission:MissionSo) : void
+    + ShowNoMissions() : void
+    + ShowMissionAvailable() : void
+    + SwitchToSubState(subState:MissionSubState) : void
+}
+enum View {
+    EmptyView,
+    NewView,
+    PovView,
+}
+class "ListController`1"<T> {
+}
+CarViewController --> "_contentController" ContentController
+CarViewController --> "_selfRoot" VisualElement
+CarViewController o-> "state" View
+CarViewController --> "confirmButton" Button
+CarViewController --> "actionList<MissionSubState>" "ListController`1"
+CarViewController --> "carList<MissionSo>" "ListController`1"
+CarViewController +-- View
+@enduml

@@ -1,6 +1,7 @@
 @startuml
 class IconAtlas {
     + resourcesFolder : string
+    - _isRebuilt : bool
     - OnEnable() : void
     - OnDisable() : void
     + Build() : void

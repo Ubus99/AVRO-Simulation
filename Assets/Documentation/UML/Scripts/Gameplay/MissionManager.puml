@@ -1,0 +1,24 @@
+@startuml
+class MissionManager {
+    <<const>> - MissionStateKey : string = "lastMissionState"
+    <<const>> - MissionNameKey : string = "missionName"
+    <<const>> - MissionEventKey : string = "missionEvent"
+    <<readonly>> - _maxMissions : int
+    + MissionManager(csvLogger:CSVLogger, maxMissions:int)
+    + Dispose() : void
+    - RegisterMessages() : void
+    - OnMissionChange(mission:MissionSo) : void
+    + TryAddMission() : bool
+    + TryRemoveMission(mission:MissionSo) : bool
+    - GetRandomMission() : MissionSo
+    - OnMissionSubmitted(missionSubState:MissionSubState) : void
+    + SetNextOrRandom() : void
+}
+class "List`1"<T> {
+}
+IDisposable <|-- MissionManager
+MissionManager --> "_csvLogger" CSVLogger
+MissionManager o-> "_missions<MissionSo>" "List`1"
+MissionManager --> "_currentMission" MissionSo
+MissionManager o-> "queue<MissionSo>" "List`1"
+@enduml

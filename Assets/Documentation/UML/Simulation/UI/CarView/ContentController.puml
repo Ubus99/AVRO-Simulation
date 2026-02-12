@@ -1,0 +1,18 @@
+@startuml
+class ContentController {
+    + ContentController(visualElement:VisualElement)
+    + LoadData(mission:MissionSo) : void
+    + SwitchView(view:CarViewController.View) : void
+    + SetMainImage(image:Texture2D) : void
+}
+class "StyleEnum`1"<T> {
+}
+ContentController o-> "Hidden<DisplayStyle>" "StyleEnum`1"
+ContentController o-> "Visible<DisplayStyle>" "StyleEnum`1"
+ContentController --> "_emptyView" VisualElement
+ContentController --> "_mainImage" Image
+ContentController --> "_mapImage" Image
+ContentController --> "_newView" VisualElement
+ContentController --> "_pov" VisualElement
+ContentController --> "_selfRoot" VisualElement
+@enduml

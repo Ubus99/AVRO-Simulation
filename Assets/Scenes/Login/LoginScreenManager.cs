@@ -8,7 +8,7 @@ using Enumerable = System.Linq.Enumerable;
 
 namespace Scenes.Login
 {
-    public class LoginScreen : MonoBehaviour
+    public class LoginScreenManager : MonoBehaviour
     {
         IntegerField _idField;
 
@@ -38,12 +38,21 @@ namespace Scenes.Login
                 _modeSelection.choices.Add($"variant {_modeSelection.choices.Count.ToString()}");
             }
 
-            _modeSelection.RegisterValueChangedCallback(evt => { _loginButton.SetEnabled(true); });
+            _idField.RegisterValueChangedCallback(_ => Validate());
+            _modeSelection.RegisterValueChangedCallback(_ => Validate());
         }
 
         void OnDisable()
         {
             if (_loginButton != null) _loginButton!.clicked -= SubmitForm;
+        }
+
+        void Validate()
+        {
+            _loginButton.SetEnabled(
+            _idField.value > 0 &&
+            _modeSelection.value != null
+            );
         }
 
         void SubmitForm()

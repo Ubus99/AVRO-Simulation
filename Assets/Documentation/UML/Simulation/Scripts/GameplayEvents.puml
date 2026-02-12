@@ -1,9 +1,0 @@
-@startuml
-class GameplayEvents <<static>> {
-}
-class "Action`1"<T> {
-}
-GameplayEvents --> "changeMissionEvent<MissionSo>" "Action`1"
-GameplayEvents --> "missionQueueUpdateEvent<IEnumerable<MissionSo>>" "Action`1"
-GameplayEvents --> "missionCompletedEvent<MissionSubState>" "Action`1"
-@enduml

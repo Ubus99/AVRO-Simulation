@@ -20,6 +20,7 @@ $PlantUmlHeaderLines = @(
     "remove ScriptableObject",
     "remove VisualTreeAsset",
     
+    "remove VisualElement",
     "remove Texture2D",
     "remove VectorImage",
     "remove Image",

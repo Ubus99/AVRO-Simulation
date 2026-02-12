@@ -16,9 +16,12 @@ remove Label
 !include .\\car logic\NavigationProvider.puml
 !include .\\car logic\NavMeshCaster.puml
 !include .\\car logic\PathVisualizer.puml
-!include .\\car logic\SplineAbstractFollower.puml
+!include .\\Gameplay\GameplayGlobals.puml
 !include .\\Gameplay\MissionDataLoader.puml
-!include .\\Gameplay\PrefabGrid.puml
+!include .\\Gameplay\MissionManager.puml
+!include .\\Gameplay\MissionSO.puml
+!include .\\Gameplay\MissionSubState.puml
+!include .\\Gameplay\NewGameManager.puml
 !include .\\Streets\JunctionTrigger.puml
 !include .\\Streets\Street.puml
 !include .\\Streets\StreetManager.puml
@@ -33,6 +36,7 @@ remove Label
 !include .\\UI\VideoFeed.puml
 !include .\\Utils\CSVLogger.puml
 !include .\\Utils\Logger.puml
+!include .\\Utils\RemoveOnLoad.puml
 !include .\\Utils\SplineHelper.puml
 !include .\\Utils\StringUtils.puml
 !include .\\Utils\TransformUtility.puml

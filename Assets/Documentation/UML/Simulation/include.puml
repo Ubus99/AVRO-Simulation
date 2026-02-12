@@ -8,14 +8,13 @@ remove Texture2D
 remove VectorImage
 remove Image
 remove Label
+remove VisualElement
 
-!include .\\Scripts\GameplayEvents.puml
 !include .\\Scripts\HumanInputObserver.puml
-!include .\\Scripts\MissionSubState.puml
-!include .\\Scripts\MissionSO.puml
-!include .\\Scripts\NewGameManager.puml
-!include .\\UI\CarViewController.puml
 !include .\\UI\ListController.puml
+!include .\\UI\CarView\CarViewController.puml
+!include .\\UI\CarView\CarViewManager.puml
+!include .\\UI\CarView\ContentController.puml
 !include .\\UI\ListItem\IListItemData.puml
 !include .\\UI\ListItem\ListItemController.puml
 @enduml

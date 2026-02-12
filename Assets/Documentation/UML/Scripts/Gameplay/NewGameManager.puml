@@ -1,0 +1,19 @@
+@startuml
+class NewGameManager {
+    - gameSpeedEasy : float = 5
+    - gameSpeedHard : float = 1
+    - maxMissions : int = 10
+    - _currentGameSpeed : float
+    - _lastMissionCreationTime : float
+    - Awake() : void
+    - Start() : void
+    - FixedUpdate() : void
+    - SwitchScene(scene:GameplayGlobals.Scenes) : void
+    - UpdateMissionQueue() : void
+    - SetGameMode(id:int, inputMethod:GameplayGlobals.Input, severity:GameplayGlobals.Severity) : void
+}
+MonoBehaviour <|-- NewGameManager
+NewGameManager --> "_csvLogger" CSVLogger
+NewGameManager --> "_logger" Logger
+NewGameManager --> "_missionManager" MissionManager
+@enduml
