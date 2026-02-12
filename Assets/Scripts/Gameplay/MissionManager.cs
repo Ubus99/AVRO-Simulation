@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Gameplay;
+using Scenes.Simulation.Scripts;
 using UnityEngine;
 using Utils;
 using Random = UnityEngine.Random;
 
-namespace Scenes.Simulation.Scripts
+namespace Gameplay
 {
     public class MissionManager : IDisposable
     {
@@ -28,7 +28,7 @@ namespace Scenes.Simulation.Scripts
             _csvLogger = csvLogger;
             _csvLogger.RegistrationEvent += RegisterMessages;
 
-            GameplayGlobals.missionSelectedEvent += OnChangeMissionEvent;
+            GameplayGlobals.switchMissionEvent += OnMissionChange;
             GameplayGlobals.missionSubmittedEvent += OnMissionSubmitted;
         }
 
@@ -36,7 +36,7 @@ namespace Scenes.Simulation.Scripts
 
         public void Dispose()
         {
-            GameplayGlobals.missionSelectedEvent -= OnChangeMissionEvent;
+            GameplayGlobals.switchMissionEvent -= OnMissionChange;
             GameplayGlobals.missionSubmittedEvent -= OnMissionSubmitted;
         }
 
@@ -47,7 +47,7 @@ namespace Scenes.Simulation.Scripts
             _csvLogger.TryRegister(MissionEventKey);
         }
 
-        void OnChangeMissionEvent(MissionSo mission)
+        void OnMissionChange(MissionSo mission)
         {
             _currentMission = mission;
         }
@@ -82,7 +82,7 @@ namespace Scenes.Simulation.Scripts
 
             TryRemoveMission(_currentMission);
             _currentMission = null;
-            GameplayGlobals.missionSelectedEvent?.Invoke(_currentMission);
+            GameplayGlobals.missionCompletedEvent?.Invoke();
         }
 
         public void SetNextOrRandom()
@@ -92,7 +92,7 @@ namespace Scenes.Simulation.Scripts
 
             _currentMission = queue[0];
 
-            GameplayGlobals.missionSelectedEvent?.Invoke(_currentMission);
+            GameplayGlobals.switchMissionEvent?.Invoke(_currentMission);
             _csvLogger.TryLog(MissionNameKey, _currentMission.name);
             _csvLogger.TryLog(MissionEventKey, "nextMission");
         }

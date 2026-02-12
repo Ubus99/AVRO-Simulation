@@ -1,122 +1,82 @@
-using System;
-using System.Collections.Generic;
-using Gameplay;
+﻿using System.Collections.Generic;
 using Scenes.Simulation.Scripts;
-using Scenes.Simulation.UI.ListItem;
-using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
-using Utils;
-using Utils.Objects;
 
 namespace Scenes.Simulation.UI.CarView
 {
-    public class CarViewController : MonoBehaviour
+    public class CarViewController
     {
-        const string MissionStateKey = "SubState";
-
-        [SerializeField]
-        VectorImage motivationalImage;
-
-        [FormerlySerializedAs("actionItemTemplate")]
-        [SerializeField]
-        VisualTreeAsset itemTemplate;
-
-        ListController<MissionSubState> _actionListController;
-        ListController<MissionSo> _carListController;
-        Button _confirmButton;
-        ContentController _contentController;
-        CSVLogger _csvLogger;
-
-        void Awake()
+        public enum View
         {
-            var uiDocument = GetComponent<UIDocument>();
-            var root = uiDocument.rootVisualElement;
+            EmptyView,
+            NewView,
+            PovView
+        }
 
-            _actionListController = new ListController<MissionSubState>(root, itemTemplate, "actions-list");
-            _actionListController.ItemSelectedEvent += SwitchSubStateView;
+        readonly ContentController _contentController;
+        readonly VisualElement _selfRoot;
 
-            _carListController = new ListController<MissionSo>(root, itemTemplate, "car-list");
-            _carListController.ItemSelectedEvent += data =>
-            {
-                GameplayGlobals.missionSelectedEvent?.Invoke(data as MissionSo);
-            };
+        public CarViewController(VisualElement root, VisualTreeAsset itemTemplate)
+        {
+            _selfRoot = root;
 
+            actionList = new ListController<MissionSubState>(root, itemTemplate, "actions-list");
+            carList = new ListController<MissionSo>(root, itemTemplate, "car-list");
             _contentController = new ContentController(root);
-
-            _confirmButton = root.Q<Button>("confirm-button");
-            _confirmButton.clicked += CompleteMission;
+            confirmButton = root.Q<Button>("confirm-button");
         }
 
-        void Start()
+        public View state { get; private set; } = View.EmptyView;
+
+        public Button confirmButton { get; }
+        public ListController<MissionSubState> actionList { get; }
+        public ListController<MissionSo> carList { get; }
+
+        public void UpdateMissionList(IList<MissionSo> missions)
         {
-            if (!ServiceLocator.instance.TryGet(out _csvLogger))
-            {
-                throw new Exception("Could not find CSV logger");
-            }
-            _csvLogger.RegistrationEvent += () => _csvLogger.TryRegister(MissionStateKey);
-
-            GameplayGlobals.missionSelectedEvent += LoadMission;
-            GameplayGlobals.missionQueueUpdateEvent += SetMissions;
-
-            LoadMission(null);
+            carList.UpdateList(missions);
         }
 
-        void OnDisable()
-        {
-            if (_confirmButton != null) _confirmButton.clicked -= CompleteMission;
-
-            GameplayGlobals.missionSelectedEvent -= LoadMission;
-            GameplayGlobals.missionQueueUpdateEvent -= SetMissions;
-        }
-
-        public event Action ReloadedEvent;
-
-        void SetMissions(IEnumerable<MissionSo> missions)
-        {
-            _carListController.UpdateList(missions);
-            _carListController.ClearSelection();
-        }
-
-        void LoadMission(MissionSo mission)
+        public void ShowMission(MissionSo mission)
         {
             _contentController.LoadData(mission);
-            _confirmButton.SetEnabled(mission);
+            _contentController.SwitchView(View.PovView);
 
-            if (mission)
-            {
-                _carListController.SelectItem(mission);
+            //select, just in case not already selected
+            carList.SelectItem(mission);
 
-                _actionListController.UpdateList(mission.options);
-                _actionListController.SelectItem(0);
+            // update available options
+            actionList.UpdateList(mission.options);
+            actionList.SelectItem(0);
 
-                Debug.Log($"loaded mission {mission.name} onto Screen");
-            }
-            else
-            {
-                _actionListController.Clear();
+            confirmButton.SetEnabled(true);
 
-                Debug.Log("loaded motivational message onto Screen");
-            }
-            
-            ReloadedEvent?.Invoke();
+            state = View.PovView;
         }
 
-        void CompleteMission()
+        public void ShowNoMissions()
         {
-            GameplayGlobals.missionSubmittedEvent?.Invoke(_actionListController.GetSelectedItem());
+            _contentController.SwitchView(View.EmptyView);
+            carList.ClearSelection();
+            confirmButton.SetEnabled(false);
+
+            state = View.EmptyView;
         }
 
-        void SwitchSubStateView(IListItemData obj)
+        public void ShowMissionAvailable()
         {
-            var subState = obj as MissionSubState? ?? default;
-            if (subState.mainTexture)
-            {
-                _contentController.SetMainImage(subState.mainTexture);
-            }
+            _contentController.SwitchView(View.NewView);
+            carList.ClearSelection();
+            confirmButton.SetEnabled(false);
 
-            Debug.Log($"switching to sub-state: {subState}");
-            _csvLogger.TryLog(MissionStateKey, subState.actionName.ToString());
+            state = View.NewView;
+        }
+
+        public void SwitchToSubState(MissionSubState subState)
+        {
+            if (!subState.mainTexture) return;
+
+            _contentController.SetMainImage(subState.mainTexture);
         }
     }
 }

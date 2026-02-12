@@ -39,6 +39,8 @@ namespace Gameplay
             _logger = Logger.instance;
             _logger.Init();
 
+            _currentGameSpeed = gameSpeedEasy;
+            
             GameplayGlobals.setGameMode += SetGameMode;
             GameplayGlobals.switchSceneEvent += SwitchScene;
         }

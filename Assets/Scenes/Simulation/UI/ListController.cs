@@ -25,6 +25,11 @@ namespace Scenes.Simulation.UI
             RefreshListView();
         }
 
+        public int count
+        {
+            get { return _listData.Count; }
+        }
+
         // cleanup helper to avoid leaking selection subscription (call when appropriate)
         public void Dispose()
         {

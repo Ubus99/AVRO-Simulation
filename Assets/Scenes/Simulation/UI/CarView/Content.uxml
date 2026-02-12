@@ -1,17 +1,17 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Resources/MainStyle.uss?fileID=7433441132597879392&amp;guid=7bc33ff846e8b9241a0405236116a2bc&amp;type=3#MainStyle"/>
-    <ui:VisualElement name="pov-panel" style="align-items: flex-end; width: 100%; height: 100%;">
+    <ui:VisualElement name="pov-panel" style="align-items: flex-end; width: 100%; height: 100%; display: none;">
         <ui:VisualElement style="width: 100%; flex-grow: 1; align-items: stretch; justify-content: center; flex-direction: row;">
             <ui:Image name="mainImage" source="project://database/Assets/Resources/MissionData/Bengt%20Scenarios/Ingolstadt/Scenarios/W-1_S-1_D-1_F.png?fileID=2800000&amp;guid=11974feba3a64a84eb69fba7ea56e2c3&amp;type=3#W-1_S-1_D-1_F" style="aspect-ratio: 2;"/>
         </ui:VisualElement>
         <ui:Image name="mapView" source="project://database/Assets/Resources/MissionData/Bengt%20Scenarios/Ingolstadt/Navigation/W-1_S-1.png?fileID=2800000&amp;guid=1c7148c9f20dab4499e2032dbb1caa23&amp;type=3#W-1_S-1" scale-mode="ScaleAndCrop" class="rounded" style="width: auto; height: 33%; aspect-ratio: 1; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; overflow: hidden; margin-top: 8px; margin-right: 8px; margin-bottom: 8px; margin-left: 8px;"/>
     </ui:VisualElement>
-    <ui:VisualElement name="empty-panel" style="height: 100%; align-items: center; margin-top: 64px; margin-right: 64px; margin-bottom: 64px; margin-left: 64px;">
-        <ui:Image source="project://database/Assets/Scenes/Simulation/UI/CarView/undraw_day-dreaming_2mlz.svg?fileID=7388822144124034973&amp;guid=785ddd49ea80a1042a09afe12cc0e886&amp;type=3#undraw_day-dreaming_2mlz" style="flex-shrink: 1; flex-grow: 0;"/>
-        <ui:Label text="No Incidents, take some time to relax!" class="textHero" style="-unity-font-style: bold; white-space: normal; width: 40%; -unity-text-align: upper-center; color: rgb(255, 255, 255);"/>
+    <ui:VisualElement name="empty-panel" style="height: 100%; align-items: center; margin-top: 64px; margin-right: 64px; margin-bottom: 64px; margin-left: 64px; display: flex; justify-content: center;">
+        <ui:Image source="project://database/Assets/Scenes/Simulation/UI/CarView/undraw_day-dreaming_2mlz.svg?fileID=7388822144124034973&amp;guid=785ddd49ea80a1042a09afe12cc0e886&amp;type=3#undraw_day-dreaming_2mlz" style="flex-shrink: 1; flex-grow: 0; margin-top: 24px; margin-right: 24px; margin-bottom: 24px; margin-left: 24px; width: auto; height: 350px;"/>
+        <ui:Label text="No Incidents, take some time to relax!" class="textHero" style="-unity-font-style: bold; white-space: normal; width: 33%; -unity-text-align: upper-center; color: rgb(255, 255, 255);"/>
     </ui:VisualElement>
-    <ui:VisualElement name="new-panel" style="height: 100%; align-items: center; margin-top: 64px; margin-right: 64px; margin-bottom: 64px; margin-left: 64px;">
-        <ui:Image source="project://database/Assets/Resources/Icons/lucide/triangle-alert.svg?fileID=7388822144124034973&amp;guid=d779d2bbc20165845bcd4a6654c09bf1&amp;type=3#triangle-alert" tint-color="rgb(255, 28, 28)" style="width: 128px; height: 128px;"/>
-        <ui:Label text="New incidents available!" class="textHero" style="color: rgb(255, 255, 255); -unity-font-style: bold; -unity-text-align: upper-center; white-space: normal;"/>
+    <ui:VisualElement name="new-panel" style="height: 100%; align-items: center; margin-top: 64px; margin-right: 64px; margin-bottom: 64px; margin-left: 64px; justify-content: center; display: flex;">
+        <ui:Image source="project://database/Assets/Resources/Icons/lucide/triangle-alert.svg?fileID=7388822144124034973&amp;guid=d779d2bbc20165845bcd4a6654c09bf1&amp;type=3#triangle-alert" tint-color="rgb(255, 28, 28)" style="width: 256px; height: 256px; margin-top: 24px; margin-right: 24px; margin-bottom: 24px; margin-left: 24px;"/>
+        <ui:Label text="New incidents available!" class="textHero" style="color: rgb(255, 255, 255); -unity-font-style: bold; -unity-text-align: upper-center; white-space: normal; width: 40%;"/>
     </ui:VisualElement>
 </ui:UXML>

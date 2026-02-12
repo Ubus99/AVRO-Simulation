@@ -2,7 +2,7 @@
     --mainTextColor: rgb(13, 13, 13);
     --bgColor1: rgb(255, 255, 255);
     --bgColor2: rgb(229, 229, 229);
-    --bgColorEmpty: rgb(51, 51, 51);
+    --bgColorEmpty: rgb(46, 46, 46);
     --borderColor1: rgb(26, 26, 26);
     color: var(--mainTextColor);
     border-top-color: var(--borderColor1);
@@ -43,8 +43,6 @@
 .textHero {
     font-size: 28px;
 }
-
-
 
 .unity-base-field__aligned {
 }
