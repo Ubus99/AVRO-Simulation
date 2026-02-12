@@ -1,6 +1,6 @@
 ﻿using System;
-using Scenes.Simulation.Scripts;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Utils;
 using Utils.Objects;
@@ -8,7 +8,7 @@ using Logger = Utils.Logger;
 
 namespace Gameplay
 {
-    public class NewGameManager : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
         [Header("Settings")]
         [SerializeField]
@@ -33,6 +33,8 @@ namespace Gameplay
 
         MissionManager _missionManager;
 
+        InputAction _restartAction;
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Awake()
         {
@@ -40,7 +42,10 @@ namespace Gameplay
             _logger.Init();
 
             _currentGameSpeed = gameSpeedEasy;
-            
+
+            _restartAction = InputSystem.actions.FindAction("Global/Restart");
+            _restartAction.performed += OnRestartActionPerformed;
+
             GameplayGlobals.setGameMode += SetGameMode;
             GameplayGlobals.switchSceneEvent += SwitchScene;
         }
@@ -53,12 +58,28 @@ namespace Gameplay
             }
 
             _missionManager = new MissionManager(_csvLogger, maxMissions);
-            _csvLogger.RestartLogging(DateTime.Now.ToString("dd-MM-yyyy_HH-mm"));
         }
 
         void FixedUpdate()
         {
             UpdateMissionQueue();
+        }
+
+        void RestartLogging()
+        {
+            var timeSting = DateTime.Now.ToString("dd-MM-yyyy_HH-mm");
+            var inputString = $"{GameplayGlobals.currentInput}_{GameplayGlobals.currentSeverity}";
+            var fileName = $"{GameplayGlobals.currentID}_{inputString}_{timeSting}";
+
+            _logger.Dispose();
+            _logger.Init(fileName);
+            _csvLogger.RestartLogging(fileName);
+
+        }
+
+        static void OnRestartActionPerformed(InputAction.CallbackContext context)
+        {
+            GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Login);
         }
 
         void SwitchScene(GameplayGlobals.Scenes scene)
@@ -95,6 +116,7 @@ namespace Gameplay
         {
             GameplayGlobals.currentInput = inputMethod;
             GameplayGlobals.currentSeverity = severity;
+            GameplayGlobals.currentID = id;
 
             _currentGameSpeed = severity switch
             {
@@ -102,7 +124,8 @@ namespace Gameplay
                 GameplayGlobals.Severity.Hard => gameSpeedHard,
                 _ => throw new ArgumentOutOfRangeException(nameof(severity), severity, null)
             };
-            _missionManager.SetNextOrRandom();
+
+            RestartLogging();
         }
     }
 }

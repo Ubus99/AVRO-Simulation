@@ -128,6 +128,7 @@ namespace Scenes.Simulation.UI
         void OnItemSelected(IEnumerable<object> enumerable)
         {
             var selectedItem = (IListItemData)_listView.selectedItem;
+            if (selectedItem == null) return;
             ItemSelectedEvent?.Invoke(selectedItem);
         }
     }

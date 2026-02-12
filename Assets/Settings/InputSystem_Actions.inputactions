@@ -493,7 +493,7 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "7607c7b6-cd76-4816-beef-bd0341cfe950",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -987,6 +987,34 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Global",
+            "id": "ddd7993d-9287-47b9-9274-3dfc2ae3ccde",
+            "actions": [
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "c5abfce0-38fc-442d-9008-e03fe37c24aa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "cf8fb34c-f327-4b95-b6b4-19fd79c7efad",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Touch;Gamepad;Joystick;XR",
+                    "action": "Restart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Scenes.Simulation.Scripts;
 using UnityEngine;
 using Utils;
+using Assert = UnityEngine.Assertions.Assert;
+using Enumerable = System.Linq.Enumerable;
 using Random = UnityEngine.Random;
 
 namespace Gameplay
@@ -12,6 +14,8 @@ namespace Gameplay
         const string MissionStateKey = "lastMissionState";
         const string MissionNameKey = "missionName";
         const string MissionEventKey = "missionEvent";
+
+        const string MissionPath = "MissionData/Bengt Scenarios/Missions";
 
         readonly CSVLogger _csvLogger;
 
@@ -23,7 +27,7 @@ namespace Gameplay
         {
             _maxMissions = maxMissions;
 
-            _missions.AddRange(Resources.LoadAll<MissionSo>("MissionData/Bengt Scenarios/Missions"));
+            _missions.AddRange(Resources.LoadAll<MissionSo>(MissionPath));
 
             _csvLogger = csvLogger;
             _csvLogger.RegistrationEvent += RegisterMessages;
@@ -49,15 +53,24 @@ namespace Gameplay
 
         void OnMissionChange(MissionSo mission)
         {
-            _currentMission = mission;
+            _currentMission = queue.Find(timedMission => mission == timedMission);
+            _currentMission.Start();
         }
 
         public bool TryAddMission()
         {
             if (queue.Count >= _maxMissions) return false;
 
-            queue.Add(GetRandomMission());
-            GameplayGlobals.missionQueueUpdateEvent?.Invoke(queue);
+            MissionSo nextMission;
+            do
+            {
+                nextMission = GetRandomMission();
+            } while (queue.Contains(nextMission));
+
+            nextMission.Load();
+            queue.Add(nextMission);
+
+            GameplayGlobals.missionQueueUpdateEvent?.Invoke(Enumerable.ToList(Enumerable.Cast<MissionSo>(queue)));
             return true;
         }
 
@@ -67,20 +80,24 @@ namespace Gameplay
             if (!queue.Contains(mission)) return false;
 
             queue.Remove(mission);
-            GameplayGlobals.missionQueueUpdateEvent?.Invoke(queue);
+            GameplayGlobals.missionQueueUpdateEvent?.Invoke(Enumerable.ToList(Enumerable.Cast<MissionSo>(queue)));
             return true;
         }
 
         MissionSo GetRandomMission()
         {
-            return _missions[Random.Range(0, _missions.Count)];
+            var mission = _missions[Random.Range(0, _missions.Count)];
+            Assert.IsNotNull(mission);
+            return mission;
         }
 
         void OnMissionSubmitted(MissionSubState missionSubState)
         {
             _csvLogger.TryLog(MissionStateKey, _currentMission.Complete(missionSubState) ? "success" : "failed");
-
             TryRemoveMission(_currentMission);
+
+            _csvLogger.TryLog(MissionStateKey, "");
+
             _currentMission = null;
             GameplayGlobals.missionCompletedEvent?.Invoke();
         }

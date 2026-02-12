@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c62931c64ebef214b9946ec5767f3760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.NewGameManager
-  mode: 1
+  mode: 0
   gameSpeedEasy: 10
   gameSpeedHard: 5
   maxMissions: 5

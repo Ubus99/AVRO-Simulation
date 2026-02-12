@@ -4,23 +4,26 @@ using UnityEngine.InputSystem;
 using Utils;
 using Utils.Objects;
 
-public class HumanInputObserver : MonoBehaviour
+namespace Scenes.Simulation.Scripts
 {
-    const string PointerPositionKey = "PointerPosition";
-    CSVLogger _csvLogger;
-
-    void Start()
+    public class HumanInputObserver : MonoBehaviour
     {
-        if (!ServiceLocator.instance.TryGet(out _csvLogger))
+        const string PointerPositionKey = "PointerPosition";
+        CSVLogger _csvLogger;
+
+        void Start()
         {
-            throw new NullReferenceException("Could not find service locator");
+            if (!ServiceLocator.instance.TryGet(out _csvLogger))
+            {
+                throw new NullReferenceException("Could not find service locator");
+            }
+            _csvLogger.RegistrationEvent += () => { _csvLogger.TryRegister(PointerPositionKey); };
         }
-        _csvLogger.RegistrationEvent += () => { _csvLogger.TryRegister(PointerPositionKey); };
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        _csvLogger.TryLog(PointerPositionKey, Pointer.current.position.ReadValue().ToString());
+        // Update is called once per frame
+        void Update()
+        {
+            _csvLogger.TryLog(PointerPositionKey, Pointer.current.position.ReadValue().ToString());
+        }
     }
 }

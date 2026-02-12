@@ -27,7 +27,8 @@ namespace Gameplay
 
         public static Input currentInput = Input.Mouse;
         public static Severity currentSeverity = Severity.Easy;
-
+        public static int currentID = 0;
+        
         // mission events
         public static Action<MissionSo> switchMissionEvent;
         public static Action<IList<MissionSo>> missionQueueUpdateEvent;

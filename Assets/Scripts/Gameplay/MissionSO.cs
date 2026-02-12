@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gameplay;
+using Scenes.Simulation.Scripts;
 using Scenes.Simulation.UI.ListItem;
 using UI.Icons;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Scenes.Simulation.Scripts
+namespace Gameplay
 {
     [CreateAssetMenu(menuName = "missions/Mission")]
     public class MissionSo : ScriptableObject, IListItemData
@@ -31,6 +31,10 @@ namespace Scenes.Simulation.Scripts
         Texture2D map;
 
         IconAtlas _icons;
+
+        float _timeEnd;
+        float _timeLoaded;
+        float _timeStart;
 
         public List<MissionSubState> options
         {
@@ -144,8 +148,25 @@ namespace Scenes.Simulation.Scripts
             }
         }
 
-        public bool Complete(MissionSubState missionSubState)
+        public void Start()
         {
+            _timeStart = Time.timeSinceLevelLoad;
+        }
+
+        public void Load()
+        {
+            _timeLoaded = Time.timeSinceLevelLoad;
+        }
+
+        public virtual bool Complete(MissionSubState missionSubState)
+        {
+            _timeEnd = Time.timeSinceLevelLoad;
+            var timeToComplete = _timeEnd - _timeStart;
+            var timeToStart = _timeStart - _timeLoaded;
+            var totalTime = timeToComplete + timeToStart;
+            Debug.Log($"mission {name} submitted. tts: {timeToStart}, ttc: {timeToComplete}, ttt: {totalTime}");
+
+
             var idx = subStates.IndexOf(missionSubState);
             if (idx == correctSubState)
             {
