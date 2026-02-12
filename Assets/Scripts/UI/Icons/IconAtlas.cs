@@ -16,10 +16,19 @@ namespace UI.Icons
         [SerializeField]
         SerializedDictionary<string, VectorImage> cache = new();
 
+        bool _isRebuilt;
+
         public VectorImage this[string key]
         {
             get
             {
+                // ensure has been build
+                if (cache.Count == 0 && !_isRebuilt)
+                {
+                    Build();
+                    _isRebuilt = true;
+                }
+
                 cache.TryGetValue(key, out var vi);
                 return vi;
             }
@@ -38,8 +47,10 @@ namespace UI.Icons
 #if UNITY_EDITOR
         void OnValidate()
         {
-            if (!string.IsNullOrEmpty(resourcesFolder))
-                Build();
+            if (string.IsNullOrEmpty(resourcesFolder)) return;
+
+            Build();
+            IconAtlasRegistry.Register(this);
         }
 #endif
 

@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -5,37 +6,42 @@ using UnityEngine.SceneManagement;
 
 namespace Scenes.Bootstrap
 {
+    [ExecuteAlways]
     public class BootstrapHelper : MonoBehaviour
     {
+        const string BootstrapScenePath = "Assets/Scenes/Bootstrap/BootstrapScene.unity";
+
         [SerializeField]
         SceneAsset sceneToLoad;
 
         string _targetPath;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             _targetPath = AssetDatabase.GetAssetPath(sceneToLoad);
 
-            CloseAllScenes();
+            if (Application.isPlaying)
+            {
+                BootstrapPlayer();
+            }
+            else
+            {
+                BootstrapEditor();
+            }
+        }
+
+        void BootstrapEditor()
+        {
+            MySceneManager.CloseAllScenes(BootstrapScenePath);
             EditorSceneManager.OpenScene(_targetPath, OpenSceneMode.Additive);
         }
 
-        void OnValidate()
+        void BootstrapPlayer()
         {
-            Start();
-        }
+            var gos = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var go in gos) DontDestroyOnLoad(go); // mark bootstrap scene save
 
-        void CloseAllScenes()
-        {
-            var count = SceneManager.sceneCount;
-
-            for (var i = count - 1; i >= 0; i--)
-            {
-                var scene = SceneManager.GetSceneAt(i);
-                if (scene.path == _targetPath) continue;
-                EditorSceneManager.CloseScene(scene, true);
-            }
+            SceneManager.LoadScene(Path.GetFileNameWithoutExtension(_targetPath));
         }
     }
 }

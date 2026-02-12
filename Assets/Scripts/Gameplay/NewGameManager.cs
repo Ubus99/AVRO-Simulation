@@ -10,6 +10,9 @@ namespace Gameplay
     public class NewGameManager : MonoBehaviour
     {
         [SerializeField]
+        bool simulationStarted;
+
+        [SerializeField]
         float gameSpeed = 5;
 
         [SerializeField]
@@ -28,6 +31,8 @@ namespace Gameplay
         {
             _logger = Logger.instance;
             _logger.Init();
+
+            GameplayEvents.startSimulationEvent += StartSimulationEvent;
         }
 
         void Start()
@@ -39,18 +44,31 @@ namespace Gameplay
 
             _missionManager = new MissionManager(_csvLogger, maxMissions);
             _csvLogger.RestartLogging(DateTime.Now.ToString("dd-MM-yyyy_HH-mm"));
-
-            _missionManager.SetNextOrRandom();
         }
 
         void FixedUpdate()
         {
-            if (!(Time.timeSinceLevelLoad - _lastMissionCreationTime > gameSpeed) ||
-                _missionManager.queue.Count >= maxMissions)
-                return;
+            UpdateMissionQueue();
+        }
 
-            _lastMissionCreationTime = Time.timeSinceLevelLoad;
-            _missionManager.TryAddMission();
+        void UpdateMissionQueue()
+        {
+            if (!simulationStarted) return;
+
+            var timeSinceLastMissionCreation = Time.timeSinceLevelLoad - _lastMissionCreationTime;
+            if (!(timeSinceLastMissionCreation > gameSpeed)) return;
+
+            if (_missionManager.TryAddMission())
+            {
+                //only update if mission was indeed added
+                _lastMissionCreationTime = Time.timeSinceLevelLoad;
+            }
+        }
+
+        void StartSimulationEvent(int id, GameplayEvents.Input inputMethod, GameplayEvents.Severity severity)
+        {
+            simulationStarted = true;
+            _missionManager.SetNextOrRandom();
         }
     }
 }
