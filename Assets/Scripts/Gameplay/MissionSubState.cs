@@ -37,6 +37,7 @@ namespace Scenes.Simulation.Scripts
         public Texture2D mainTexture;
         public AdsAction actionName;
         public OddChange actionDescription;
+        public bool isCorrect;
 
         public VectorImage leftImage
         {

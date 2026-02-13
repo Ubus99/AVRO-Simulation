@@ -15,14 +15,20 @@ namespace Scenes.Simulation.UI.CarView
         }
 
         readonly ContentController _contentController;
+        readonly FocusController _focusController;
         readonly VisualElement _selfRoot;
 
         public CarViewController(VisualElement root, VisualTreeAsset itemTemplate)
         {
             _selfRoot = root;
+            _focusController = root.focusController;
 
             actionList = new ListController<MissionSubState>(root, itemTemplate, "actions-list");
             carList = new ListController<MissionSo>(root, itemTemplate, "car-list");
+
+            //actionList.RegisterNavigation(NavigationMoveEvent.Direction.Left, carList);
+            //actionList.RegisterNavigation(NavigationMoveEvent.Direction.Right, actionList);
+
             _contentController = new ContentController(root);
             confirmButton = root.Q<Button>("confirm-button");
         }
@@ -78,6 +84,15 @@ namespace Scenes.Simulation.UI.CarView
             if (!subState.mainTexture) return;
 
             _contentController.SetMainImage(subState.mainTexture);
+        }
+
+        public void JumpToItem(int idx)
+        {
+            var e = _focusController.focusedElement as VisualElement;
+            if (e is ListView list)
+            {
+                list.SetSelection(idx);
+            }
         }
     }
 }

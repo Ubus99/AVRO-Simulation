@@ -12,17 +12,8 @@ namespace Gameplay
     [CreateAssetMenu(menuName = "missions/Mission")]
     public class MissionSo : ScriptableObject, IListItemData
     {
-        static readonly MissionSubState EmergencyState = new()
-        {
-            actionName = MissionSubState.AdsAction.Stop,
-            actionDescription = MissionSubState.OddChange.NoValidPaths
-        };
-
         [SerializeField]
         Texture2D route;
-
-        [SerializeField]
-        int correctSubState;
 
         [SerializeField]
         List<MissionSubState> subStates = new();
@@ -43,17 +34,8 @@ namespace Gameplay
 
         void OnValidate()
         {
-            var loader = MissionDataLoader.instance;
-            if (loader == null)
-            {
-                Debug.LogWarning("MissionDataLoader.instance is null");
-                return;
-            }
-            var images = loader.textures
-                .Where(kvp => kvp.Key.StartsWith(name)) // belongs to the same mission
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
+            SyncLists();
 
-            SyncLists(images);
             _icons = IconAtlasRegistry.Get("lucide");
             if (!_icons)
             {
@@ -93,8 +75,18 @@ namespace Gameplay
             return route;
         }
 
-        void SyncLists(Dictionary<string, Texture2D> images)
+        public void SyncLists()
         {
+            var loader = MissionDataLoader.instance;
+            if (loader == null)
+            {
+                Debug.LogWarning("MissionDataLoader.instance is null");
+                return;
+            }
+            var images = loader.textures
+                .Where(kvp => kvp.Key.StartsWith(name)) // belongs to the same mission
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
+
             if (images == null) throw new ArgumentNullException(nameof(images));
             if (subStates == null) throw new ArgumentNullException(nameof(subStates));
 
@@ -113,6 +105,7 @@ namespace Gameplay
                 }
             }
 
+            // iterate images and remove those already in use
             for (var i = images.Count - 1; i >= 0; i--)
             {
                 var kvp = images.ElementAt(i);
@@ -136,16 +129,7 @@ namespace Gameplay
                 }
             }
 
-            if (!subStates.Contains(EmergencyState))
-            {
-                subStates.Add(EmergencyState);
-            }
-
-            // update old notation
-            if (correctSubState == -1)
-            {
-                correctSubState = subStates.Count - 1;
-            }
+            subStates = subStates.OrderBy(state => state.mainTexture.name).ToList();
         }
 
         public void Start()
@@ -167,8 +151,7 @@ namespace Gameplay
             Debug.Log($"mission {name} submitted. tts: {timeToStart}, ttc: {timeToComplete}, ttt: {totalTime}");
 
 
-            var idx = subStates.IndexOf(missionSubState);
-            if (idx == correctSubState)
+            if (missionSubState.isCorrect)
             {
                 Debug.Log($"Mission {name} Completed successfully");
                 return true;

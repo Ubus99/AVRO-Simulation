@@ -4,6 +4,7 @@
     --bgColor2: rgb(229, 229, 229);
     --bgColorEmpty: rgb(46, 46, 46);
     --borderColor1: rgb(26, 26, 26);
+    --focusColor: rgb(0, 40, 255);
     color: var(--mainTextColor);
     border-top-color: var(--borderColor1);
     border-bottom-color: var(--borderColor1);

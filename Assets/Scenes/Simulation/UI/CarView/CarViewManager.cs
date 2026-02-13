@@ -4,6 +4,7 @@ using Gameplay;
 using Scenes.Simulation.Scripts;
 using Scenes.Simulation.UI.ListItem;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Utils;
@@ -25,6 +26,8 @@ namespace Scenes.Simulation.UI.CarView
         CarViewController _carViewController;
         CSVLogger _csvLogger;
 
+        InputAction _jumpToAction;
+
         IList<MissionSo> _missions;
 
         void Awake()
@@ -39,6 +42,8 @@ namespace Scenes.Simulation.UI.CarView
                 GameplayGlobals.switchMissionEvent?.Invoke(data as MissionSo);
             };
             _carViewController.confirmButton.clicked += SubmitMission;
+
+            _jumpToAction = InputSystem.actions.FindAction("JumpTo");
         }
 
         void Start()
@@ -56,6 +61,11 @@ namespace Scenes.Simulation.UI.CarView
             _carViewController.ShowNoMissions();
         }
 
+        void Update()
+        {
+            CheckJumpPerformed();
+        }
+
         void OnDisable()
         {
             _carViewController.actionList!.ItemSelectedEvent -= OnSubStateSelected;
@@ -66,11 +76,67 @@ namespace Scenes.Simulation.UI.CarView
             GameplayGlobals.missionQueueUpdateEvent -= OnMissionQueueUpdate;
         }
 
+        void CheckJumpPerformed()
+        {
+            if (!Keyboard.current.ctrlKey.isPressed) return;
+            var i = DigitPressed();
+            if (i == -1) return;
+
+            _carViewController.JumpToItem(i);
+
+            Debug.Log($"Jump to Item {i}");
+        }
+
+        static int DigitPressed()
+        {
+            if (Keyboard.current.digit1Key.wasPressedThisFrame)
+            {
+                return 0;
+            }
+            if (Keyboard.current.digit2Key.wasPressedThisFrame)
+            {
+                return 1;
+            }
+            if (Keyboard.current.digit3Key.wasPressedThisFrame)
+            {
+                return 2;
+            }
+            if (Keyboard.current.digit4Key.wasPressedThisFrame)
+            {
+                return 3;
+            }
+            if (Keyboard.current.digit5Key.wasPressedThisFrame)
+            {
+                return 4;
+            }
+            if (Keyboard.current.digit6Key.wasPressedThisFrame)
+            {
+                return 5;
+            }
+            if (Keyboard.current.digit7Key.wasPressedThisFrame)
+            {
+                return 6;
+            }
+            if (Keyboard.current.digit8Key.wasPressedThisFrame)
+            {
+                return 7;
+            }
+            if (Keyboard.current.digit9Key.wasPressedThisFrame)
+            {
+                return 8;
+            }
+            if (Keyboard.current.digit0Key.wasPressedThisFrame)
+            {
+                return 9;
+            }
+            return -1;
+        }
+
         void OnMissionQueueUpdate(IList<MissionSo> missions)
         {
             _missions = missions;
             _carViewController.UpdateMissionList(missions);
-            
+
             if (_carViewController.state == CarViewController.View.EmptyView)
             {
                 _carViewController.ShowMissionAvailable();

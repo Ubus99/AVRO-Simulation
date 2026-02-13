@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Scenes.Simulation.UI.ListItem;
+using UI;
 using UnityEngine.UIElements;
 
 namespace Scenes.Simulation.UI
@@ -37,6 +38,24 @@ namespace Scenes.Simulation.UI
             {
                 _listView.selectionChanged -= OnItemSelected;
             }
+        }
+
+        public void RegisterNavigation(NavigationMoveEvent.Direction direction, VisualElement element)
+        {
+            _listView.RegisterCallback<
+                NavigationMoveEvent,
+                (NavigationMoveEvent.Direction direction,
+                VisualElement element)>(
+            GUIUtils.SwitchFocusTo,
+            (direction, element));
+        }
+
+        public void RegisterNavigation<TOther>(
+            NavigationMoveEvent.Direction direction,
+            ListController<TOther> element)
+            where TOther : IListItemData
+        {
+            RegisterNavigation(direction, element._listView);
         }
 
         public event Action<IListItemData> ItemSelectedEvent;

@@ -48,5 +48,15 @@ namespace UI
                 else ve.RemoveFromClassList("hidden");
             }
         }
+
+        public static void SwitchFocusTo(NavigationMoveEvent evt,
+            (NavigationMoveEvent.Direction direction, VisualElement element) data)
+        {
+            if (evt.direction != data.direction)
+                return;
+
+            evt.StopPropagation();
+            data.element.Focus();
+        }
     }
 }

@@ -96,8 +96,6 @@ namespace Gameplay
             _csvLogger.TryLog(MissionStateKey, _currentMission.Complete(missionSubState) ? "success" : "failed");
             TryRemoveMission(_currentMission);
 
-            _csvLogger.TryLog(MissionStateKey, "");
-
             _currentMission = null;
             GameplayGlobals.missionCompletedEvent?.Invoke();
         }

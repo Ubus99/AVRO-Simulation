@@ -1,5 +1,4 @@
 ﻿using Gameplay;
-using Scenes.Simulation.Scripts;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -15,10 +14,6 @@ namespace Editor
         static void SubStateSection(VisualElement root, SerializedProperty correctStateProperty,
             SerializedProperty listProperty)
         {
-            var correctStateField = new PropertyField();
-            correctStateField.BindProperty(correctStateProperty);
-            root.Add(correctStateField);
-
             root.Add(new ListView
             {
                 showFoldoutHeader = true,
@@ -113,6 +108,12 @@ namespace Editor
             var correctStateProperty = serializedObject.FindProperty("correctSubState");
             var subStateListProperty = serializedObject.FindProperty("subStates");
 
+            var reloadButton = new Button
+            {
+                text = "Reload"
+            };
+            reloadButton.clicked += () => { (target as MissionSo)?.SyncLists(); };
+            root.Add(reloadButton);
             AssignableImageSection(root, mapImageProperty);
             AssignableImageSection(root, routeImageProperty);
             SubStateSection(root, correctStateProperty, subStateListProperty);
