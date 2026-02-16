@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Scenes.Simulation.Scripts;
 
 namespace Gameplay
 {
@@ -28,7 +27,7 @@ namespace Gameplay
         public static Input currentInput = Input.Mouse;
         public static Severity currentSeverity = Severity.Easy;
         public static int currentID = 0;
-        
+
         // mission events
         public static Action<MissionSo> switchMissionEvent;
         public static Action<IList<MissionSo>> missionQueueUpdateEvent;
@@ -38,5 +37,10 @@ namespace Gameplay
         // game events
         public static Action<Scenes> switchSceneEvent;
         public static Action<int, Input, Severity> setGameMode;
+
+        public static string logName
+        {
+            get { return $"{currentID}_{currentInput.ToString()}_{currentSeverity.ToString()}"; }
+        }
     }
 }

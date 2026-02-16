@@ -2,8 +2,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using Utils;
-using Utils.Objects;
 using Logger = Utils.Logger;
 
 namespace Gameplay
@@ -23,7 +21,6 @@ namespace Gameplay
         [SerializeField]
         int maxMissions = 10;
 
-        CSVLogger _csvLogger;
 
         float _currentGameSpeed;
 
@@ -36,7 +33,7 @@ namespace Gameplay
         InputAction _restartAction;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Awake()
+        void Start()
         {
             _logger = Logger.instance;
             _logger.Init();
@@ -48,21 +45,18 @@ namespace Gameplay
 
             GameplayGlobals.setGameMode += SetGameMode;
             GameplayGlobals.switchSceneEvent += SwitchScene;
-        }
 
-        void Start()
-        {
-            if (!ServiceLocator.instance.TryGet(out _csvLogger))
-            {
-                throw new Exception("Could not find CSV Logger");
-            }
-
-            _missionManager = new MissionManager(_csvLogger, maxMissions);
+            _missionManager = new MissionManager(maxMissions);
         }
 
         void FixedUpdate()
         {
             UpdateMissionQueue();
+        }
+
+        void OnDisable()
+        {
+            _missionManager.Dispose();
         }
 
         void RestartLogging()
@@ -73,7 +67,6 @@ namespace Gameplay
 
             _logger.Dispose();
             _logger.Init(fileName);
-            _csvLogger.RestartLogging(fileName);
 
         }
 

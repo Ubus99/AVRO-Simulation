@@ -7,6 +7,7 @@ using UI.Icons;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Utils;
 
 namespace Gameplay
 {
@@ -24,9 +25,7 @@ namespace Gameplay
 
         IconAtlas _icons;
 
-        float _timeEnd;
-        float _timeLoaded;
-        float _timeStart;
+        public MissionRecord record { get; } = new();
 
         public List<MissionSubState> options
         {
@@ -89,22 +88,17 @@ namespace Gameplay
 
         public void Start()
         {
-            _timeStart = Time.timeSinceLevelLoad;
+            record.TimeStart = Time.timeSinceLevelLoad;
         }
 
         public void Load()
         {
-            _timeLoaded = Time.timeSinceLevelLoad;
+            record.TimeLoaded = Time.timeSinceLevelLoad;
         }
 
-        public virtual bool Complete(MissionSubState missionSubState)
+        public bool Complete(MissionSubState missionSubState)
         {
-            _timeEnd = Time.timeSinceLevelLoad;
-            var timeToComplete = _timeEnd - _timeStart;
-            var timeToStart = _timeStart - _timeLoaded;
-            var totalTime = timeToComplete + timeToStart;
-            Debug.Log(
-            $"mission {name} submitted. tts: {timeToStart}, ttc: {timeToComplete}, ttt: {totalTime}, correct: {missionSubState.isCorrect}");
+            record.TimeEnd = Time.timeSinceLevelLoad;
 
             return missionSubState.isCorrect;
         }
@@ -143,6 +137,30 @@ namespace Gameplay
                 var assetPath = Path.Combine(@"Assets\Resources", ownPath, $"{image.name}.asset").Replace("\\", "/");
                 AssetDatabase.CreateAsset(ss, assetPath);
                 AssetDatabase.SaveAssets();
+            }
+        }
+
+        public class MissionRecord : BaseRecord
+        {
+            public string MissionName;
+            public float TimeEnd;
+            public float TimeLoaded;
+            public float TimeStart;
+
+
+            public float timeToComplete
+            {
+                get { return TimeEnd - TimeStart; }
+            }
+
+            public float timeToStart
+            {
+                get { return TimeStart - TimeLoaded; }
+            }
+
+            public float totalTime
+            {
+                get { return timeToComplete + timeToStart; }
             }
         }
     }

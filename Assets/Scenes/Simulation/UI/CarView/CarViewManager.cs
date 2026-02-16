@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Gameplay;
 using Scenes.Simulation.UI.ListItem;
@@ -7,14 +6,11 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Utils;
-using Utils.Objects;
 
 namespace Scenes.Simulation.UI.CarView
 {
     public class CarViewManager : MonoBehaviour
     {
-        const string MissionStateKey = "SubState";
-
         [SerializeField]
         VectorImage motivationalImage;
 
@@ -23,7 +19,7 @@ namespace Scenes.Simulation.UI.CarView
         VisualTreeAsset itemTemplate;
 
         CarViewController _carViewController;
-        CSVLogger _csvLogger;
+        CSVLogger<UIRecord> _csvLogger;
 
         InputAction _jumpToAction;
 
@@ -31,6 +27,8 @@ namespace Scenes.Simulation.UI.CarView
 
         void Awake()
         {
+            _csvLogger = new CSVLogger<UIRecord>(GameplayGlobals.logName);
+
             var uiDocument = GetComponent<UIDocument>();
             var root = uiDocument.rootVisualElement;
 
@@ -43,16 +41,11 @@ namespace Scenes.Simulation.UI.CarView
             _carViewController.confirmButton.clicked += SubmitMission;
 
             _jumpToAction = InputSystem.actions.FindAction("JumpTo");
+
         }
 
         void Start()
         {
-            if (!ServiceLocator.instance.TryGet(out _csvLogger))
-            {
-                throw new Exception("Could not find CSV logger");
-            }
-            _csvLogger.RegistrationEvent += () => _csvLogger.TryRegister(MissionStateKey);
-
             GameplayGlobals.switchMissionEvent += OnSwitchToMission;
             GameplayGlobals.missionCompletedEvent += OnMissionCompleted;
             GameplayGlobals.missionQueueUpdateEvent += OnMissionQueueUpdate;
@@ -131,7 +124,10 @@ namespace Scenes.Simulation.UI.CarView
 
             if (!subState) return;
             Debug.Log($"switching to sub-state: {subState.actionName}");
-            _csvLogger.TryLog(MissionStateKey, subState.actionName.ToString());
+        }
+
+        class UIRecord : BaseRecord
+        {
         }
     }
 }

@@ -1,29 +1,36 @@
-using System;
+using Gameplay;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utils;
-using Utils.Objects;
 
 namespace Scenes.Simulation.Scripts
 {
     public class HumanInputObserver : MonoBehaviour
     {
-        const string PointerPositionKey = "PointerPosition";
-        CSVLogger _csvLogger;
+        CSVLogger<HumanInputRecord> _csvLogger;
 
         void Start()
         {
-            if (!ServiceLocator.instance.TryGet(out _csvLogger))
-            {
-                throw new NullReferenceException("Could not find service locator");
-            }
-            _csvLogger.RegistrationEvent += () => { _csvLogger.TryRegister(PointerPositionKey); };
+            _csvLogger = new CSVLogger<HumanInputRecord>(GameplayGlobals.logName);
         }
 
         // Update is called once per frame
         void Update()
         {
-            _csvLogger.TryLog(PointerPositionKey, Pointer.current.position.ReadValue().ToString());
+            _csvLogger.Log(new HumanInputRecord
+            {
+                MousePosition = Pointer.current.position.ReadValue()
+            });
+        }
+
+        void OnDisable()
+        {
+            _csvLogger.Dispose();
+        }
+
+        class HumanInputRecord : BaseRecord
+        {
+            public Vector2 MousePosition;
         }
     }
 }

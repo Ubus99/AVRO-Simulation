@@ -1,120 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using CsvHelper;
 using UnityEngine;
-using Utils.Objects;
 
 namespace Utils
 {
-    public class CSVLogger : MonoBehaviour
+    public class CSVLogger<T> : IDisposable where T : BaseRecord
     {
-        readonly DataTable _data = new() { Columns = { "timestamp" } };
-        readonly Dictionary<string, string> _frameData = new();
-        bool _empty;
+#if UNITY_EDITOR
+        readonly string _logBasePath = Path.Combine(Application.dataPath, "logs");
+#else
+        readonly string _logBasePath = Path.Combine(Application.persistentDataPath, "logs");
+#endif
+
+        readonly CsvWriter _csv;
+        StreamWriter _streamWriter;
         string _fileName;
 
-#if UNITY_EDITOR
-        static readonly string LogBasePath = Path.Combine(Application.dataPath, "logs");
-#else
-        static readonly string LogBasePath = Path.Combine(Application.persistentDataPath, "logs");
-#endif
+        public CSVLogger(string fileName)
+        {
+            _fileName = $"{fileName}_{DateTime.Now:yyyyMMdd-HHmm}_{typeof(T).Name}";
+            Directory.CreateDirectory(_logBasePath);
+
+            _streamWriter = new StreamWriter(fullPath);
+            _csv = new CsvWriter(_streamWriter, CultureInfo.InvariantCulture);
+        }
 
         string fullPath
         {
-            get { return Path.Join(LogBasePath, $"{_fileName}.csv"); }
+            get { return Path.Join(_logBasePath, $"{_fileName}.csv"); }
         }
 
-        void Awake()
+        public void Rename(string newName)
         {
-            Directory.CreateDirectory(LogBasePath);
-
-            ServiceLocator.instance.TryRegister<CSVLogger>(this);
-            enabled = false;
-        }
-
-        void LateUpdate()
-        {
-            if (_empty) return;
-
-            // ensure only logs when there is data
-            _frameData["timestamp"] = DateTime.Now.ToString("HH:mm:ss:ffff");
-            JoinDataTable(_data, _frameData);
-            // remove old data
-            foreach (var k in _frameData.Keys.ToList())
-            {
-                _frameData[k] = null;
-            }
-            _empty = true;
-
-            using var writer = new StreamWriter(fullPath);
-            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-
-            var columnNames = _data.Columns.Cast<DataColumn>().Select(column => column.ColumnName).ToArray();
-            foreach (var colName in columnNames)
-            {
-                csv.WriteField(colName);
-            }
-            csv.NextRecord();
-
-            foreach (DataRow row in _data.Rows)
-            {
-                var fields = row.ItemArray.Select(field => field.ToString());
-                foreach (var field in fields)
-                {
-                    csv.WriteField(field);
-                }
-                csv.NextRecord();
-            }
-        }
-
-        static void JoinDataTable(DataTable table, Dictionary<string, string> dictionary)
-        {
-            var row = table.NewRow();
-            foreach (var kvp in dictionary)
-            {
-                row[kvp.Key] = kvp.Value;
-            }
-            table.Rows.Add(row);
-        }
-
-        public void RestartLogging(string newName)
-        {
+            _streamWriter.Dispose();
+            File.Move(fullPath, Path.Join(_logBasePath, $"{newName}.csv"));
             _fileName = newName;
-            _data.Clear();
-
-            RegistrationEvent?.Invoke();
-
-            enabled = true;
+            _streamWriter = new StreamWriter(fullPath);
         }
 
-        public bool TryRegister(string key)
+        public void Dispose()
         {
-            if (!_frameData.TryAdd(key, null))
-                return false;
-
-            _data.Columns.Add(key, typeof(string));
-            return true;
+            _streamWriter.Dispose();
+            _csv.Dispose();
         }
 
-        public bool TryRegister(string[] keys)
+        public void Log(T record)
         {
-            return keys.All(key => _frameData.TryAdd(key, null));
+            _csv.WriteRecord(record);
+            _csv.NextRecord();
         }
+    }
 
-        public bool TryLog(string key, string message)
+    public class BaseRecord
+    {
+        public string timestamp
         {
-            if (!_frameData.ContainsKey(key))
-                return false;
-
-            _frameData[key] = message;
-            _empty = false;
-            return true;
+            get { return DateTime.Now.ToString("HH:mm:ss:ffff"); }
         }
-
-        public event Action RegistrationEvent;
     }
 }

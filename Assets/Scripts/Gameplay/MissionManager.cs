@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Scenes.Simulation.Scripts;
 using UnityEngine;
 using Utils;
 using Assert = UnityEngine.Assertions.Assert;
@@ -11,26 +10,19 @@ namespace Gameplay
 {
     public class MissionManager : IDisposable
     {
-        const string MissionStateKey = "lastMissionState";
-        const string MissionNameKey = "missionName";
-        const string MissionEventKey = "missionEvent";
-
         const string MissionPath = "MissionData/Bengt Scenarios/Missions";
 
-        readonly CSVLogger _csvLogger;
+        readonly CSVLogger<MissionSo.MissionRecord> _csvLogger = new(GameplayGlobals.logName);
 
         readonly int _maxMissions;
         readonly List<MissionSo> _missions = new();
         MissionSo _currentMission;
 
-        public MissionManager(CSVLogger csvLogger, int maxMissions)
+        public MissionManager(int maxMissions)
         {
             _maxMissions = maxMissions;
 
             _missions.AddRange(Resources.LoadAll<MissionSo>(MissionPath));
-
-            _csvLogger = csvLogger;
-            _csvLogger.RegistrationEvent += RegisterMessages;
 
             GameplayGlobals.switchMissionEvent += OnMissionChange;
             GameplayGlobals.missionSubmittedEvent += OnMissionSubmitted;
@@ -40,15 +32,9 @@ namespace Gameplay
 
         public void Dispose()
         {
+            _csvLogger.Dispose();
             GameplayGlobals.switchMissionEvent -= OnMissionChange;
             GameplayGlobals.missionSubmittedEvent -= OnMissionSubmitted;
-        }
-
-        void RegisterMessages()
-        {
-            _csvLogger.TryRegister(MissionNameKey);
-            _csvLogger.TryRegister(MissionStateKey);
-            _csvLogger.TryRegister(MissionEventKey);
         }
 
         void OnMissionChange(MissionSo mission)
@@ -93,7 +79,17 @@ namespace Gameplay
 
         void OnMissionSubmitted(MissionSubState missionSubState)
         {
-            _csvLogger.TryLog(MissionStateKey, _currentMission.Complete(missionSubState) ? "success" : "failed");
+            _currentMission.Complete(missionSubState);
+            Debug.Log(
+            $"mission {_currentMission.name} submitted. " +
+            $"tts: {_currentMission.record.timeToStart}, " +
+            $"ttc: {_currentMission.record.timeToComplete}, " +
+            $"tt: {_currentMission.record.totalTime}, " +
+            $"correct: {missionSubState.isCorrect}"
+            );
+
+            _csvLogger.Log(_currentMission.record);
+
             TryRemoveMission(_currentMission);
 
             _currentMission = null;
@@ -108,8 +104,6 @@ namespace Gameplay
             _currentMission = queue[0];
 
             GameplayGlobals.switchMissionEvent?.Invoke(_currentMission);
-            _csvLogger.TryLog(MissionNameKey, _currentMission.name);
-            _csvLogger.TryLog(MissionEventKey, "nextMission");
         }
     }
 }

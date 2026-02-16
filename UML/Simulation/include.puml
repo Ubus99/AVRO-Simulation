@@ -1,0 +1,13 @@
+﻿@startuml
+hide empty members
+hide interface
+remove MonoBehaviour
+remove ScriptableObject
+remove VisualTreeAsset
+remove VisualElement
+remove Texture2D
+remove VectorImage
+remove Image
+remove Label
+
+@enduml
