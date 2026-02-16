@@ -172,7 +172,7 @@ namespace Scenes.Simulation.UI.CarView
 
         void OnSubStateSelected(IListItemData obj)
         {
-            var subState = obj as MissionSubState? ?? default;
+            var subState = obj as MissionSubState;
             _carViewController.SwitchToSubState(subState);
 
             Debug.Log($"switching to sub-state: {subState.actionName}");

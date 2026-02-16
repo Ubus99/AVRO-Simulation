@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6ae67ff2074af3b6bcca59833fba76, type: 3}
+  m_Name: W-10_S-1
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.MissionSo
+  route: {fileID: 2800000, guid: efc253fbb0ceb9a49b1a91bb7f433b64, type: 3}
+  subStates:
+  - {fileID: 11400000, guid: 15ae43a808a57c646b6ce2678bd8981e, type: 2}
+  - {fileID: 11400000, guid: c536886386f87fb468fea0ec202f6593, type: 2}
+  - {fileID: 11400000, guid: 6833011535f90ae4d985425fd7b5bf4d, type: 2}
+  map: {fileID: 0}

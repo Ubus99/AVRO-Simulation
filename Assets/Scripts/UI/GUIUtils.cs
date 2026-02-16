@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -57,6 +59,73 @@ namespace UI
 
             evt.StopPropagation();
             data.element.Focus();
+        }
+
+        static void UpdateImage(Image image, GeometryChangedEvent evt)
+        {
+            if (image.image is not Texture2D { width: > 0 } tex)
+                return;
+
+            var targetWidth = evt.newRect.width; // available width
+            var scaledHeight = targetWidth * ((float)tex.height / tex.width);
+            image.style.height = new StyleLength(new Length(scaledHeight, LengthUnit.Pixel));
+        }
+
+        public static void AssignableImageSection(VisualElement root, SerializedProperty imageProperty)
+        {
+            var imageField = new ObjectField
+            {
+                objectType = typeof(Texture2D),
+                allowSceneObjects = false,
+                label = imageProperty.displayName
+            };
+            imageField.BindProperty(imageProperty);
+
+            // draw map
+            var image = new Image
+            {
+                scaleMode = ScaleMode.ScaleToFit,
+                style =
+                {
+                    width = new StyleLength(Length.Percent(100)),
+                    height = new StyleLength(StyleKeyword.Auto),
+                    maxHeight = 256,
+                    flexShrink = 0
+                },
+                image = imageProperty.objectReferenceValue as Texture2D
+            };
+
+            imageField.RegisterValueChangedCallback(_ =>
+                image.image = imageProperty.objectReferenceValue as Texture2D);
+
+            root.RegisterCallback<GeometryChangedEvent, Image>((evt, img) =>
+                UpdateImage(img, evt),
+            image);
+
+            root.Add(imageField);
+            root.Add(image);
+        }
+
+        public static void ImageSection(VisualElement root, SerializedProperty imageProperty)
+        {
+            var routeImage = new Image
+            {
+                scaleMode = ScaleMode.ScaleToFit,
+                style =
+                {
+                    width = new StyleLength(Length.Percent(100)),
+                    height = new StyleLength(StyleKeyword.Auto),
+                    maxHeight = 128,
+                    flexShrink = 0
+                },
+                image = imageProperty.objectReferenceValue as Texture2D
+            };
+
+            root.RegisterCallback<GeometryChangedEvent, Image>((evt, image) =>
+                UpdateImage(image, evt),
+            routeImage);
+
+            root.Add(routeImage);
         }
     }
 }

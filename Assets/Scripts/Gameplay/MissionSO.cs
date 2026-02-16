@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Scenes.Simulation.Scripts;
 using Scenes.Simulation.UI.ListItem;
 using UI.Icons;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -32,10 +33,21 @@ namespace Gameplay
             get { return subStates; }
         }
 
+#if UNITY_EDITOR
+        string ownPath
+        {
+            get
+            {
+                var filePath = AssetDatabase.GetAssetPath(this);
+                var path = Path.GetDirectoryName(filePath);
+                return path?.Replace(@"Assets\Resources\", string.Empty);
+            }
+        }
+
+#endif
+
         void OnValidate()
         {
-            SyncLists();
-
             _icons = IconAtlasRegistry.Get("lucide");
             if (!_icons)
             {
@@ -75,63 +87,6 @@ namespace Gameplay
             return route;
         }
 
-        public void SyncLists()
-        {
-            var loader = MissionDataLoader.instance;
-            if (loader == null)
-            {
-                Debug.LogWarning("MissionDataLoader.instance is null");
-                return;
-            }
-            var images = loader.textures
-                .Where(kvp => kvp.Key.StartsWith(name)) // belongs to the same mission
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
-
-            if (images == null) throw new ArgumentNullException(nameof(images));
-            if (subStates == null) throw new ArgumentNullException(nameof(subStates));
-
-            if (images.Count == 0)
-                subStates.Clear();
-
-            // iterate all exising states
-            for (var i = subStates.Count - 1; i >= 0; i--)
-            {
-                var ss = subStates[i];
-
-                // no matching image
-                if (images.All(kvp => kvp.Value != ss.mainTexture))
-                {
-                    subStates.RemoveAt(i);
-                }
-            }
-
-            // iterate images and remove those already in use
-            for (var i = images.Count - 1; i >= 0; i--)
-            {
-                var kvp = images.ElementAt(i);
-
-                if (subStates.Any(state => state.mainTexture == kvp.Value))
-                {
-                    images.Remove(kvp.Key);
-                }
-            }
-
-            // Add new entries for any remaining sprites with no struct
-            foreach (var kv in images)
-            {
-                if (kv.Key == name)
-                {
-                    route = kv.Value;
-                }
-                else
-                {
-                    subStates.Add(new MissionSubState { mainTexture = kv.Value });
-                }
-            }
-
-            subStates = subStates.OrderBy(state => state.mainTexture.name).ToList();
-        }
-
         public void Start()
         {
             _timeStart = Time.timeSinceLevelLoad;
@@ -158,6 +113,38 @@ namespace Gameplay
             }
             Debug.Log($"Mission {name} Completed unsuccessfully");
             return false;
+        }
+
+
+        public void SyncLists()
+        {
+
+            var states = Resources.LoadAll<MissionSubState>(ownPath).ToList();
+
+            if (!states.Any()) return;
+            subStates.Clear();
+            subStates.AddRange(states);
+
+            EditorUtility.SetDirty(this);
+        }
+
+        public void GenerateStates()
+        {
+            var states = Resources.LoadAll<MissionSubState>(ownPath).ToList();
+            var images = Resources.LoadAll<Texture2D>(ownPath).ToList();
+
+            foreach (var image in images)
+            {
+                if (!image.name.EndsWith("F") && !image.name.EndsWith("C")) continue;
+                if (states.Any(state => state.name == image.name)) continue;
+
+                var ss = CreateInstance<MissionSubState>();
+                ss.mainTexture = image;
+
+                var assetPath = Path.Combine(@"Assets\Resources", ownPath, $"{image.name}.asset").Replace("\\", "/");
+                AssetDatabase.CreateAsset(ss, assetPath);
+                AssetDatabase.SaveAssets();
+            }
         }
     }
 }

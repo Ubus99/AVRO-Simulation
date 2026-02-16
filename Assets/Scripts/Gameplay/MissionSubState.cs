@@ -1,13 +1,14 @@
 ﻿using System;
 using Scenes.Simulation.UI.ListItem;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Utils;
 
-namespace Scenes.Simulation.Scripts
+namespace Gameplay
 {
-    [Serializable]
-    public struct MissionSubState : IListItemData
+    [CreateAssetMenu(menuName = "missions/SubState")]
+    public class MissionSubState : ScriptableObject, IListItemData
     {
         public enum AdsAction
         {
@@ -39,6 +40,19 @@ namespace Scenes.Simulation.Scripts
         public OddChange actionDescription;
         public bool isCorrect;
 
+#if UNITY_EDITOR
+        void OnValidate()
+        {
+            if (mainTexture)
+            {
+                EditorApplication.delayCall += () =>
+                    AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(this), mainTexture.name);
+
+                isCorrect = mainTexture.name.EndsWith("C");
+            }
+        }
+#endif
+
         public VectorImage leftImage
         {
             get { return null; }
@@ -64,12 +78,6 @@ namespace Scenes.Simulation.Scripts
             get { return 80; }
         }
 
-        public bool Equals(MissionSubState other)
-        {
-            return Equals(mainTexture, other.mainTexture) && actionName == other.actionName &&
-                   actionDescription == other.actionDescription;
-        }
-
         public bool Equals(IListItemData other)
         {
             return other != null &&
@@ -77,6 +85,12 @@ namespace Scenes.Simulation.Scripts
                    supportText == other.supportText &&
                    leftImage == other.leftImage &&
                    rightImage == other.rightImage;
+        }
+
+        public bool Equals(MissionSubState other)
+        {
+            return Equals(mainTexture, other.mainTexture) && actionName == other.actionName &&
+                   actionDescription == other.actionDescription;
         }
 
         public override bool Equals(object obj)

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6ae67ff2074af3b6bcca59833fba76, type: 3}
+  m_Name: W-15_S-1
+  m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.MissionSo
+  route: {fileID: 2800000, guid: cca3082f6ca6eb743aa681c9a20c4394, type: 3}
+  subStates:
+  - {fileID: 11400000, guid: cd5f91b565c5b0a4d9d3f4de818ed782, type: 2}
+  - {fileID: 11400000, guid: dbf1197d4100c0f4f84b5c061ba02c41, type: 2}
+  map: {fileID: 2800000, guid: 1c85277e0408dda448e96aa697d2f5fc, type: 3}
