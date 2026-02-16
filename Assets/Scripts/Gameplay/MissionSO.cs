@@ -103,22 +103,15 @@ namespace Gameplay
             var timeToComplete = _timeEnd - _timeStart;
             var timeToStart = _timeStart - _timeLoaded;
             var totalTime = timeToComplete + timeToStart;
-            Debug.Log($"mission {name} submitted. tts: {timeToStart}, ttc: {timeToComplete}, ttt: {totalTime}");
+            Debug.Log(
+            $"mission {name} submitted. tts: {timeToStart}, ttc: {timeToComplete}, ttt: {totalTime}, correct: {missionSubState.isCorrect}");
 
-
-            if (missionSubState.isCorrect)
-            {
-                Debug.Log($"Mission {name} Completed successfully");
-                return true;
-            }
-            Debug.Log($"Mission {name} Completed unsuccessfully");
-            return false;
+            return missionSubState.isCorrect;
         }
 
 
         public void SyncLists()
         {
-
             var states = Resources.LoadAll<MissionSubState>(ownPath).ToList();
 
             if (!states.Any()) return;
