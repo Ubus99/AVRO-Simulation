@@ -65,6 +65,7 @@ namespace Scenes.Simulation.UI.CarView
         {
             _contentController.SwitchView(View.EmptyView);
             carList.ClearSelection();
+            actionList.Clear();
             confirmButton.SetEnabled(false);
 
             state = View.EmptyView;
@@ -74,6 +75,7 @@ namespace Scenes.Simulation.UI.CarView
         {
             _contentController.SwitchView(View.NewView);
             carList.ClearSelection();
+            actionList.Clear();
             confirmButton.SetEnabled(false);
 
             state = View.NewView;

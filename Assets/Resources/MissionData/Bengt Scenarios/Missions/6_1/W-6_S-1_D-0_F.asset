@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81cb60999b114be68c5199eeaa43b9b7, type: 3}
   m_Name: W-6_S-1_D-0_F
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.MissionSubState
-  mainTexture: {fileID: 2800000, guid: ab84eab1e875ec441911eaae2e895573, type: 3}
+  mainTexture: {fileID: 2800000, guid: e7dc0c1a17908c243b5c993d3d84d252, type: 3}
   actionName: 7
   actionDescription: 8
-  isCorrect: 1
+  isCorrect: 0
