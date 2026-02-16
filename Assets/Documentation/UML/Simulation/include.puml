@@ -4,11 +4,11 @@ hide interface
 remove MonoBehaviour
 remove ScriptableObject
 remove VisualTreeAsset
+remove VisualElement
 remove Texture2D
 remove VectorImage
 remove Image
 remove Label
-remove VisualElement
 
 !include .\\Scripts\HumanInputObserver.puml
 !include .\\UI\ListController.puml

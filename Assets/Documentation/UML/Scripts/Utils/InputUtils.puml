@@ -1,0 +1,5 @@
+@startuml
+class InputUtils <<static>> {
+    + {static} DigitPressed() : int
+}
+@enduml

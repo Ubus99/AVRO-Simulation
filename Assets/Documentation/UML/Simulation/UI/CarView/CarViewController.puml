@@ -6,6 +6,7 @@ class CarViewController {
     + ShowNoMissions() : void
     + ShowMissionAvailable() : void
     + SwitchToSubState(subState:MissionSubState) : void
+    + JumpToItem(idx:int) : void
 }
 enum View {
     EmptyView,
@@ -15,6 +16,7 @@ enum View {
 class "ListController`1"<T> {
 }
 CarViewController --> "_contentController" ContentController
+CarViewController --> "_focusController" FocusController
 CarViewController --> "_selfRoot" VisualElement
 CarViewController o-> "state" View
 CarViewController --> "confirmButton" Button

@@ -1,20 +1,24 @@
 @startuml
 class MissionSo {
-    - correctSubState : int
+    - _timeEnd : float
+    - _timeLoaded : float
+    - _timeStart : float
     - OnValidate() : void
     + Equals(other:IListItemData) : bool
     + mainText : string <<get>>
     + supportText : string <<get>> = null
     + approximateHeight : int <<get>>
     + GetRouteTexture() : Texture2D
-    - SyncLists(images:Dictionary<string, Texture2D>) : void
-    + Complete(missionSubState:MissionSubState) : bool
+    + Start() : void
+    + Load() : void
+    + <<virtual>> Complete(missionSubState:MissionSubState) : bool
+    + SyncLists() : void
+    + GenerateStates() : void
 }
 class "List`1"<T> {
 }
 ScriptableObject <|-- MissionSo
 IListItemData <|-- MissionSo
-MissionSo o-> "EmergencyState" MissionSubState
 MissionSo --> "route" Texture2D
 MissionSo o-> "subStates<MissionSubState>" "List`1"
 MissionSo --> "map" Texture2D

@@ -129,6 +129,7 @@ namespace Scenes.Simulation.UI.CarView
             var subState = obj as MissionSubState;
             _carViewController.SwitchToSubState(subState);
 
+            if (!subState) return;
             Debug.Log($"switching to sub-state: {subState.actionName}");
             _csvLogger.TryLog(MissionStateKey, subState.actionName.ToString());
         }

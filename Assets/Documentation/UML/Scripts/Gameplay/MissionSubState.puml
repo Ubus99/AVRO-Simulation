@@ -1,10 +1,11 @@
 @startuml
-struct MissionSubState {
+class MissionSubState {
+    + isCorrect : bool
     + mainText : string <<get>>
     + supportText : string <<get>>
     + approximateHeight : int <<get>>
-    + Equals(other:MissionSubState) : bool
     + Equals(other:IListItemData) : bool
+    + Equals(other:MissionSubState) : bool
     + <<override>> Equals(obj:object) : bool
     + <<override>> GetHashCode() : int
 }
@@ -22,13 +23,14 @@ enum OddChange {
     None= 0,
     AllowUsingOppositeLane= 1,
     IgnoreSignage= 2,
-    DeclarePlannedRouteValid= 3,
+    AcceptPlannedRoute= 3,
     Reroute= 4,
     WaitForObstacleToClear= 5,
     PrioritizeOriginalRoadSignage= 6,
     PrioritizeCurrentRoadSignage= 7,
     NoValidPaths= 8,
 }
+ScriptableObject <|-- MissionSubState
 IListItemData <|-- MissionSubState
 MissionSubState --> "mainTexture" Texture2D
 MissionSubState --> "actionName" AdsAction

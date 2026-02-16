@@ -3,6 +3,7 @@ class MissionManager {
     <<const>> - MissionStateKey : string = "lastMissionState"
     <<const>> - MissionNameKey : string = "missionName"
     <<const>> - MissionEventKey : string = "missionEvent"
+    <<const>> - MissionPath : string = "MissionData/Bengt Scenarios/Missions"
     <<readonly>> - _maxMissions : int
     + MissionManager(csvLogger:CSVLogger, maxMissions:int)
     + Dispose() : void

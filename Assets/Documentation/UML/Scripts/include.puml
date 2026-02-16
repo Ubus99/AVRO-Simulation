@@ -4,6 +4,7 @@ hide interface
 remove MonoBehaviour
 remove ScriptableObject
 remove VisualTreeAsset
+remove VisualElement
 remove Texture2D
 remove VectorImage
 remove Image
@@ -16,12 +17,12 @@ remove Label
 !include .\\car logic\NavigationProvider.puml
 !include .\\car logic\NavMeshCaster.puml
 !include .\\car logic\PathVisualizer.puml
+!include .\\Gameplay\GameManager.puml
 !include .\\Gameplay\GameplayGlobals.puml
 !include .\\Gameplay\MissionDataLoader.puml
 !include .\\Gameplay\MissionManager.puml
 !include .\\Gameplay\MissionSO.puml
 !include .\\Gameplay\MissionSubState.puml
-!include .\\Gameplay\NewGameManager.puml
 !include .\\Streets\JunctionTrigger.puml
 !include .\\Streets\Street.puml
 !include .\\Streets\StreetManager.puml
@@ -35,6 +36,7 @@ remove Label
 !include .\\UI\ModalUI.puml
 !include .\\UI\VideoFeed.puml
 !include .\\Utils\CSVLogger.puml
+!include .\\Utils\InputUtils.puml
 !include .\\Utils\Logger.puml
 !include .\\Utils\RemoveOnLoad.puml
 !include .\\Utils\SplineHelper.puml

@@ -3,7 +3,9 @@ class CarViewManager {
     <<const>> - MissionStateKey : string = "SubState"
     - Awake() : void
     - Start() : void
+    - Update() : void
     - OnDisable() : void
+    - CheckJumpPerformed() : void
     - OnMissionQueueUpdate(missions:IList<MissionSo>) : void
     - OnSwitchToMission(mission:MissionSo) : void
     - SubmitMission() : void
@@ -17,5 +19,6 @@ CarViewManager --> "motivationalImage" VectorImage
 CarViewManager --> "itemTemplate" VisualTreeAsset
 CarViewManager --> "_carViewController" CarViewController
 CarViewManager --> "_csvLogger" CSVLogger
+CarViewManager --> "_jumpToAction" InputAction
 CarViewManager --> "_missions<MissionSo>" "IList`1"
 @enduml

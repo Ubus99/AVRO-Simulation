@@ -2,5 +2,9 @@
 class GUIUtils <<static>> {
     + {static} PlaceAt(element:RectTransform, screenPoint:Vector2, canvas:Canvas, parent:RectTransform, clampToPanel:bool) : void
     + {static} ToggleHidden(elements:List<VisualElement>, isHidden:bool) : void
+    + {static} SwitchFocusTo(evt:NavigationMoveEvent, data:(NavigationMoveEvent.Direction direction, VisualElement element)) : void
+    {static} - UpdateImage(image:Image, evt:GeometryChangedEvent) : void
+    + {static} AssignableImageSection(root:VisualElement, imageProperty:SerializedProperty) : void
+    + {static} ImageSection(root:VisualElement, imageProperty:SerializedProperty) : void
 }
 @enduml

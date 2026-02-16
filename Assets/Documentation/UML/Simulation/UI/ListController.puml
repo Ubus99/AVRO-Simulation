@@ -3,6 +3,8 @@ class "ListController`1"<T> {
     + ListController(root:VisualElement, itemTemplate:VisualTreeAsset, name:string)
     + count : int <<get>>
     + Dispose() : void
+    + RegisterNavigation(direction:NavigationMoveEvent.Direction, element:VisualElement) : void
+    + RegisterNavigation(direction:NavigationMoveEvent.Direction, element:ListController<TOther>) : void
     +  <<event>> ItemSelectedEvent : Action<IListItemData> 
     - ConfigureListView() : void
     + UpdateList(newItems:IEnumerable<T>) : void

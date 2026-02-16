@@ -1,5 +1,6 @@
 @startuml
 class GameplayGlobals <<static>> {
+    + {static} currentID : int = 0
 }
 enum Input {
     Mouse,
