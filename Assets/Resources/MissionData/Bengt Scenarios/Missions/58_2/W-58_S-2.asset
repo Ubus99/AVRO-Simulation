@@ -12,16 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6ae67ff2074af3b6bcca59833fba76, type: 3}
   m_Name: W-58_S-2
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.MissionSo
-  map: {fileID: 2800000, guid: 1c85277e0408dda448e96aa697d2f5fc, type: 3}
   route: {fileID: 2800000, guid: aeedc4ba4a2f22a4a9478116406a4078, type: 3}
-  correctSubState: 0
   subStates:
-  - mainTexture: {fileID: 2800000, guid: 00d8c6e3587080549b1e31ee5c19eced, type: 3}
-    actionName: 3
-    actionDescription: 3
-  - mainTexture: {fileID: 2800000, guid: 7d5bb7f1db9b8e546b12a340d72335a4, type: 3}
-    actionName: 0
-    actionDescription: 4
-  - mainTexture: {fileID: 2800000, guid: 385d08343f4889b4aa2a6ef0b23d16c4, type: 3}
-    actionName: 4
-    actionDescription: 4
+  - {fileID: 11400000, guid: 61b75c4c13ae2cb4ea28e83049223635, type: 2}
+  - {fileID: 11400000, guid: f3acebb784a48e44db0461db44b2c04f, type: 2}
+  - {fileID: 11400000, guid: 2000f05dba25fbc42b25df566dae2bc0, type: 2}
+  - {fileID: 11400000, guid: 24b05827d61fafc42bfc2d352d4c4789, type: 2}
+  map: {fileID: 2800000, guid: 1c85277e0408dda448e96aa697d2f5fc, type: 3}

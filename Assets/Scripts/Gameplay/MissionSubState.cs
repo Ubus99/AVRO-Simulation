@@ -27,7 +27,7 @@ namespace Gameplay
             None = 0,
             AllowUsingOppositeLane = 1,
             IgnoreSignage = 2,
-            DeclarePlannedRouteValid = 3,
+            AcceptPlannedRoute = 3,
             Reroute = 4,
             WaitForObstacleToClear = 5,
             PrioritizeOriginalRoadSignage = 6,

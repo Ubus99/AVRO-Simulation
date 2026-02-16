@@ -141,6 +141,12 @@ namespace Gameplay
                 var ss = CreateInstance<MissionSubState>();
                 ss.mainTexture = image;
 
+                if (image.name.EndsWith("0_F") || image.name.EndsWith("0_C"))
+                {
+                    ss.actionName = MissionSubState.AdsAction.Stop;
+                    ss.actionDescription = MissionSubState.OddChange.NoValidPaths;
+                }
+
                 var assetPath = Path.Combine(@"Assets\Resources", ownPath, $"{image.name}.asset").Replace("\\", "/");
                 AssetDatabase.CreateAsset(ss, assetPath);
                 AssetDatabase.SaveAssets();

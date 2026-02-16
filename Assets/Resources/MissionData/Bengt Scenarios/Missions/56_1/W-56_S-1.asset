@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6ae67ff2074af3b6bcca59833fba76, type: 3}
   m_Name: W-56_S-1
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.MissionSo
-  map: {fileID: 2800000, guid: 1c85277e0408dda448e96aa697d2f5fc, type: 3}
   route: {fileID: 2800000, guid: 0d1d85f8f5c02824d9b526ef11e38b3b, type: 3}
-  correctSubState: 0
   subStates:
-  - mainTexture: {fileID: 2800000, guid: 4df22b576d8052141a384ef1356ba6aa, type: 3}
-    actionName: 0
-    actionDescription: 3
+  - {fileID: 11400000, guid: 79de0a31217fcc245995805d27ddd42a, type: 2}
+  - {fileID: 11400000, guid: e5424cb351a2d414d8d430cc1c2b770c, type: 2}
+  map: {fileID: 2800000, guid: 1c85277e0408dda448e96aa697d2f5fc, type: 3}
