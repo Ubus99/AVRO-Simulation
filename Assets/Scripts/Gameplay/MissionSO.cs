@@ -7,7 +7,7 @@ using UI.Icons;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Utils;
+using Utils.Logging;
 
 namespace Gameplay
 {
@@ -99,7 +99,7 @@ namespace Gameplay
         public bool Complete(MissionSubState missionSubState)
         {
             record.TimeEnd = Time.timeSinceLevelLoad;
-            record.MissionName = name;
+            record.missionName = name;
 
             return missionSubState.isCorrect;
         }
@@ -143,11 +143,10 @@ namespace Gameplay
 
         public class MissionRecord : BaseRecord
         {
-            public string MissionName;
             public float TimeEnd;
             public float TimeLoaded;
             public float TimeStart;
-
+            public string missionName { get; set; }
 
             public float timeToComplete
             {

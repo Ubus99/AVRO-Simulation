@@ -4,7 +4,7 @@ using UnityEngine;
 using Utils.Types;
 using Object = UnityEngine.Object;
 
-namespace Utils
+namespace Utils.Logging
 {
     /// <summary>
     ///     Inspired by:
@@ -14,23 +14,18 @@ namespace Utils
     public class Logger : AbstractSingleton<Logger>, ILogHandler, IDisposable
     {
         const string FileExtension = ".log";
-        
-#if UNITY_EDITOR
-        static readonly string LogBasePath = Path.Combine(Application.dataPath, "logs");
-#else
-        static readonly string LogBasePath = Path.Combine(Application.persistentDataPath, "logs");
-#endif
+
+        readonly DateTime _creationTime = DateTime.Now;
 
         readonly ILogHandler _defaultLogHandler = Debug.unityLogger.logHandler;
+        string _fileName;
 
         string _logFilePath;
-        string _newFilePath;
         StreamWriter _streamWriter;
 
         public void Dispose()
         {
             _streamWriter.Dispose();
-            File.Move(_logFilePath, _newFilePath);
         }
 
         public void LogFormat(LogType logType, Object context, string format, params object[] args)
@@ -45,17 +40,13 @@ namespace Utils
             _defaultLogHandler.LogException(exception, context);
         }
 
-        public void Init(string name = "")
+        public void Init(string name = "log")
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                name = $"{DateTime.Now:yyyy-MM-dd-HH-mm}";
-            }
-
+            _fileName = name;
             try
             {
-                _logFilePath = _newFilePath = Path.Combine(LogBasePath, name + FileExtension);
-                Directory.CreateDirectory(LogBasePath);
+                _logFilePath = LogUtils.GenerateFilePath(_fileName, _creationTime, FileExtension);
+                LogUtils.CreateLogDirectory();
                 _streamWriter = File.AppendText(_logFilePath);
             }
             catch (Exception e)
@@ -69,9 +60,16 @@ namespace Utils
             Debug.Log($"Log File created @{_logFilePath}");
         }
 
-        public void RenameLog(string name)
+        public void RenameLog(string newName)
         {
-            _newFilePath = Path.Combine(LogBasePath, name, FileExtension);
+            Dispose();
+
+            var newPath = LogUtils.GenerateFilePath(newName, _creationTime, FileExtension);
+            var oldPath = LogUtils.GenerateFilePath(_fileName, _creationTime, FileExtension);
+            File.Move(oldPath, newPath);
+            _fileName = newName;
+
+            _streamWriter = new StreamWriter(newPath, true);
         }
     }
 }

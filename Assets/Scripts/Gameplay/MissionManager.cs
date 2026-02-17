@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils;
+using Utils.Logging;
 using Assert = UnityEngine.Assertions.Assert;
 using Enumerable = System.Linq.Enumerable;
 using Random = UnityEngine.Random;
@@ -12,10 +12,10 @@ namespace Gameplay
     {
         const string MissionPath = "MissionData/Bengt Scenarios/Missions";
 
-        readonly CSVLogger<MissionSo.MissionRecord> _csvLogger = new(GameplayGlobals.logName);
-
         readonly int _maxMissions;
         readonly List<MissionSo> _missions = new();
+
+        CSVLogger<MissionSo.MissionRecord> _csvLogger = new(GameplayGlobals.logName);
         MissionSo _currentMission;
 
         public MissionManager(int maxMissions)
@@ -27,6 +27,7 @@ namespace Gameplay
             GameplayGlobals.setGameMode += (_, _, _) => _csvLogger.Rename(GameplayGlobals.logName);
             GameplayGlobals.switchMissionEvent += OnMissionChange;
             GameplayGlobals.missionSubmittedEvent += OnMissionSubmitted;
+            GameplayGlobals.restartEvent += OnRestart;
         }
 
         List<MissionSo> queue { get; } = new();
@@ -36,6 +37,13 @@ namespace Gameplay
             _csvLogger.Dispose();
             GameplayGlobals.switchMissionEvent -= OnMissionChange;
             GameplayGlobals.missionSubmittedEvent -= OnMissionSubmitted;
+            GameplayGlobals.restartEvent -= OnRestart;
+        }
+
+        void OnRestart()
+        {
+            _csvLogger.Dispose();
+            _csvLogger = new CSVLogger<MissionSo.MissionRecord>(GameplayGlobals.logName);
         }
 
         void OnMissionChange(MissionSo mission)
@@ -61,7 +69,7 @@ namespace Gameplay
             nextMission.Load();
             queue.Add(nextMission);
 
-            Debug.Log($"Mission added: {nextMission}");
+            Debug.Log($"Mission added: {nextMission.name}");
             GameplayGlobals.missionQueueUpdateEvent?.Invoke(Enumerable.ToList(Enumerable.Cast<MissionSo>(queue)));
             return true;
         }

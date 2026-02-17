@@ -35,12 +35,13 @@ namespace Gameplay
         public static Action missionCompletedEvent;
 
         // game events
+        public static Action restartEvent;
         public static Action<Scenes> switchSceneEvent;
         public static Action<int, Input, Severity> setGameMode;
 
         public static string logName
         {
-            get { return $"{currentID}_{currentInput.ToString()}_{currentSeverity.ToString()}"; }
+            get { return $"{currentID}_{currentInput}_{currentSeverity}"; }
         }
     }
 }

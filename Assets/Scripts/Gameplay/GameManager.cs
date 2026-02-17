@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using Logger = Utils.Logger;
+using Logger = Utils.Logging.Logger;
 
 namespace Gameplay
 {
@@ -30,8 +30,6 @@ namespace Gameplay
 
         MissionManager _missionManager;
 
-        InputAction _restartAction;
-
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
@@ -40,11 +38,10 @@ namespace Gameplay
 
             _currentGameSpeed = gameSpeedEasy;
 
-            _restartAction = InputSystem.actions.FindAction("Global/Restart");
-            _restartAction.performed += OnRestartActionPerformed;
 
             GameplayGlobals.setGameMode += SetGameMode;
             GameplayGlobals.switchSceneEvent += SwitchScene;
+            GameplayGlobals.restartEvent += OnGameRestart;
 
             _missionManager = new MissionManager(maxMissions);
         }
@@ -59,19 +56,10 @@ namespace Gameplay
             _missionManager.Dispose();
         }
 
-        void RestartLogging()
+        void OnGameRestart()
         {
-            var timeSting = DateTime.Now.ToString("dd-MM-yyyy_HH-mm");
-            var inputString = $"{GameplayGlobals.currentInput}_{GameplayGlobals.currentSeverity}";
-            var fileName = $"{GameplayGlobals.currentID}_{inputString}_{timeSting}";
-
-            _logger.Dispose();
-            _logger.Init(fileName);
-
-        }
-
-        static void OnRestartActionPerformed(InputAction.CallbackContext context)
-        {
+            GameplayGlobals.currentID = 0;
+            _logger.Init();
             GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Login);
         }
 
@@ -118,7 +106,7 @@ namespace Gameplay
                 _ => throw new ArgumentOutOfRangeException(nameof(severity), severity, null)
             };
 
-            RestartLogging();
+            _logger.RenameLog(GameplayGlobals.logName);
         }
     }
 }

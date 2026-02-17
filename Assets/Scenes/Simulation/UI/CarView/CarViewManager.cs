@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Utils;
+using Utils.Logging;
 
 namespace Scenes.Simulation.UI.CarView
 {
@@ -24,6 +25,21 @@ namespace Scenes.Simulation.UI.CarView
         InputAction _jumpToAction;
 
         IList<MissionSo> _missions;
+
+        MissionSo _selectedMission;
+        MissionSubState _selectedSubState;
+
+        UIRecord uiRecord
+        {
+            get
+            {
+                return new UIRecord
+                {
+                    mission = _selectedMission.name,
+                    state = _selectedSubState.actionName.ToString()
+                };
+            }
+        }
 
         void Awake()
         {
@@ -49,6 +65,8 @@ namespace Scenes.Simulation.UI.CarView
             GameplayGlobals.switchMissionEvent += OnSwitchToMission;
             GameplayGlobals.missionCompletedEvent += OnMissionCompleted;
             GameplayGlobals.missionQueueUpdateEvent += OnMissionQueueUpdate;
+            
+            GameplayGlobals.restartEvent += OnRestart;
 
             _carViewController.ShowNoMissions();
         }
@@ -66,6 +84,14 @@ namespace Scenes.Simulation.UI.CarView
             GameplayGlobals.switchMissionEvent -= OnSwitchToMission;
             GameplayGlobals.missionCompletedEvent -= OnMissionCompleted;
             GameplayGlobals.missionQueueUpdateEvent -= OnMissionQueueUpdate;
+
+            GameplayGlobals.restartEvent -= OnRestart;
+        }
+
+        void OnRestart()
+        {
+            _csvLogger.Dispose();
+            _csvLogger = new CSVLogger<UIRecord>(GameplayGlobals.logName);
         }
 
         void CheckJumpPerformed()
@@ -94,7 +120,11 @@ namespace Scenes.Simulation.UI.CarView
         {
             if (!mission) return;
 
+            _selectedMission = mission;
+            _selectedSubState = mission.options[0];
             _carViewController.ShowMission(mission);
+
+            _csvLogger.Log(uiRecord);
             Debug.Log($"loaded mission {mission.name} onto Screen");
         }
 
@@ -107,6 +137,8 @@ namespace Scenes.Simulation.UI.CarView
 
         void OnMissionCompleted()
         {
+            _selectedMission = null;
+            _selectedSubState = null;
             if (_missions.Count == 0)
             {
                 _carViewController.ShowNoMissions();
@@ -119,21 +151,18 @@ namespace Scenes.Simulation.UI.CarView
 
         void OnSubStateSelected(IListItemData obj)
         {
-            var subState = obj as MissionSubState;
-            _carViewController.SwitchToSubState(subState);
-            _csvLogger.Log(new UIRecord()
-            {
-                //mission = 
-            });
+            _selectedSubState = obj as MissionSubState;
+            _carViewController.SwitchToSubState(_selectedSubState);
 
-            if (!subState) return;
-            Debug.Log($"switching to sub-state: {subState.actionName}");
+            if (!_selectedSubState) return;
+            _csvLogger.Log(uiRecord);
+            Debug.Log($"switching to sub-state: {_selectedSubState.actionName}");
         }
 
         class UIRecord : BaseRecord
         {
-            public MissionSo mission;
-            public MissionSubState state;
+            public string mission { get; set; }
+            public string state { get; set; }
         }
     }
 }
