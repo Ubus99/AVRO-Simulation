@@ -121,6 +121,10 @@ namespace Scenes.Simulation.UI.CarView
         {
             var subState = obj as MissionSubState;
             _carViewController.SwitchToSubState(subState);
+            _csvLogger.Log(new UIRecord()
+            {
+                //mission = 
+            });
 
             if (!subState) return;
             Debug.Log($"switching to sub-state: {subState.actionName}");
@@ -128,6 +132,8 @@ namespace Scenes.Simulation.UI.CarView
 
         class UIRecord : BaseRecord
         {
+            public MissionSo mission;
+            public MissionSubState state;
         }
     }
 }

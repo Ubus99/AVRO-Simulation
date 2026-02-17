@@ -24,11 +24,12 @@ namespace Gameplay
 
             _missions.AddRange(Resources.LoadAll<MissionSo>(MissionPath));
 
+            GameplayGlobals.setGameMode += (_, _, _) => _csvLogger.Rename(GameplayGlobals.logName);
             GameplayGlobals.switchMissionEvent += OnMissionChange;
             GameplayGlobals.missionSubmittedEvent += OnMissionSubmitted;
         }
 
-        public List<MissionSo> queue { get; } = new();
+        List<MissionSo> queue { get; } = new();
 
         public void Dispose()
         {
@@ -45,7 +46,11 @@ namespace Gameplay
 
         public bool TryAddMission()
         {
-            if (queue.Count >= _maxMissions) return false;
+            if (queue.Count >= _maxMissions)
+            {
+                Debug.Log("Mission is full");
+                return false;
+            }
 
             MissionSo nextMission;
             do
@@ -56,6 +61,7 @@ namespace Gameplay
             nextMission.Load();
             queue.Add(nextMission);
 
+            Debug.Log($"Mission added: {nextMission}");
             GameplayGlobals.missionQueueUpdateEvent?.Invoke(Enumerable.ToList(Enumerable.Cast<MissionSo>(queue)));
             return true;
         }

@@ -99,6 +99,7 @@ namespace Gameplay
         public bool Complete(MissionSubState missionSubState)
         {
             record.TimeEnd = Time.timeSinceLevelLoad;
+            record.MissionName = name;
 
             return missionSubState.isCorrect;
         }

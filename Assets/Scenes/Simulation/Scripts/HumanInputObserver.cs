@@ -11,6 +11,7 @@ namespace Scenes.Simulation.Scripts
 
         void Start()
         {
+            GameplayGlobals.setGameMode += (_, _, _) => _csvLogger.Rename(GameplayGlobals.logName);
             _csvLogger = new CSVLogger<HumanInputRecord>(GameplayGlobals.logName);
         }
 

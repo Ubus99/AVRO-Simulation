@@ -14,42 +14,61 @@ namespace Utils
         readonly string _logBasePath = Path.Combine(Application.persistentDataPath, "logs");
 #endif
 
-        readonly CsvWriter _csv;
+        CsvWriter _csv;
         StreamWriter _streamWriter;
         string _fileName;
+        readonly DateTime _creationTime = DateTime.Now;
 
         public CSVLogger(string fileName)
         {
-            _fileName = $"{fileName}_{DateTime.Now:yyyyMMdd-HHmm}_{typeof(T).Name}";
+            _fileName = fileName;
             Directory.CreateDirectory(_logBasePath);
 
-            _streamWriter = new StreamWriter(fullPath);
+            _streamWriter = new StreamWriter(FullPathGenerator(_fileName));
             _csv = new CsvWriter(_streamWriter, CultureInfo.InvariantCulture);
+
+            _csv.WriteHeader<T>();
+            _csv.NextRecord();
         }
 
-        string fullPath
+        string FullPathGenerator(string fileName)
         {
-            get { return Path.Join(_logBasePath, $"{_fileName}.csv"); }
+            return Path.Join(_logBasePath, FileNameGenerator(fileName));
+        }
+
+        string FileNameGenerator(string baseName)
+        {
+            return $"{baseName}_{_creationTime:yyyyMMdd-HHmm}_{typeof(T).Name}.csv";
         }
 
         public void Rename(string newName)
         {
+            _csv.Flush();
+            _streamWriter.Flush();
+
+            _csv.Dispose();
             _streamWriter.Dispose();
-            File.Move(fullPath, Path.Join(_logBasePath, $"{newName}.csv"));
+
+            File.Move(
+            FullPathGenerator(_fileName),
+            FullPathGenerator(newName));
             _fileName = newName;
-            _streamWriter = new StreamWriter(fullPath);
+
+            _streamWriter = new StreamWriter(FullPathGenerator(_fileName));
+            _csv = new CsvWriter(_streamWriter, CultureInfo.InvariantCulture);
         }
 
         public void Dispose()
         {
-            _streamWriter.Dispose();
             _csv.Dispose();
+            _streamWriter.Dispose();
         }
 
         public void Log(T record)
         {
             _csv.WriteRecord(record);
             _csv.NextRecord();
+            _csv.Flush();
         }
     }
 
