@@ -13,12 +13,7 @@ MonoBehaviour:
   m_Name: W-2_S-1
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.MissionSo
   route: {fileID: 2800000, guid: 69f3e77f8bb2e914e944e03a60912a91, type: 3}
-  correctSubState: 0
   subStates:
-  - mainTexture: {fileID: 2800000, guid: fb3f67ace39e68d4a85e0b30f0ac56be, type: 3}
-    actionName: 7
-    actionDescription: 8
-  - mainTexture: {fileID: 2800000, guid: 39e3335422c90a2498ed1e9ee5312a40, type: 3}
-    actionName: 4
-    actionDescription: 2
+  - {fileID: 11400000, guid: 909bf2c7334ca09489cd08318a70a578, type: 2}
+  - {fileID: 11400000, guid: 79d097c96f44bf84fae63f8c379596ce, type: 2}
   map: {fileID: 2800000, guid: ca60bce60ff101d4fb300a337cab81b3, type: 3}
