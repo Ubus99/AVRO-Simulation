@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   sceneToLoad: {fileID: 102900000, guid: 7ffd83728f8852a4d89005dacdf344ab, type: 3}
+  targetPath: Assets/Scenes/Login/Login.unity
 --- !u!1 &1072098919
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +380,7 @@ MonoBehaviour:
   gameSpeedEasy: 7
   gameSpeedHard: 3
   maxMissions: 5
-  missionsToComplete: 60
+  missionsToComplete: 40
 --- !u!4 &1703591600
 Transform:
   m_ObjectHideFlags: 0

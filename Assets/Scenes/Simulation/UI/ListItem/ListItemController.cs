@@ -26,8 +26,21 @@ namespace Scenes.Simulation.UI.ListItem
         {
             UpdateIcon(_leftImage, data.leftImage, "hideable");
             UpdateIcon(_rightImage, data.rightImage, "hideable2");
-            _mainText.text = data.mainText;
-            _supportText.text = data.supportText;
+            UpdateLabel(_mainText, data.mainText);
+            UpdateLabel(_supportText, data.supportText);
+        }
+
+        void UpdateLabel(Label label, string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                label.AddToClassList("hidden");
+            }
+            else
+            {
+                label.text = text;
+                label.RemoveFromClassList("hidden");
+            }
         }
 
         void UpdateIcon(Image target, VectorImage icon, string group = null)

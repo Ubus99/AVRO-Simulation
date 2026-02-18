@@ -68,7 +68,7 @@ namespace Gameplay
 
         public int approximateHeight
         {
-            get { return 64; }
+            get { return 50; }
         }
 
         public Texture2D GetRouteTexture()
