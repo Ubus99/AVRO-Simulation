@@ -1,6 +1,5 @@
 ﻿using System;
 using Gameplay;
-using Scenes.Simulation.Scripts;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -33,7 +32,8 @@ namespace Scenes.Simulation.UI.CarView
         public void LoadData(MissionSo mission)
         {
             if (!mission) return;
-
+            if (!mission.options[0]) return;
+            
             _mainImage.image = mission.options[0].mainTexture;
             _mapImage.image = mission.GetRouteTexture();
         }
