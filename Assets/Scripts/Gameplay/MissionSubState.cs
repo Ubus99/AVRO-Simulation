@@ -75,7 +75,7 @@ namespace Gameplay
 
         public int approximateHeight
         {
-            get { return 70; }
+            get { return 62; }
         }
 
         public bool Equals(IListItemData other)

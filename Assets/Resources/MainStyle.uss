@@ -47,3 +47,12 @@
 
 .unity-base-field__aligned {
 }
+
+.divider {
+    margin-top: 0;
+    margin-right: 16px;
+    margin-bottom: 0;
+    margin-left: 16px;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.15);
+}

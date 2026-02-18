@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Resources/MainStyle.uss?fileID=7433441132597879392&amp;guid=7bc33ff846e8b9241a0405236116a2bc&amp;type=3#MainStyle"/>
     <Style src="project://database/Assets/Scenes/Simulation/UI/ListItem/ListItem.uss?fileID=7433441132597879392&amp;guid=f8fc6d7cfcd81a2419b95d0830db471d&amp;type=3#ListItem"/>
-    <ui:VisualElement name="list-item">
+    <ui:VisualElement name="list-item" style="border-bottom-color: rgb(0, 0, 0);">
         <ui:VisualElement name="top-section">
             <ui:Image name="left-icon" source="project://database/Assets/Resources/Icons/lucide/square-x.svg?fileID=7388822144124034973&amp;guid=155bcb9fd19d9334980eeb7f151522c3&amp;type=3#square-x" tint-color="rgb(0, 0, 0)" class="lucide-icon hideable"/>
             <ui:VisualElement style="flex-grow: 1; padding-top: 0; padding-right: 12px; padding-bottom: 0; padding-left: 12px; align-items: flex-start;">
@@ -15,5 +15,6 @@
                 <ui:Label text="Label" name="support-text" style="font-size: 13px; -unity-font-style: bold;"/>
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:VisualElement class="divider"/>
     </ui:VisualElement>
 </ui:UXML>
