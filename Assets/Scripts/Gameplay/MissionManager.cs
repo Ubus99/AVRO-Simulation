@@ -58,7 +58,7 @@ namespace Gameplay
         {
             if (queue.Count >= _maxMissions)
             {
-                Debug.Log("Mission is full");
+                //Debug.Log("Mission is full");
                 return false;
             }
 
