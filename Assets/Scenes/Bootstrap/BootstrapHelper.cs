@@ -1,8 +1,10 @@
 using System.IO;
-using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 
 namespace Scenes.Bootstrap
 {
@@ -11,15 +13,16 @@ namespace Scenes.Bootstrap
     {
         const string BootstrapScenePath = "Assets/Scenes/Bootstrap/BootstrapScene.unity";
 
+#if UNITY_EDITOR
         [SerializeField]
         SceneAsset sceneToLoad;
+#endif
 
-        string _targetPath;
+        [SerializeField]
+        string targetPath;
 
         void Start()
         {
-            _targetPath = AssetDatabase.GetAssetPath(sceneToLoad);
-
             if (Application.isPlaying)
             {
                 BootstrapPlayer();
@@ -30,10 +33,19 @@ namespace Scenes.Bootstrap
             }
         }
 
+#if UNITY_EDITOR
+        void OnValidate()
+        {
+            targetPath = AssetDatabase.GetAssetPath(sceneToLoad);
+        }
+#endif
+
         void BootstrapEditor()
         {
+#if UNITY_EDITOR
             MySceneManager.CloseAllScenes(BootstrapScenePath);
-            EditorSceneManager.OpenScene(_targetPath, OpenSceneMode.Additive);
+            EditorSceneManager.OpenScene(targetPath, OpenSceneMode.Additive);
+#endif
         }
 
         void BootstrapPlayer()
@@ -41,7 +53,7 @@ namespace Scenes.Bootstrap
             var gos = GameObject.FindGameObjectsWithTag("bootstrap");
             foreach (var go in gos) DontDestroyOnLoad(go); // mark bootstrap scene save
 
-            SceneManager.LoadScene(Path.GetFileNameWithoutExtension(_targetPath));
+            SceneManager.LoadScene(Path.GetFileNameWithoutExtension(targetPath));
         }
     }
 }

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Scenes.Simulation.Scripts;
+using Gameplay;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Gameplay
+namespace Editor
 {
-    [FilePath("Resources/MissionData/DataLoader.dat", FilePathAttribute.Location.PreferencesFolder)]
     public class MissionDataLoader : ScriptableSingleton<MissionDataLoader>
     {
         [SerializeField]

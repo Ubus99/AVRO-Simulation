@@ -5,7 +5,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using Time = UnityEngine.Time;
 
-namespace Utils.Logging
+namespace Logging
 {
     public class CSVLogger<T> : IDisposable where T : BaseRecord
     {

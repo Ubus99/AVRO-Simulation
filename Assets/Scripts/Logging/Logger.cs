@@ -4,7 +4,7 @@ using UnityEngine;
 using Utils.Types;
 using Object = UnityEngine.Object;
 
-namespace Utils.Logging
+namespace Logging
 {
     /// <summary>
     ///     Inspired by:

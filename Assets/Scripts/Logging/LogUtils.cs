@@ -2,14 +2,14 @@
 using System.IO;
 using UnityEngine;
 
-namespace Utils.Logging
+namespace Logging
 {
     public static class LogUtils
     {
 #if UNITY_EDITOR
         static readonly string LogBasePath = Path.Combine(Application.dataPath, "logs");
 #else
-        static readonly string LogBasePath = Path.Combine(Application.persistentDataPath, "logs");
+        static readonly string LogBasePath = Path.Combine(Application.dataPath, "logs");
 #endif
 
         public static void CreateLogDirectory()

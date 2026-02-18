@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
 
 namespace Scenes.Bootstrap
 {
@@ -21,7 +23,11 @@ namespace Scenes.Bootstrap
             {
                 var scene = SceneManager.GetSceneAt(i);
                 if (exceptPaths.Contains(scene.path)) continue;
+#if UNITY_EDITOR
                 EditorSceneManager.CloseScene(scene, true);
+#else
+                SceneManager.UnloadSceneAsync(scene);
+#endif
             }
         }
 

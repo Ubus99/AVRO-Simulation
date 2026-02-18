@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using Gameplay;
+using Logging;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Utils.Logging;
 
 namespace Scenes.Simulation.Scripts
 {

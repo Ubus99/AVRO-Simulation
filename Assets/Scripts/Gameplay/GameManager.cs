@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
-using Logger = Utils.Logging.Logger;
+using Logger = Logging.Logger;
 
 namespace Gameplay
 {

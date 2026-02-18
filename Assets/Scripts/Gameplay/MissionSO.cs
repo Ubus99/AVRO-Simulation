@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Logging;
 using Scenes.Simulation.UI.ListItem;
 using UI.Icons;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Utils.Logging;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Gameplay
 {
@@ -32,20 +34,7 @@ namespace Gameplay
             get { return subStates; }
         }
 
-#if UNITY_EDITOR
-        string ownPath
-        {
-            get
-            {
-                var filePath = AssetDatabase.GetAssetPath(this);
-                var path = Path.GetDirectoryName(filePath);
-                return path?.Replace(@"Assets\Resources\", string.Empty);
-            }
-        }
-
-#endif
-
-        void OnValidate()
+        void OnEnable()
         {
             _icons = IconAtlasRegistry.Get("lucide");
             if (!_icons)
@@ -53,6 +42,7 @@ namespace Gameplay
                 throw new NullReferenceException("Icon Database not found");
             }
         }
+
 
         public bool Equals(IListItemData other)
         {
@@ -105,6 +95,47 @@ namespace Gameplay
             return missionSubState.isCorrect;
         }
 
+        public class MissionRecord : BaseRecord
+        {
+            public float TimeEnd;
+            public float TimeLoaded;
+            public float TimeStart;
+
+            public string missionName { get; set; }
+            public int numberCompleted { get; set; }
+            public bool correct { get; set; }
+
+            public float timeToComplete
+            {
+                get { return TimeEnd - TimeStart; }
+            }
+
+            public float timeToStart
+            {
+                get { return TimeStart - TimeLoaded; }
+            }
+
+            public float totalTime
+            {
+                get { return timeToComplete + timeToStart; }
+            }
+        }
+
+#if UNITY_EDITOR
+        string ownPath
+        {
+            get
+            {
+                var filePath = AssetDatabase.GetAssetPath(this);
+                var path = Path.GetDirectoryName(filePath);
+                return path?.Replace(@"Assets\Resources\", string.Empty);
+            }
+        }
+
+        void OnValidate()
+        {
+            _icons = IconAtlasRegistry.Get("lucide");
+        }
 
         public void SyncLists()
         {
@@ -141,31 +172,6 @@ namespace Gameplay
                 AssetDatabase.SaveAssets();
             }
         }
-
-        public class MissionRecord : BaseRecord
-        {
-            public float TimeEnd;
-            public float TimeLoaded;
-            public float TimeStart;
-            
-            public string missionName { get; set; }
-            public int numberCompleted { get; set; }
-            public bool correct { get; set; }
-
-            public float timeToComplete
-            {
-                get { return TimeEnd - TimeStart; }
-            }
-
-            public float timeToStart
-            {
-                get { return TimeStart - TimeLoaded; }
-            }
-
-            public float totalTime
-            {
-                get { return timeToComplete + timeToStart; }
-            }
-        }
+#endif
     }
 }

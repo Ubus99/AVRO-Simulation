@@ -2,41 +2,41 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
-using Utils;
 using Utils.Editor;
-using Utils.Objects;
+using Utils.ObjectManagement;
 
 namespace Streets
 {
     [ExecuteInEditMode]
     public class StreetNet : MonoBehaviour
     {
+#if UNITY_EDITOR
         public List<Street> streets;
         public GameObject junctions;
         public GameObject nodes;
         public JunctionTrigger triggerPrefab;
         public GameObject streetVizPrefab;
 
-        private readonly Dictionary<Street.Address, JunctionTrigger> _junctionTriggers = new();
+        readonly Dictionary<Street.Address, JunctionTrigger> _junctionTriggers = new();
 
-        private bool _dirty;
+        bool _dirty;
 
-        private void Start()
+        void Start()
         {
             UpdateStreets();
         }
 
-        private void Update()
+        void Update()
         {
             UpdateStreets();
         }
 
-        private void OnValidate()
+        void OnValidate()
         {
             _dirty = true;
         }
 
-        private void UpdateStreets()
+        void UpdateStreets()
         {
 #if UNITY_EDITOR
             if (!_dirty) return;
@@ -73,10 +73,10 @@ namespace Streets
 #endif
         }
 
-        private SplineContainer AddBranch(string name, BezierKnot knot1, BezierKnot knot2)
+        SplineContainer AddBranch(string name, BezierKnot knot1, BezierKnot knot2)
         {
-            if (!streetVizPrefab) return null; 
-            
+            if (!streetVizPrefab) return null;
+
             var go = Instantiate(streetVizPrefab, junctions.transform, true);
             go.name = name;
 
@@ -87,14 +87,14 @@ namespace Streets
             spline.Add(knot1);
             spline.Add(knot2);
             spline.Closed = false;
-            
+
             var ns = go.GetComponent<NavMeshSnap>();
             ns.offset = Vector3.down;
 
             return sc;
         }
 
-        private void AddTrigger(Vector3 pos, Street.Address a, SplineContainer spline = null)
+        void AddTrigger(Vector3 pos, Street.Address a, SplineContainer spline = null)
         {
             // load from cache
             if (!_junctionTriggers.TryGetValue(a, out var junction) || !junction)
@@ -115,5 +115,6 @@ namespace Streets
             junction.junctionData.TryAdd(a.GetSpline(), 0);
             if (spline) junction.junctionData.TryAdd(spline, 0);
         }
+#endif
     }
 }

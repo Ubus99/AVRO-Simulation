@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Logging;
 using UnityEngine;
-using Utils.Logging;
 using Assert = UnityEngine.Assertions.Assert;
 using Enumerable = System.Linq.Enumerable;
 using Random = UnityEngine.Random;

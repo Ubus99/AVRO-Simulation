@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.UIElements;
+#endif
 
 namespace UI
 {
@@ -71,6 +73,7 @@ namespace UI
             image.style.height = new StyleLength(new Length(scaledHeight, LengthUnit.Pixel));
         }
 
+#if UNITY_EDITOR
         public static void AssignableImageSection(VisualElement root, SerializedProperty imageProperty)
         {
             var imageField = new ObjectField
@@ -127,5 +130,6 @@ namespace UI
 
             root.Add(routeImage);
         }
+#endif
     }
 }

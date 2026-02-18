@@ -43,11 +43,13 @@ namespace UI
             _dirty = true;
         }
 
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             base.OnValidate();
             _dirty = true;
         }
+#endif
 
         public void OnPointerClick(PointerEventData eventData)
         {

@@ -1,9 +1,7 @@
-﻿using System;
-using Mono.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Utils.Objects
+namespace Utils.ObjectManagement
 {
     public static class ObjectManagementUtility
     {

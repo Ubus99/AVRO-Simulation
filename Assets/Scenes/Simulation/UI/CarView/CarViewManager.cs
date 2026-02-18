@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using Gameplay;
+using Logging;
 using Scenes.Simulation.UI.ListItem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Utils;
-using Utils.Logging;
 
 namespace Scenes.Simulation.UI.CarView
 {
