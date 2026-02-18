@@ -147,9 +147,11 @@ namespace Gameplay
             public float TimeEnd;
             public float TimeLoaded;
             public float TimeStart;
-
+            
             public string missionName { get; set; }
+            public int numberCompleted { get; set; }
             public bool correct { get; set; }
+
             public float timeToComplete
             {
                 get { return TimeEnd - TimeStart; }

@@ -97,15 +97,17 @@ namespace Gameplay
         {
             _currentMission.Complete(missionSubState);
             missionsCompleted++;
-            
+
             Debug.Log(
             $"mission {_currentMission.name} submitted. " +
             $"tts: {_currentMission.record.timeToStart}, " +
             $"ttc: {_currentMission.record.timeToComplete}, " +
             $"tt: {_currentMission.record.totalTime}, " +
-            $"correct: {missionSubState.isCorrect}"
+            $"correct: {missionSubState.isCorrect}, " +
+            $"completed: {missionsCompleted}"
             );
 
+            _currentMission.record.numberCompleted = missionsCompleted;
             _csvLogger.Log(_currentMission.record);
 
             TryRemoveMission(_currentMission);

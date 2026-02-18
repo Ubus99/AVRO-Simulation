@@ -68,6 +68,7 @@ namespace Gameplay
         void OnGameRestart()
         {
             GameplayGlobals.currentID = 0;
+            _logger.Dispose();
             _logger.Init(GameplayGlobals.logName);
             GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Login);
         }
