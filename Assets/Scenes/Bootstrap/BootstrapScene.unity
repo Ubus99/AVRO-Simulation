@@ -376,8 +376,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.NewGameManager
   mode: 0
-  gameSpeedEasy: 10
-  gameSpeedHard: 5
+  gameSpeedEasy: 7
+  gameSpeedHard: 3
   maxMissions: 5
 --- !u!4 &1703591600
 Transform:

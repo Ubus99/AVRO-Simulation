@@ -30,6 +30,8 @@ namespace Gameplay
             GameplayGlobals.restartEvent += OnRestart;
         }
 
+        public int missionsCompleted { get; set; }
+
         List<MissionSo> queue { get; } = new();
 
         public void Dispose()
@@ -94,6 +96,8 @@ namespace Gameplay
         void OnMissionSubmitted(MissionSubState missionSubState)
         {
             _currentMission.Complete(missionSubState);
+            missionsCompleted++;
+            
             Debug.Log(
             $"mission {_currentMission.name} submitted. " +
             $"tts: {_currentMission.record.timeToStart}, " +

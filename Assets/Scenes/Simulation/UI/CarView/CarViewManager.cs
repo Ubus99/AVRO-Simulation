@@ -29,18 +29,6 @@ namespace Scenes.Simulation.UI.CarView
         MissionSo _selectedMission;
         MissionSubState _selectedSubState;
 
-        UIRecord uiRecord
-        {
-            get
-            {
-                return new UIRecord
-                {
-                    mission = _selectedMission.name,
-                    state = _selectedSubState.actionName.ToString()
-                };
-            }
-        }
-
         void Awake()
         {
             _csvLogger = new CSVLogger<UIRecord>(GameplayGlobals.logName);
@@ -65,7 +53,7 @@ namespace Scenes.Simulation.UI.CarView
             GameplayGlobals.switchMissionEvent += OnSwitchToMission;
             GameplayGlobals.missionCompletedEvent += OnMissionCompleted;
             GameplayGlobals.missionQueueUpdateEvent += OnMissionQueueUpdate;
-            
+
             GameplayGlobals.restartEvent += OnRestart;
 
             _carViewController.ShowNoMissions();
@@ -124,7 +112,11 @@ namespace Scenes.Simulation.UI.CarView
             _selectedSubState = mission.options[0];
             _carViewController.ShowMission(mission);
 
-            _csvLogger.Log(uiRecord);
+            _csvLogger.Log(new UIRecord
+            {
+                view = _selectedMission.name,
+                viewState = _selectedSubState.actionName.ToString()
+            });
             Debug.Log($"loaded mission {mission.name} onto Screen");
         }
 
@@ -142,10 +134,20 @@ namespace Scenes.Simulation.UI.CarView
             if (_missions.Count == 0)
             {
                 _carViewController.ShowNoMissions();
+                _csvLogger.Log(new UIRecord
+                {
+                    view = "No Missions Screen",
+                    viewState = ""
+                });
             }
             else
             {
                 _carViewController.ShowMissionAvailable();
+                _csvLogger.Log(new UIRecord
+                {
+                    view = "New Missions Screen",
+                    viewState = ""
+                });
             }
         }
 
@@ -155,14 +157,18 @@ namespace Scenes.Simulation.UI.CarView
             _carViewController.SwitchToSubState(_selectedSubState);
 
             if (!_selectedSubState) return;
-            _csvLogger.Log(uiRecord);
+            _csvLogger.Log(new UIRecord
+            {
+                view = _selectedMission.name,
+                viewState = _selectedSubState.actionName.ToString()
+            });
             Debug.Log($"switching to sub-state: {_selectedSubState.actionName}");
         }
 
         class UIRecord : BaseRecord
         {
-            public string mission { get; set; }
-            public string state { get; set; }
+            public string view { get; set; }
+            public string viewState { get; set; }
         }
     }
 }

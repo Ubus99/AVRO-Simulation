@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Utils;
 using Logger = Utils.Logging.Logger;
 
 namespace Gameplay
@@ -21,6 +21,8 @@ namespace Gameplay
         [SerializeField]
         int maxMissions = 10;
 
+        [SerializeField]
+        int missionsToComplete = 20;
 
         float _currentGameSpeed;
 
@@ -34,10 +36,9 @@ namespace Gameplay
         void Start()
         {
             _logger = Logger.instance;
-            _logger.Init();
+            _logger.Init(GameplayGlobals.logName);
 
             _currentGameSpeed = gameSpeedEasy;
-
 
             GameplayGlobals.setGameMode += SetGameMode;
             GameplayGlobals.switchSceneEvent += SwitchScene;
@@ -48,18 +49,26 @@ namespace Gameplay
 
         void FixedUpdate()
         {
-            UpdateMissionQueue();
+            if (_missionManager.missionsCompleted >= missionsToComplete)
+            {
+                GameplayGlobals.restartEvent?.Invoke();
+            }
+            else
+            {
+                UpdateMissionQueue();
+            }
         }
 
         void OnDisable()
         {
+            _logger.Dispose();
             _missionManager.Dispose();
         }
 
         void OnGameRestart()
         {
             GameplayGlobals.currentID = 0;
-            _logger.Init();
+            _logger.Init(GameplayGlobals.logName);
             GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Login);
         }
 
@@ -70,6 +79,7 @@ namespace Gameplay
             {
                 case GameplayGlobals.Scenes.Login:
                     SceneManager.LoadScene("Login");
+                    InputUtils.SwitchToScheme("Keyboard&Mouse");
                     break;
                 case GameplayGlobals.Scenes.Simulation:
                     SceneManager.LoadScene("Simulation");
@@ -98,6 +108,21 @@ namespace Gameplay
             GameplayGlobals.currentInput = inputMethod;
             GameplayGlobals.currentSeverity = severity;
             GameplayGlobals.currentID = id;
+
+            switch (inputMethod)
+            {
+                case GameplayGlobals.Input.Mouse:
+                    InputUtils.SwitchToScheme("Keyboard&Mouse");
+                    break;
+                case GameplayGlobals.Input.Touch:
+                    InputUtils.SwitchToScheme("Touch");
+                    break;
+                case GameplayGlobals.Input.Speech:
+                    InputUtils.SwitchToScheme("Keyboard");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(inputMethod), inputMethod, null);
+            }
 
             _currentGameSpeed = severity switch
             {

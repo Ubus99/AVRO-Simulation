@@ -49,5 +49,29 @@ namespace Utils
             }
             return -1;
         }
+
+        public static void SwitchToScheme(string scheme)
+        {
+            var asset = InputSystem.actions;
+            if (asset == null) return;
+
+            var uiMap = asset.FindActionMap("UI");
+            if (uiMap == null) return;
+
+            if (string.IsNullOrEmpty(scheme))
+            {
+                uiMap.bindingMask = InputBinding.MaskByGroups(string.Empty); // matches no groups -> disables bindings
+                return;
+            }
+
+            var found = asset.FindControlScheme(scheme);
+            if (found == null || string.IsNullOrEmpty(found.Value.bindingGroup))
+            {
+                uiMap.bindingMask = InputBinding.MaskByGroups(string.Empty); // matches no groups -> disables bindings
+                return;
+            }
+
+            uiMap.bindingMask = InputBinding.MaskByGroups(found.Value.bindingGroup);
+        }
     }
 }

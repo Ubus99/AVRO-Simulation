@@ -64,7 +64,7 @@ namespace Scenes.Login
             GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Simulation);
         }
 
-        static IEnumerable<T> EnumerateEnumValues<T>()
+        static IEnumerable<T> EnumerateEnumValues<T>() where T : Enum
         {
             return Enumerable.Cast<T>(Enum.GetValues(typeof(T)));
         }

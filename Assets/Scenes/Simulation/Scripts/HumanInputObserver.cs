@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Gameplay;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -60,6 +61,15 @@ namespace Scenes.Simulation.Scripts
         {
             public float mouseX { get; set; }
             public float mouseY { get; set; }
+
+            public string keyCodes
+            {
+                get
+                {
+                    return string.Join(",",
+                    (from kc in Keyboard.current.allKeys where kc.isPressed select kc.name).ToList());
+                }
+            }
         }
     }
 }

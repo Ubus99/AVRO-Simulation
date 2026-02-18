@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Time = UnityEngine.Time;
 
 namespace Utils.Logging
 {
@@ -53,7 +54,7 @@ namespace Utils.Logging
                 HasHeaderRecord = false
             };
             _csv = new CsvWriter(_streamWriter, config);
-            _csv.NextRecord();
+            //_csv.NextRecord();
         }
 
         public void Log(T record)
@@ -70,6 +71,11 @@ namespace Utils.Logging
         public string timestamp
         {
             get { return DateTime.Now.ToString("HH:mm:ss:ffff"); }
+        }
+
+        public float secondsSinceStart
+        {
+            get { return Time.timeSinceLevelLoad; }
         }
     }
 }

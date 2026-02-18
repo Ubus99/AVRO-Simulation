@@ -100,6 +100,7 @@ namespace Gameplay
         {
             record.TimeEnd = Time.timeSinceLevelLoad;
             record.missionName = name;
+            record.correct = missionSubState.isCorrect;
 
             return missionSubState.isCorrect;
         }
@@ -146,8 +147,9 @@ namespace Gameplay
             public float TimeEnd;
             public float TimeLoaded;
             public float TimeStart;
-            public string missionName { get; set; }
 
+            public string missionName { get; set; }
+            public bool correct { get; set; }
             public float timeToComplete
             {
                 get { return TimeEnd - TimeStart; }
