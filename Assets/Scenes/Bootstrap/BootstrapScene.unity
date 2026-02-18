@@ -379,6 +379,7 @@ MonoBehaviour:
   gameSpeedEasy: 7
   gameSpeedHard: 3
   maxMissions: 5
+  missionsToComplete: 20
 --- !u!4 &1703591600
 Transform:
   m_ObjectHideFlags: 0
@@ -419,7 +420,7 @@ GameObject:
   - component: {fileID: 1900225250}
   m_Layer: 0
   m_Name: EventSystem
-  m_TagString: Untagged
+  m_TagString: bootstrap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647

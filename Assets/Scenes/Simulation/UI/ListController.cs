@@ -22,9 +22,15 @@ namespace Scenes.Simulation.UI
             _listView.selectionChanged -= OnItemSelected;
             _listView.selectionChanged += OnItemSelected;
 
+            // disable scrolling
+            _listView.RegisterCallback<WheelEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
+            _listView.RegisterCallback<PointerMoveEvent>(evt => evt.StopPropagation(), TrickleDown.TrickleDown);
+
             ConfigureListView();
             RefreshListView();
         }
+
+        public bool canScroll { get; set; }
 
         public int count
         {
