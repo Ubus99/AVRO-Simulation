@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Scenes.Simulation.UI.ListItem;
-using UI;
+using UI.ListItem;
 using UnityEngine.UIElements;
 
-namespace Scenes.Simulation.UI
+namespace UI
 {
     public class ListController<T> : IDisposable where T : IListItemData
     {

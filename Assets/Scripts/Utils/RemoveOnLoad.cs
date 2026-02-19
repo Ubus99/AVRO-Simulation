@@ -7,7 +7,7 @@ namespace Utils
         void Start()
         {
             Debug.Log($"Destroying {gameObject.name}");
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 }

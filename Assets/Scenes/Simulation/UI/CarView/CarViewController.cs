@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Gameplay;
 using Scenes.Simulation.Scripts;
+using UI;
 using UnityEngine.UIElements;
 
 namespace Scenes.Simulation.UI.CarView

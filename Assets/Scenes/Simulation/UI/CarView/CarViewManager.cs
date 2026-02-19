@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Gameplay;
 using Logging;
-using Scenes.Simulation.UI.ListItem;
+using UI.ListItem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -19,10 +19,10 @@ namespace Scenes.Simulation.UI.CarView
         [SerializeField]
         VisualTreeAsset itemTemplate;
 
+        AudioSource _audioSource;
+
         CarViewController _carViewController;
         CSVLogger<UIRecord> _csvLogger;
-
-        InputAction _jumpToAction;
 
         IList<MissionSo> _missions;
 
@@ -32,6 +32,8 @@ namespace Scenes.Simulation.UI.CarView
         void Awake()
         {
             _csvLogger = new CSVLogger<UIRecord>(GameplayGlobals.logName);
+
+            _audioSource = GetComponent<AudioSource>();
 
             var uiDocument = GetComponent<UIDocument>();
             var root = uiDocument.rootVisualElement;
@@ -43,9 +45,6 @@ namespace Scenes.Simulation.UI.CarView
                 GameplayGlobals.switchMissionEvent?.Invoke(data as MissionSo);
             };
             _carViewController.confirmButton.clicked += SubmitMission;
-
-            _jumpToAction = InputSystem.actions.FindAction("JumpTo");
-
         }
 
         void Start()
@@ -95,6 +94,12 @@ namespace Scenes.Simulation.UI.CarView
 
         void OnMissionQueueUpdate(IList<MissionSo> missions)
         {
+            if (missions.Count > _missions.Count)
+            {
+                // new mission was added
+                _audioSource.Play();
+            }
+
             _missions = missions;
             _carViewController.UpdateMissionList(missions);
 

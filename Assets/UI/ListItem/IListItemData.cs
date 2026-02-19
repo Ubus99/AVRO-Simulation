@@ -1,7 +1,7 @@
 using System;
 using UnityEngine.UIElements;
 
-namespace Scenes.Simulation.UI.ListItem
+namespace UI.ListItem
 {
     public interface IListItemData : IEquatable<IListItemData>
     {
@@ -9,7 +9,6 @@ namespace Scenes.Simulation.UI.ListItem
         public VectorImage rightImage { get; }
         public string mainText { get; }
         public string supportText { get; }
-
         public int approximateHeight { get; }
     }
 }

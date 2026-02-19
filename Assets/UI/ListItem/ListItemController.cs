@@ -1,9 +1,8 @@
 using System;
-using UI;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UIElements.Image;
 
-namespace Scenes.Simulation.UI.ListItem
+namespace UI.ListItem
 {
     public class ListItemController
     {
