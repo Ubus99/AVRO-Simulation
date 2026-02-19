@@ -72,7 +72,7 @@ namespace Gameplay
             queue.Add(nextMission);
 
             Debug.Log($"Mission added: {nextMission.name}");
-            GameplayGlobals.missionQueueUpdateEvent?.Invoke(Enumerable.ToList(Enumerable.Cast<MissionSo>(queue)));
+            GameplayGlobals.missionQueueUpdateEvent?.Invoke(queue);
             return true;
         }
 

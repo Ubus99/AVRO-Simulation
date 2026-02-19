@@ -24,7 +24,7 @@ namespace Scenes.Simulation.UI.CarView
         CarViewController _carViewController;
         CSVLogger<UIRecord> _csvLogger;
 
-        IList<MissionSo> _missions;
+        IList<MissionSo> _missions = new List<MissionSo>();
 
         MissionSo _selectedMission;
         MissionSubState _selectedSubState;
