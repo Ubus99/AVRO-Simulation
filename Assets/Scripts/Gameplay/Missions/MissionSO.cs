@@ -5,13 +5,11 @@ using System.Linq;
 using Logging;
 using UI.Icons;
 using UI.ListItem;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
-namespace Gameplay
+namespace Gameplay.Missions
 {
     [CreateAssetMenu(menuName = "missions/Mission")]
     public class MissionSo : ScriptableObject, IListItemData

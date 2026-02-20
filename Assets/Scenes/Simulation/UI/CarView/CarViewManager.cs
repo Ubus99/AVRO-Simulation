@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay;
+using Gameplay.Missions;
 using Logging;
 using UI.ListItem;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Utils;
 
@@ -15,11 +16,14 @@ namespace Scenes.Simulation.UI.CarView
         [SerializeField]
         VectorImage motivationalImage;
 
-        [FormerlySerializedAs("actionItemTemplate")]
         [SerializeField]
         VisualTreeAsset itemTemplate;
 
-        AudioSource _audioSource;
+        [SerializeField]
+        AudioSource missionAudio;
+        
+        [SerializeField]
+        AudioSource submitAudio;
 
         CarViewController _carViewController;
         CSVLogger<UIRecord> _csvLogger;
@@ -33,8 +37,6 @@ namespace Scenes.Simulation.UI.CarView
         {
             _csvLogger = new CSVLogger<UIRecord>(GameplayGlobals.logName);
 
-            _audioSource = GetComponent<AudioSource>();
-
             var uiDocument = GetComponent<UIDocument>();
             var root = uiDocument.rootVisualElement;
 
@@ -42,16 +44,17 @@ namespace Scenes.Simulation.UI.CarView
             _carViewController.actionList.ItemSelectedEvent += OnSubStateSelected;
             _carViewController.carList.ItemSelectedEvent += data =>
             {
-                GameplayGlobals.switchMissionEvent?.Invoke(data as MissionSo);
+                MissionEvents.switchMissionEvent?.Invoke(data as MissionSo);
             };
             _carViewController.confirmButton.clicked += SubmitMission;
         }
 
         void Start()
         {
-            GameplayGlobals.switchMissionEvent += OnSwitchToMission;
-            GameplayGlobals.missionCompletedEvent += OnMissionCompleted;
-            GameplayGlobals.missionQueueUpdateEvent += OnMissionQueueUpdate;
+            MissionEvents.switchMissionEvent += OnSwitchToMission;
+            MissionEvents.missionCompletedEvent += OnMissionCompleted;
+            MissionEvents.missionQueuedEvent += OnMissionQueued;
+            MissionEvents.missionQueueUpdateEvent += OnMissionQueueUpdate;
 
             GameplayGlobals.restartEvent += OnRestart;
 
@@ -68,11 +71,18 @@ namespace Scenes.Simulation.UI.CarView
             _carViewController.actionList!.ItemSelectedEvent -= OnSubStateSelected;
             _carViewController.confirmButton!.clicked -= SubmitMission;
 
-            GameplayGlobals.switchMissionEvent -= OnSwitchToMission;
-            GameplayGlobals.missionCompletedEvent -= OnMissionCompleted;
-            GameplayGlobals.missionQueueUpdateEvent -= OnMissionQueueUpdate;
+            MissionEvents.switchMissionEvent -= OnSwitchToMission;
+            MissionEvents.missionCompletedEvent -= OnMissionCompleted;
+            MissionEvents.missionQueuedEvent -= OnMissionQueued;
+            MissionEvents.missionQueueUpdateEvent -= OnMissionQueueUpdate;
 
             GameplayGlobals.restartEvent -= OnRestart;
+        }
+
+        void OnMissionQueued(MissionSo mission)
+        {
+            missionAudio.Stop();
+            missionAudio.Play();
         }
 
         void OnRestart()
@@ -94,13 +104,8 @@ namespace Scenes.Simulation.UI.CarView
 
         void OnMissionQueueUpdate(IList<MissionSo> missions)
         {
-            if (missions.Count > _missions.Count)
-            {
-                // new mission was added
-                _audioSource.Play();
-            }
-
-            _missions = missions;
+            // remove reference by duplication
+            _missions = missions.ToList();
             _carViewController.UpdateMissionList(missions);
 
             if (_carViewController.state == CarViewController.View.EmptyView)
@@ -127,13 +132,16 @@ namespace Scenes.Simulation.UI.CarView
 
         void SubmitMission()
         {
-            GameplayGlobals.missionSubmittedEvent?.Invoke(
+            MissionEvents.missionSubmittedEvent?.Invoke(
             _carViewController.actionList.GetSelectedItem()
             );
         }
 
-        void OnMissionCompleted()
+        void OnMissionCompleted(MissionSo mission)
         {
+            // bullshit gate, in case something on the backend goes wrong
+            if (mission != _selectedMission) return;
+
             _selectedMission = null;
             _selectedSubState = null;
             if (_missions.Count == 0)

@@ -6,7 +6,7 @@ using Assert = UnityEngine.Assertions.Assert;
 using Enumerable = System.Linq.Enumerable;
 using Random = UnityEngine.Random;
 
-namespace Gameplay
+namespace Gameplay.Missions
 {
     public class MissionManager : IDisposable
     {
@@ -25,8 +25,8 @@ namespace Gameplay
             _missions.AddRange(Resources.LoadAll<MissionSo>(MissionPath));
 
             GameplayGlobals.setGameMode += (_, _, _) => _csvLogger.Rename(GameplayGlobals.logName);
-            GameplayGlobals.switchMissionEvent += OnMissionChange;
-            GameplayGlobals.missionSubmittedEvent += OnMissionSubmitted;
+            MissionEvents.switchMissionEvent += OnMissionChange;
+            MissionEvents.missionSubmittedEvent += OnMissionSubmitted;
             GameplayGlobals.restartEvent += OnRestart;
         }
 
@@ -37,8 +37,8 @@ namespace Gameplay
         public void Dispose()
         {
             _csvLogger.Dispose();
-            GameplayGlobals.switchMissionEvent -= OnMissionChange;
-            GameplayGlobals.missionSubmittedEvent -= OnMissionSubmitted;
+            MissionEvents.switchMissionEvent -= OnMissionChange;
+            MissionEvents.missionSubmittedEvent -= OnMissionSubmitted;
             GameplayGlobals.restartEvent -= OnRestart;
         }
 
@@ -72,7 +72,9 @@ namespace Gameplay
             queue.Add(nextMission);
 
             Debug.Log($"Mission added: {nextMission.name}");
-            GameplayGlobals.missionQueueUpdateEvent?.Invoke(queue);
+            
+            MissionEvents.missionQueuedEvent?.Invoke(nextMission);
+            MissionEvents.missionQueueUpdateEvent?.Invoke(queue);
             return true;
         }
 
@@ -82,7 +84,7 @@ namespace Gameplay
             if (!queue.Contains(mission)) return false;
 
             queue.Remove(mission);
-            GameplayGlobals.missionQueueUpdateEvent?.Invoke(Enumerable.ToList(Enumerable.Cast<MissionSo>(queue)));
+            MissionEvents.missionQueueUpdateEvent?.Invoke(Enumerable.ToList(Enumerable.Cast<MissionSo>(queue)));
             return true;
         }
 
@@ -112,8 +114,8 @@ namespace Gameplay
 
             TryRemoveMission(_currentMission);
 
+            MissionEvents.missionCompletedEvent?.Invoke(_currentMission);
             _currentMission = null;
-            GameplayGlobals.missionCompletedEvent?.Invoke();
         }
 
         public void SetNextOrRandom()
@@ -123,7 +125,7 @@ namespace Gameplay
 
             _currentMission = queue[0];
 
-            GameplayGlobals.switchMissionEvent?.Invoke(_currentMission);
+            MissionEvents.switchMissionEvent?.Invoke(_currentMission);
         }
     }
 }

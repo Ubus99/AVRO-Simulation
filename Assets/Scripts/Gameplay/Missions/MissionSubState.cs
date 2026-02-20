@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Utils;
 
-namespace Gameplay
+namespace Gameplay.Missions
 {
     [CreateAssetMenu(menuName = "missions/SubState")]
     public class MissionSubState : ScriptableObject, IListItemData

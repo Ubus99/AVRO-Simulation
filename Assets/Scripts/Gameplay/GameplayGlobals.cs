@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Gameplay
 {
@@ -27,12 +26,6 @@ namespace Gameplay
         public static Input currentInput = Input.Mouse;
         public static Severity currentSeverity = Severity.Easy;
         public static int currentID = 0;
-
-        // mission events
-        public static Action<MissionSo> switchMissionEvent;
-        public static Action<IList<MissionSo>> missionQueueUpdateEvent;
-        public static Action<MissionSubState> missionSubmittedEvent;
-        public static Action missionCompletedEvent;
 
         // game events
         public static Action restartEvent;
