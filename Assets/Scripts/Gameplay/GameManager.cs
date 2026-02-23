@@ -45,7 +45,8 @@ namespace Gameplay
             GameplayGlobals.switchSceneEvent += SwitchScene;
             GameplayGlobals.restartEvent += OnGameRestart;
 
-            _missionManager = new MissionManager(maxMissions);
+            _missionManager = new MissionManager(maxMissions, 0);
+            _missionManager.ExecuteMissionsOnlyOnce = true;
         }
 
         void FixedUpdate()
