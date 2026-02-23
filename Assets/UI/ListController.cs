@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UI.ListItem;
 using UnityEngine.UIElements;
 
@@ -8,13 +7,16 @@ namespace UI
 {
     public class ListController<T> : IDisposable where T : IListItemData
     {
+        readonly bool _flexible;
         readonly VisualTreeAsset _itemTemplate;
         readonly List<T> _listData = new();
         readonly ListView _listView;
 
-        public ListController(VisualElement root, VisualTreeAsset itemTemplate, string name)
+        public ListController(VisualElement root, VisualTreeAsset itemTemplate, string name,
+            bool flexibleHeight = false)
         {
             _itemTemplate = itemTemplate;
+            _flexible = flexibleHeight;
             _listView = root.Q<ListView>(name);
 
             // ensure we don't double-subscribe if InitializeList is called more than once
@@ -67,6 +69,17 @@ namespace UI
 
         void ConfigureListView()
         {
+            if (_flexible)
+            {
+                _listView.fixedItemHeight = 0;
+                _listView.virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
+            }
+            else
+            {
+                _listView.fixedItemHeight = 80;
+                _listView.virtualizationMethod = CollectionVirtualizationMethod.FixedHeight;
+            }
+
             _listView.makeItem = () =>
             {
                 var instance = _itemTemplate.Instantiate();
@@ -81,8 +94,6 @@ namespace UI
                 if (i >= 0 && i < _listData.Count)
                     (element.userData as ListItemController)?.SetData(_listData[i]);
             };
-
-            _listView.fixedItemHeight = 80;
             _listView.itemsSource = _listData;
         }
 
@@ -119,7 +130,7 @@ namespace UI
         {
             if (_listView == null) return;
 
-            // reassign itemsSource to ensure the ListView picks up changed Count,
+            // reassign itemsSource to ensure the ListView picks up the changed Count,
             // then force a visual refresh of visible items.
             if (_listData.FirstOrDefault() is { } item)
                 _listView.fixedItemHeight = item.approximateHeight;

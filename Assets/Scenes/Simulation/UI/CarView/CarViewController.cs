@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using Gameplay;
 using Gameplay.Missions;
-using Scenes.Simulation.Scripts;
 using UI;
 using UnityEngine.UIElements;
 
@@ -25,8 +23,8 @@ namespace Scenes.Simulation.UI.CarView
             _selfRoot = root;
             _focusController = root.focusController;
 
-            actionList = new ListController<MissionSubState>(root, itemTemplate, "actions-list");
-            carList = new ListController<MissionSo>(root, itemTemplate, "car-list");
+            actionList = new ListController<MissionSubState>(root, itemTemplate, "actions-list", true);
+            carList = new ListController<MissionSo>(root, itemTemplate, "car-list", true);
 
             //actionList.RegisterNavigation(NavigationMoveEvent.Direction.Left, carList);
             //actionList.RegisterNavigation(NavigationMoveEvent.Direction.Right, actionList);

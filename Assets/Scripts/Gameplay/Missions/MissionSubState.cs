@@ -70,7 +70,7 @@ namespace Gameplay.Missions
 
         public string supportText
         {
-            get { return actionDescription.ToString().ToSentenceCase(); }
+            get { return $"- {actionDescription.ToString().ToSentenceCase()}"; }
         }
 
         public int approximateHeight
