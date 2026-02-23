@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Logging;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
@@ -37,7 +36,7 @@ namespace Gameplay.Missions
 
         public bool ExecuteMissionsOnlyOnce { get; set; }
 
-        public int MissionsCompleted { get; set; }
+        public int MissionsCompleted { get; private set; }
 
         List<MissionSo> Queue { get; } = new();
 
@@ -76,7 +75,7 @@ namespace Gameplay.Missions
             do
             {
                 nextMission = GetRandomMission();
-                if (nextMission == null) return false;
+                if (!nextMission) return false;
             } while (Queue.Contains(nextMission));
 
             nextMission.Load();
@@ -101,6 +100,7 @@ namespace Gameplay.Missions
 
         void ShuffleMissions<T>(IList<T> list)
         {
+            _missions.OrderBy(so => so.name); // ensure shuffle remains deterministic
             var n = list.Count;
             while (n > 1)
             {
