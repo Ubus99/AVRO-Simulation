@@ -70,7 +70,7 @@ namespace Gameplay
         void OnGameRestart()
         {
             GameplayGlobals.currentID = 0;
-            _missionManager.MissionsCompleted = 0;
+            _missionManager.ResetCompletedMissions();
             
             _logger.Dispose();
             _logger.Init(GameplayGlobals.logName);

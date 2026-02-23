@@ -119,6 +119,7 @@ namespace Gameplay.Missions
 
         public void ResetCompletedMissions()
         {
+            MissionsCompleted = 0;
             _availableMissions = new List<MissionSo>(_missions);
         }
 
