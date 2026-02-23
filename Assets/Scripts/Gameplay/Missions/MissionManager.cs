@@ -4,7 +4,7 @@ using System.Linq;
 using Logging;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 namespace Gameplay.Missions
 {
@@ -14,22 +14,20 @@ namespace Gameplay.Missions
 
         readonly int _maxMissions;
         readonly List<MissionSo> _missions = new();
-        readonly int? _randomSeed;
-        readonly System.Random _random;
-        List<MissionSo> _shuffledMissions;
+        readonly Random _random;
 
         CSVLogger<MissionSo.MissionRecord> _csvLogger = new(GameplayGlobals.logName);
         MissionSo _currentMission;
+        List<MissionSo> _shuffledMissions;
 
         public MissionManager(int maxMissions, int? randomSeed = null)
         {
             _maxMissions = maxMissions;
-            _randomSeed = randomSeed;
-            _random = _randomSeed.HasValue ? new System.Random(_randomSeed.Value) : new System.Random();
+            _random = randomSeed.HasValue ? new Random(randomSeed.Value) : new Random();
 
             _missions.AddRange(Resources.LoadAll<MissionSo>(MissionPath));
+            ShuffleMissions(_missions);
             _shuffledMissions = new List<MissionSo>(_missions);
-            ShuffleMissions();
 
             GameplayGlobals.setGameMode += (_, _, _) => _csvLogger.Rename(GameplayGlobals.logName);
             MissionEvents.switchMissionEvent += OnMissionChange;
@@ -101,16 +99,15 @@ namespace Gameplay.Missions
             return true;
         }
 
-        void ShuffleMissions()
+        void ShuffleMissions<T>(IList<T> list)
         {
-            int n = _shuffledMissions.Count;
+            var n = list.Count;
             while (n > 1)
             {
                 n--;
-                int k = _random.Next(n + 1);
-                var temp = _shuffledMissions[k];
-                _shuffledMissions[k] = _shuffledMissions[n];
-                _shuffledMissions[n] = temp;
+                var k = _random.Next(n + 1);
+                (list[k], list[n]) =
+                    (list[n], list[k]);
             }
         }
 
@@ -138,7 +135,6 @@ namespace Gameplay.Missions
         {
             MissionsCompleted = 0;
             _shuffledMissions = new List<MissionSo>(_missions);
-            ShuffleMissions();
         }
 
         void OnMissionSubmitted(MissionSubState missionSubState)
