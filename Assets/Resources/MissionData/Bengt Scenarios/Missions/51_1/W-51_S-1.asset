@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6ae67ff2074af3b6bcca59833fba76, type: 3}
   m_Name: W-51_S-1
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.MissionSo
-  route: {fileID: 0}
+  route: {fileID: 2800000, guid: cab96d92de30b5740a29b5a4d694f502, type: 3}
   subStates:
   - {fileID: 11400000, guid: 16f7730aa7e41ce45b3fc243cf4a23c5, type: 2}
   - {fileID: 11400000, guid: d667595da61d7814583505258be70e17, type: 2}

@@ -8,6 +8,7 @@ using UI.ListItem;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
 namespace Gameplay.Missions
 {
@@ -87,7 +88,7 @@ namespace Gameplay.Missions
         public bool Complete(MissionSubState missionSubState)
         {
             record.TimeEnd = Time.timeSinceLevelLoad;
-            record.missionName = name;
+            record.missionName = $"Car #{Mathf.FloorToInt(Random.Range(1000, 9999))}";
             record.correct = missionSubState.isCorrect;
 
             return missionSubState.isCorrect;
