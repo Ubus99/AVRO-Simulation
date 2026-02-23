@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Logging;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
-using Enumerable = System.Linq.Enumerable;
 using Random = UnityEngine.Random;
 
 namespace Gameplay.Missions
@@ -14,6 +14,7 @@ namespace Gameplay.Missions
 
         readonly int _maxMissions;
         readonly List<MissionSo> _missions = new();
+        List<MissionSo> _availableMissions;
 
         CSVLogger<MissionSo.MissionRecord> _csvLogger = new(GameplayGlobals.logName);
         MissionSo _currentMission;
@@ -23,12 +24,15 @@ namespace Gameplay.Missions
             _maxMissions = maxMissions;
 
             _missions.AddRange(Resources.LoadAll<MissionSo>(MissionPath));
+            _availableMissions = new List<MissionSo>(_missions);
 
             GameplayGlobals.setGameMode += (_, _, _) => _csvLogger.Rename(GameplayGlobals.logName);
             MissionEvents.switchMissionEvent += OnMissionChange;
             MissionEvents.missionSubmittedEvent += OnMissionSubmitted;
             GameplayGlobals.restartEvent += OnRestart;
         }
+
+        public bool ExecuteMissionsOnlyOnce { get; set; }
 
         public int MissionsCompleted { get; set; }
 
@@ -66,13 +70,14 @@ namespace Gameplay.Missions
             do
             {
                 nextMission = GetRandomMission();
+                if (nextMission == null) return false;
             } while (Queue.Contains(nextMission));
 
             nextMission.Load();
             Queue.Add(nextMission);
 
             Debug.Log($"Mission added: {nextMission.name}");
-            
+
             MissionEvents.missionQueuedEvent?.Invoke(nextMission);
             MissionEvents.missionQueueUpdateEvent?.Invoke(Queue);
             return true;
@@ -84,21 +89,43 @@ namespace Gameplay.Missions
             if (!Queue.Contains(mission)) return false;
 
             Queue.Remove(mission);
-            MissionEvents.missionQueueUpdateEvent?.Invoke(Enumerable.ToList(Enumerable.Cast<MissionSo>(Queue)));
+            MissionEvents.missionQueueUpdateEvent?.Invoke(Queue.ToList());
             return true;
         }
 
         MissionSo GetRandomMission()
         {
-            var mission = _missions[Random.Range(0, _missions.Count)];
-            Assert.IsNotNull(mission);
-            return mission;
+            if (ExecuteMissionsOnlyOnce)
+            {
+                if (_availableMissions.Count == 0)
+                {
+                    Debug.LogWarning("All missions completed. Call ResetCompletedMissions() to allow repeats.");
+                    return null;
+                }
+                var mission = _availableMissions[Random.Range(0, _availableMissions.Count)];
+                Assert.IsNotNull(mission);
+                return mission;
+            }
+
+            var randomMission = _missions[Random.Range(0, _missions.Count)];
+            Assert.IsNotNull(randomMission);
+            return randomMission;
+        }
+
+        public void ResetCompletedMissions()
+        {
+            _availableMissions = new List<MissionSo>(_missions);
         }
 
         void OnMissionSubmitted(MissionSubState missionSubState)
         {
             _currentMission.Complete(missionSubState);
             MissionsCompleted++;
+
+            if (ExecuteMissionsOnlyOnce)
+            {
+                _availableMissions.Remove(_currentMission);
+            }
 
             Debug.Log(
             $"mission {_currentMission.name} submitted. " +
