@@ -1,6 +1,0 @@
-@startuml
-class RemoveOnLoad {
-    - Start() : void
-}
-MonoBehaviour <|-- RemoveOnLoad
-@enduml

@@ -1,0 +1,24 @@
+﻿@startuml
+hide empty members
+hide interface
+remove MonoBehaviour
+remove ScriptableObject
+remove VisualTreeAsset
+remove VisualElement
+remove Texture2D
+remove VectorImage
+remove Image
+remove Label
+
+!include .\\ColorGuide.puml
+!include .\\DynamicGrid.puml
+!include .\\GUIUtils.puml
+!include .\\IListElement.puml
+!include .\\IPlayerClickable.puml
+!include .\\ISubScreen.puml
+!include .\\ModalUI.puml
+!include .\\VideoFeed.puml
+!include .\\Icons\IconAtlas.puml
+!include .\\Icons\IconAtlasPostprocessor.puml
+!include .\\Icons\IconAtlasRegistry.puml
+@enduml

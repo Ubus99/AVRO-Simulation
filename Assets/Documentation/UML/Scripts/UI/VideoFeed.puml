@@ -5,7 +5,6 @@ class VideoFeed {
     # <<override>> Awake() : void
     - Update() : void
     # <<override>> OnRectTransformDimensionsChange() : void
-    # <<override>> OnValidate() : void
     + OnPointerClick(eventData:PointerEventData) : void
     + Show() : void
     + Hide() : void

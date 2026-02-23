@@ -1,9 +1,0 @@
-@startuml
-class JunctionTrigger {
-    + TryGetRandomExit(exit:SplineContainer) : bool
-}
-class "WeightedPool`1"<T> {
-}
-MonoBehaviour <|-- JunctionTrigger
-JunctionTrigger o-> "junctionData<SplineContainer>" "WeightedPool`1"
-@enduml

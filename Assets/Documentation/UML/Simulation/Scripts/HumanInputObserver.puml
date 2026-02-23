@@ -1,9 +1,23 @@
 @startuml
 class HumanInputObserver {
-    <<const>> - PointerPositionKey : string = "PointerPosition"
     - Start() : void
-    - Update() : void
+    - FixedUpdate() : void
+    - OnDisable() : void
+    + Dispose() : void
+    - OnSetGameMode(id:int, input:GameplayGlobals.Input, severity:GameplayGlobals.Severity) : void
+    - OnRestart() : void
+}
+class "CSVLogger`1"<T> {
+}
+class HumanInputRecord {
+    + mouseX : float <<get>> <<set>>
+    + mouseY : float <<get>> <<set>>
+    + keyCodes : string <<get>>
 }
 MonoBehaviour <|-- HumanInputObserver
-HumanInputObserver --> "_csvLogger" CSVLogger
+IDisposable <|-- HumanInputObserver
+HumanInputObserver --> "_csvLogger<HumanInputRecord>" "CSVLogger`1"
+HumanInputObserver --> "_restartAction" InputAction
+HumanInputObserver +-- HumanInputRecord
+BaseRecord <|-- HumanInputRecord
 @enduml

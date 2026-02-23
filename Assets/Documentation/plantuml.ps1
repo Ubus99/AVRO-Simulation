@@ -6,7 +6,8 @@
 
 # Directories to scan / generate UML for (easy to extend)
 $ScanDirectories = @(
-    @{ Source = "..\Scripts"; Target = ".\UML\Scripts" },
+    @{ Source = "..\Scripts\UI"; Target = ".\UML\Scripts\UI" },
+    @{ Source = "..\Scripts\Gameplay"; Target = ".\UML\Scripts\Gameplay" },
     @{ Source = "..\Scenes\Simulation"; Target = ".\UML\Simulation" }
 )
 
@@ -28,7 +29,7 @@ $PlantUmlHeaderLines = @(
 )
 
 # Additional flags passed to puml-gen
-$flags = @("-dir", "-createAssociation")
+$flags = @("-dir", "-createAssociation", "-addPackageTags")
 
 # --------------- HELPERS ----------------
 

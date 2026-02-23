@@ -1,0 +1,11 @@
+@startuml
+class MissionEvents <<static>> {
+}
+class "Action`1"<T> {
+}
+MissionEvents --> "missionQueuedEvent<MissionSo>" "Action`1"
+MissionEvents --> "missionQueueUpdateEvent<IList<MissionSo>>" "Action`1"
+MissionEvents --> "switchMissionEvent<MissionSo>" "Action`1"
+MissionEvents --> "missionSubmittedEvent<MissionSubState>" "Action`1"
+MissionEvents --> "missionCompletedEvent<MissionSo>" "Action`1"
+@enduml

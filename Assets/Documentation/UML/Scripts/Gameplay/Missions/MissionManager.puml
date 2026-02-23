@@ -1,0 +1,25 @@
+@startuml
+class MissionManager {
+    <<const>> - MissionPath : string = "MissionData/Bengt Scenarios/Missions"
+    <<readonly>> - _maxMissions : int
+    + MissionManager(maxMissions:int)
+    + missionsCompleted : int <<get>> <<set>>
+    + Dispose() : void
+    - OnRestart() : void
+    - OnMissionChange(mission:MissionSo) : void
+    + TryAddMission() : bool
+    + TryRemoveMission(mission:MissionSo) : bool
+    - GetRandomMission() : MissionSo
+    - OnMissionSubmitted(missionSubState:MissionSubState) : void
+    + SetNextOrRandom() : void
+}
+class "List`1"<T> {
+}
+class "CSVLogger`1"<T> {
+}
+IDisposable <|-- MissionManager
+MissionManager o-> "_missions<MissionSo>" "List`1"
+MissionManager o-> "_csvLogger<MissionSo.MissionRecord>" "CSVLogger`1"
+MissionManager --> "_currentMission" MissionSo
+MissionManager o-> "queue<MissionSo>" "List`1"
+@enduml

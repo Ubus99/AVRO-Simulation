@@ -11,10 +11,7 @@ remove Image
 remove Label
 
 !include .\\Scripts\HumanInputObserver.puml
-!include .\\UI\ListController.puml
 !include .\\UI\CarView\CarViewController.puml
 !include .\\UI\CarView\CarViewManager.puml
 !include .\\UI\CarView\ContentController.puml
-!include .\\UI\ListItem\IListItemData.puml
-!include .\\UI\ListItem\ListItemController.puml
 @enduml

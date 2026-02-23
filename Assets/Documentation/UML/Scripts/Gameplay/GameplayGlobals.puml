@@ -1,6 +1,7 @@
 @startuml
 class GameplayGlobals <<static>> {
     + {static} currentID : int = 0
+    + {static} logName : string <<get>>
 }
 enum Input {
     Mouse,
@@ -21,10 +22,7 @@ class "Action`3"<T1,T2,T3> {
 }
 GameplayGlobals o-> "currentInput" Input
 GameplayGlobals o-> "currentSeverity" Severity
-GameplayGlobals --> "switchMissionEvent<MissionSo>" "Action`1"
-GameplayGlobals --> "missionQueueUpdateEvent<IList<MissionSo>>" "Action`1"
-GameplayGlobals --> "missionSubmittedEvent<MissionSubState>" "Action`1"
-GameplayGlobals --> "missionCompletedEvent" Action
+GameplayGlobals --> "restartEvent" Action
 GameplayGlobals --> "switchSceneEvent<Scenes>" "Action`1"
 GameplayGlobals --> "setGameMode<int,Input,Severity>" "Action`3"
 GameplayGlobals +-- Input

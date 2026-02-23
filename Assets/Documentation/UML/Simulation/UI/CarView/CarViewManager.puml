@@ -1,24 +1,36 @@
 @startuml
 class CarViewManager {
-    <<const>> - MissionStateKey : string = "SubState"
     - Awake() : void
     - Start() : void
     - Update() : void
     - OnDisable() : void
+    - OnMissionQueued(mission:MissionSo) : void
+    - OnRestart() : void
     - CheckJumpPerformed() : void
     - OnMissionQueueUpdate(missions:IList<MissionSo>) : void
     - OnSwitchToMission(mission:MissionSo) : void
     - SubmitMission() : void
-    - OnMissionCompleted() : void
+    - OnMissionCompleted(mission:MissionSo) : void
     - OnSubStateSelected(obj:IListItemData) : void
 }
+class "CSVLogger`1"<T> {
+}
 class "IList`1"<T> {
+}
+class UIRecord {
+    + view : string <<get>> <<set>>
+    + viewState : string <<get>> <<set>>
 }
 MonoBehaviour <|-- CarViewManager
 CarViewManager --> "motivationalImage" VectorImage
 CarViewManager --> "itemTemplate" VisualTreeAsset
+CarViewManager --> "missionAudio" AudioSource
+CarViewManager --> "submitAudio" AudioSource
 CarViewManager --> "_carViewController" CarViewController
-CarViewManager --> "_csvLogger" CSVLogger
-CarViewManager --> "_jumpToAction" InputAction
-CarViewManager --> "_missions<MissionSo>" "IList`1"
+CarViewManager --> "_csvLogger<UIRecord>" "CSVLogger`1"
+CarViewManager o-> "_missions<MissionSo>" "IList`1"
+CarViewManager --> "_selectedMission" MissionSo
+CarViewManager --> "_selectedSubState" MissionSubState
+CarViewManager +-- UIRecord
+BaseRecord <|-- UIRecord
 @enduml

@@ -1,7 +1,0 @@
-@startuml
-abstract class AbstractFollower {
-}
-NavigationProvider <|-- AbstractFollower
-AbstractFollower --> "targetPrefab" CarTarget
-AbstractFollower --> "target" CarTarget
-@enduml

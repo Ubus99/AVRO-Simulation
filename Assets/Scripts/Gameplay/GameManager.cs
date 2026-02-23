@@ -50,7 +50,7 @@ namespace Gameplay
 
         void FixedUpdate()
         {
-            if (_missionManager.missionsCompleted >= missionsToComplete)
+            if (_missionManager.MissionsCompleted >= missionsToComplete)
             {
                 GameplayGlobals.restartEvent?.Invoke();
             }
@@ -69,8 +69,11 @@ namespace Gameplay
         void OnGameRestart()
         {
             GameplayGlobals.currentID = 0;
+            _missionManager.MissionsCompleted = 0;
+            
             _logger.Dispose();
             _logger.Init(GameplayGlobals.logName);
+            
             GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Login);
         }
 

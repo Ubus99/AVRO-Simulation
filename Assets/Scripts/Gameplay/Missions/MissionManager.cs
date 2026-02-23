@@ -30,9 +30,9 @@ namespace Gameplay.Missions
             GameplayGlobals.restartEvent += OnRestart;
         }
 
-        public int missionsCompleted { get; set; }
+        public int MissionsCompleted { get; set; }
 
-        List<MissionSo> queue { get; } = new();
+        List<MissionSo> Queue { get; } = new();
 
         public void Dispose()
         {
@@ -50,13 +50,13 @@ namespace Gameplay.Missions
 
         void OnMissionChange(MissionSo mission)
         {
-            _currentMission = queue.Find(timedMission => mission == timedMission);
+            _currentMission = Queue.Find(timedMission => mission == timedMission);
             _currentMission.Start();
         }
 
         public bool TryAddMission()
         {
-            if (queue.Count >= _maxMissions)
+            if (Queue.Count >= _maxMissions)
             {
                 //Debug.Log("Mission is full");
                 return false;
@@ -66,25 +66,25 @@ namespace Gameplay.Missions
             do
             {
                 nextMission = GetRandomMission();
-            } while (queue.Contains(nextMission));
+            } while (Queue.Contains(nextMission));
 
             nextMission.Load();
-            queue.Add(nextMission);
+            Queue.Add(nextMission);
 
             Debug.Log($"Mission added: {nextMission.name}");
             
             MissionEvents.missionQueuedEvent?.Invoke(nextMission);
-            MissionEvents.missionQueueUpdateEvent?.Invoke(queue);
+            MissionEvents.missionQueueUpdateEvent?.Invoke(Queue);
             return true;
         }
 
         public bool TryRemoveMission(MissionSo mission)
         {
-            if (queue.Count <= 0) return false;
-            if (!queue.Contains(mission)) return false;
+            if (Queue.Count <= 0) return false;
+            if (!Queue.Contains(mission)) return false;
 
-            queue.Remove(mission);
-            MissionEvents.missionQueueUpdateEvent?.Invoke(Enumerable.ToList(Enumerable.Cast<MissionSo>(queue)));
+            Queue.Remove(mission);
+            MissionEvents.missionQueueUpdateEvent?.Invoke(Enumerable.ToList(Enumerable.Cast<MissionSo>(Queue)));
             return true;
         }
 
@@ -98,7 +98,7 @@ namespace Gameplay.Missions
         void OnMissionSubmitted(MissionSubState missionSubState)
         {
             _currentMission.Complete(missionSubState);
-            missionsCompleted++;
+            MissionsCompleted++;
 
             Debug.Log(
             $"mission {_currentMission.name} submitted. " +
@@ -106,10 +106,10 @@ namespace Gameplay.Missions
             $"ttc: {_currentMission.record.timeToComplete}, " +
             $"tt: {_currentMission.record.totalTime}, " +
             $"correct: {missionSubState.isCorrect}, " +
-            $"completed: {missionsCompleted}"
+            $"completed: {MissionsCompleted}"
             );
 
-            _currentMission.record.numberCompleted = missionsCompleted;
+            _currentMission.record.numberCompleted = MissionsCompleted;
             _csvLogger.Log(_currentMission.record);
 
             TryRemoveMission(_currentMission);
@@ -120,10 +120,10 @@ namespace Gameplay.Missions
 
         public void SetNextOrRandom()
         {
-            if (queue.Count == 0)
+            if (Queue.Count == 0)
                 TryAddMission();
 
-            _currentMission = queue[0];
+            _currentMission = Queue[0];
 
             MissionEvents.switchMissionEvent?.Invoke(_currentMission);
         }

@@ -3,20 +3,18 @@ class GameManager {
     - gameSpeedEasy : float = 5
     - gameSpeedHard : float = 1
     - maxMissions : int = 10
+    - missionsToComplete : int = 20
     - _currentGameSpeed : float
     - _lastMissionCreationTime : float
-    - Awake() : void
     - Start() : void
     - FixedUpdate() : void
-    - RestartLogging() : void
-    {static} - OnRestartActionPerformed(context:InputAction.CallbackContext) : void
+    - OnDisable() : void
+    - OnGameRestart() : void
     - SwitchScene(scene:GameplayGlobals.Scenes) : void
     - UpdateMissionQueue() : void
     - SetGameMode(id:int, inputMethod:GameplayGlobals.Input, severity:GameplayGlobals.Severity) : void
 }
 MonoBehaviour <|-- GameManager
-GameManager --> "_csvLogger" CSVLogger
 GameManager --> "_logger" Logger
 GameManager --> "_missionManager" MissionManager
-GameManager --> "_restartAction" InputAction
 @enduml

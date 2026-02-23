@@ -1,5 +1,0 @@
-@startuml
-class ObjectManagementUtility <<static>> {
-    + {static} KillAllChildren(parent:Transform) : void
-}
-@enduml

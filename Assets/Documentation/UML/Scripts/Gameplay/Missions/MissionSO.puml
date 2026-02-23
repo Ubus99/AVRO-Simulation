@@ -1,0 +1,38 @@
+@startuml
+class MissionSo {
+    - OnEnable() : void
+    + Equals(other:IListItemData) : bool
+    + mainText : string <<get>>
+    + supportText : string <<get>> = null
+    + approximateHeight : int <<get>>
+    + GetRouteTexture() : Texture2D
+    + Start() : void
+    + Load() : void
+    + Complete(missionSubState:MissionSubState) : bool
+}
+class "List`1"<T> {
+}
+class MissionRecord {
+    + TimeEnd : float
+    + TimeLoaded : float
+    + TimeStart : float
+    + missionName : string <<get>> <<set>>
+    + numberCompleted : int <<get>> <<set>>
+    + correct : bool <<get>> <<set>>
+    + timeToComplete : float <<get>>
+    + timeToStart : float <<get>>
+    + totalTime : float <<get>>
+}
+ScriptableObject <|-- MissionSo
+IListItemData <|-- MissionSo
+MissionSo --> "route" Texture2D
+MissionSo o-> "subStates<MissionSubState>" "List`1"
+MissionSo --> "map" Texture2D
+MissionSo --> "_icons" IconAtlas
+MissionSo o-> "record" MissionRecord
+MissionSo --> "options<MissionSubState>" "List`1"
+MissionSo --> "leftImage" VectorImage
+MissionSo --> "rightImage" VectorImage
+MissionSo +-- MissionRecord
+BaseRecord <|-- MissionRecord
+@enduml

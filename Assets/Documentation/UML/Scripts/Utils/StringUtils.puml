@@ -1,5 +1,0 @@
-@startuml
-class StringUtils <<static>> {
-    + {static} ToSentenceCase(input:string) : string
-}
-@enduml

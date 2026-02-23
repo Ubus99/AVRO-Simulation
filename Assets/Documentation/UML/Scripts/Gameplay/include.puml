@@ -1,0 +1,19 @@
+﻿@startuml
+hide empty members
+hide interface
+remove MonoBehaviour
+remove ScriptableObject
+remove VisualTreeAsset
+remove VisualElement
+remove Texture2D
+remove VectorImage
+remove Image
+remove Label
+
+!include .\\GameManager.puml
+!include .\\GameplayGlobals.puml
+!include .\\Missions\MissionEvents.puml
+!include .\\Missions\MissionManager.puml
+!include .\\Missions\MissionSO.puml
+!include .\\Missions\MissionSubState.puml
+@enduml

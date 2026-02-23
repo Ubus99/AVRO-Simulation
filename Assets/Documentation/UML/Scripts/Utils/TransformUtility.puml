@@ -1,6 +1,0 @@
-@startuml
-class TransformUtility <<static>> {
-    + {static} TransformPoint(point:Vector2, from:Transform, to:Transform) : Vector2
-    + {static} TransformPoint(point:Vector3, from:Transform, to:Transform) : Vector3
-}
-@enduml
