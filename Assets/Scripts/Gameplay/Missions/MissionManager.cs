@@ -105,30 +105,30 @@ namespace Gameplay.Missions
             while (n > 1)
             {
                 n--;
-                var k = _random.Next(n + 1);
-                (list[k], list[n]) =
-                    (list[n], list[k]);
+                var k = _random.Next(n + 1); // preinitialized random generator
+                (list[k], list[n]) = (list[n], list[k]); // swap places
             }
         }
 
         MissionSo GetRandomMission()
         {
-            if (ExecuteMissionsOnlyOnce)
+            if (!ExecuteMissionsOnlyOnce)
             {
-                if (_shuffledMissions.Count == 0)
-                {
-                    Debug.LogWarning("All missions completed. Call ResetCompletedMissions() to allow repeats.");
-                    return null;
-                }
-                var mission = _shuffledMissions[0];
-                _shuffledMissions.RemoveAt(0);
-                Assert.IsNotNull(mission);
-                return mission;
+                var randomMission = _shuffledMissions[_random.Next(_shuffledMissions.Count)];
+                Assert.IsNotNull(randomMission);
+                return randomMission;
             }
 
-            var randomMission = _shuffledMissions[_random.Next(_shuffledMissions.Count)];
-            Assert.IsNotNull(randomMission);
-            return randomMission;
+            if (_shuffledMissions.Count == 0)
+            {
+                Debug.LogWarning("All missions completed. Call ResetCompletedMissions() to allow repeats.");
+                return null;
+            }
+
+            var mission = _shuffledMissions[0];
+            _shuffledMissions.RemoveAt(0);
+            Assert.IsNotNull(mission);
+            return mission;
         }
 
         public void ResetCompletedMissions()
