@@ -336,7 +336,7 @@ MonoBehaviour:
   gameSpeedEasy: 12
   gameSpeedHard: 8
   maxMissions: 7
-  missionsToComplete: 2
+  missionsToComplete: 25
 --- !u!4 &1703591600
 Transform:
   m_ObjectHideFlags: 0
