@@ -70,10 +70,10 @@ namespace Gameplay
         void OnGameRestart()
         {
             GameplayGlobals.currentID = 0;
-            
+
             _logger.Dispose();
             _logger.Init(GameplayGlobals.logName);
-            
+
             GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Login);
         }
 
@@ -88,6 +88,7 @@ namespace Gameplay
                     break;
                 case GameplayGlobals.Scenes.Simulation:
                     SceneManager.LoadScene("Simulation");
+                    _lastMissionCreationTime = 0;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(scene), scene, null);
