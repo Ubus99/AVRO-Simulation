@@ -19,9 +19,14 @@ namespace Gameplay.Missions
         CSVLogger<MissionSo.MissionRecord> _csvLogger = new(GameplayGlobals.logName);
         MissionSo _currentMission;
 
-        public MissionManager(int maxMissions)
+        public MissionManager(int maxMissions, int? randomSeed = null)
         {
             _maxMissions = maxMissions;
+
+            if (randomSeed.HasValue)
+            {
+                Random.InitState(randomSeed.Value);
+            }
 
             _missions.AddRange(Resources.LoadAll<MissionSo>(MissionPath));
             _availableMissions = new List<MissionSo>(_missions);
