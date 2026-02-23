@@ -60,11 +60,6 @@ namespace Gameplay.Missions
 
             Queue.Clear();
             ResetCompletedMissions();
-
-            if (_randomSeed.HasValue)
-            {
-                Random.InitState(_randomSeed.Value);
-            }
         }
 
         void OnMissionChange(MissionSo mission)
@@ -131,6 +126,11 @@ namespace Gameplay.Missions
         {
             MissionsCompleted = 0;
             _availableMissions = new List<MissionSo>(_missions);
+
+            if (_randomSeed.HasValue)
+            {
+                Random.InitState(_randomSeed.Value);
+            }
         }
 
         void OnMissionSubmitted(MissionSubState missionSubState)
