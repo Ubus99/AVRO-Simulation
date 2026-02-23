@@ -60,7 +60,7 @@ namespace Gameplay.Missions
 
         public string mainText
         {
-            get { return name; }
+            get { return $"Car #{Mathf.FloorToInt(Random.Range(1000, 9999))}"; }
         }
 
         public string supportText { get; } = null;
@@ -88,7 +88,7 @@ namespace Gameplay.Missions
         public bool Complete(MissionSubState missionSubState)
         {
             record.TimeEnd = Time.timeSinceLevelLoad;
-            record.missionName = $"Car #{Mathf.FloorToInt(Random.Range(1000, 9999))}";
+            record.missionName = name;
             record.correct = missionSubState.isCorrect;
 
             return missionSubState.isCorrect;
