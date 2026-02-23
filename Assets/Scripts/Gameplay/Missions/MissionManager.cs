@@ -58,6 +58,9 @@ namespace Gameplay.Missions
             _csvLogger.Dispose();
             _csvLogger = new CSVLogger<MissionSo.MissionRecord>(GameplayGlobals.logName);
 
+            Queue.Clear();
+            ResetCompletedMissions();
+
             if (_randomSeed.HasValue)
             {
                 Random.InitState(_randomSeed.Value);
