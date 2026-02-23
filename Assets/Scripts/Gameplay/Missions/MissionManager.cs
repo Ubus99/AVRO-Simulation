@@ -14,6 +14,7 @@ namespace Gameplay.Missions
 
         readonly int _maxMissions;
         readonly List<MissionSo> _missions = new();
+        readonly int? _randomSeed;
         List<MissionSo> _availableMissions;
 
         CSVLogger<MissionSo.MissionRecord> _csvLogger = new(GameplayGlobals.logName);
@@ -22,10 +23,11 @@ namespace Gameplay.Missions
         public MissionManager(int maxMissions, int? randomSeed = null)
         {
             _maxMissions = maxMissions;
+            _randomSeed = randomSeed;
 
-            if (randomSeed.HasValue)
+            if (_randomSeed.HasValue)
             {
-                Random.InitState(randomSeed.Value);
+                Random.InitState(_randomSeed.Value);
             }
 
             _missions.AddRange(Resources.LoadAll<MissionSo>(MissionPath));
@@ -55,6 +57,11 @@ namespace Gameplay.Missions
         {
             _csvLogger.Dispose();
             _csvLogger = new CSVLogger<MissionSo.MissionRecord>(GameplayGlobals.logName);
+
+            if (_randomSeed.HasValue)
+            {
+                Random.InitState(_randomSeed.Value);
+            }
         }
 
         void OnMissionChange(MissionSo mission)
