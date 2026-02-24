@@ -11,7 +11,7 @@ namespace Gameplay.Missions
     {
         const string MissionPath = "MissionData/Bengt Scenarios/Missions";
 
-        readonly int _maxMissions;
+        public int MaxMissions;
         readonly List<MissionSo> _missions = new();
         readonly Random _random;
 
@@ -21,7 +21,7 @@ namespace Gameplay.Missions
 
         public MissionManager(int maxMissions, int? randomSeed = null)
         {
-            _maxMissions = maxMissions;
+            MaxMissions = maxMissions;
             _random = randomSeed.HasValue ? new Random(randomSeed.Value) : new Random();
 
             _missions.AddRange(Resources.LoadAll<MissionSo>(MissionPath));
@@ -65,7 +65,7 @@ namespace Gameplay.Missions
 
         public bool TryAddMission()
         {
-            if (Queue.Count >= _maxMissions)
+            if (Queue.Count >= MaxMissions)
             {
                 //Debug.Log("Mission is full");
                 return false;

@@ -14,18 +14,12 @@ namespace Gameplay
         GameplayGlobals.Scenes mode;
 
         [SerializeField]
-        float gameSpeedEasy = 5;
+        DifficultySo difficultyEasy;
 
         [SerializeField]
-        float gameSpeedHard = 1;
+        DifficultySo difficultyHard;
 
-        [SerializeField]
-        int maxMissions = 10;
-
-        [SerializeField]
-        int missionsToComplete = 20;
-
-        float _currentGameSpeed;
+        DifficultySo _currentDifficulty;
 
         float _lastMissionCreationTime;
 
@@ -39,19 +33,19 @@ namespace Gameplay
             _logger = Logger.instance;
             _logger.Init(GameplayGlobals.logName);
 
-            _currentGameSpeed = gameSpeedEasy;
+            _currentDifficulty = difficultyEasy;
 
             GameplayGlobals.setGameMode += SetGameMode;
             GameplayGlobals.switchSceneEvent += SwitchScene;
             GameplayGlobals.restartEvent += OnGameRestart;
 
-            _missionManager = new MissionManager(maxMissions, 0);
+            _missionManager = new MissionManager(_currentDifficulty.maxMissions, 0);
             _missionManager.ExecuteMissionsOnlyOnce = true;
         }
 
         void FixedUpdate()
         {
-            if (_missionManager.MissionsCompleted >= missionsToComplete)
+            if (_missionManager.MissionsCompleted >= _currentDifficulty.missionsToComplete)
             {
                 GameplayGlobals.restartEvent?.Invoke();
             }
@@ -100,7 +94,7 @@ namespace Gameplay
             if (mode != GameplayGlobals.Scenes.Simulation) return;
 
             var timeSinceLastMissionCreation = Time.timeSinceLevelLoad - _lastMissionCreationTime;
-            if (!(timeSinceLastMissionCreation > _currentGameSpeed)) return;
+            if (!(timeSinceLastMissionCreation > _currentDifficulty.gameSpeed)) return;
 
             if (_missionManager.TryAddMission())
             {
@@ -130,12 +124,13 @@ namespace Gameplay
                     throw new ArgumentOutOfRangeException(nameof(inputMethod), inputMethod, null);
             }
 
-            _currentGameSpeed = severity switch
+            _currentDifficulty = severity switch
             {
-                GameplayGlobals.Severity.Easy => gameSpeedEasy,
-                GameplayGlobals.Severity.Hard => gameSpeedHard,
+                GameplayGlobals.Severity.Easy => difficultyEasy,
+                GameplayGlobals.Severity.Hard => difficultyHard,
                 _ => throw new ArgumentOutOfRangeException(nameof(severity), severity, null)
             };
+            _missionManager.MaxMissions = _currentDifficulty.maxMissions;
 
             _logger.RenameLog(GameplayGlobals.logName);
         }

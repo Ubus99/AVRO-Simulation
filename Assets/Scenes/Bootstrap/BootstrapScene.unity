@@ -333,10 +333,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Simulation.Scripts.NewGameManager
   mode: 0
-  gameSpeedEasy: 12
-  gameSpeedHard: 8
-  maxMissions: 7
-  missionsToComplete: 25
+  difficultyEasy: {fileID: 11400000, guid: bbbcb363c1ce6e74fa5642896fde869e, type: 2}
+  difficultyHard: {fileID: 11400000, guid: 5330b93bb4d23df4394fe51d5da0c185, type: 2}
 --- !u!4 &1703591600
 Transform:
   m_ObjectHideFlags: 0
