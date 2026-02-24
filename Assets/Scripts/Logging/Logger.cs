@@ -18,6 +18,7 @@ namespace Logging
         readonly DateTime _creationTime = DateTime.Now;
 
         readonly ILogHandler _defaultLogHandler = Debug.unityLogger.logHandler;
+        bool _closed;
         string _fileName;
 
         string _logFilePath;
@@ -26,10 +27,15 @@ namespace Logging
         public void Dispose()
         {
             _streamWriter.Dispose();
+            _closed = true;
         }
 
         public void LogFormat(LogType logType, Object context, string format, params object[] args)
         {
+            if (_closed)
+            {
+                throw new ObjectDisposedException(nameof(Logger));
+            }
             _streamWriter.WriteLine($"[{DateTime.Now:hh:mm:ss:ff}] {string.Format(format, args)}");
             _streamWriter.Flush();
             _defaultLogHandler.LogFormat(logType, context, format, args); // log to console also
@@ -57,6 +63,7 @@ namespace Logging
 
             Debug.unityLogger.logHandler = this;
 
+            _closed = false;
             Debug.Log($"Log File created @{_logFilePath}");
         }
 
@@ -70,6 +77,7 @@ namespace Logging
             _fileName = newName;
 
             _streamWriter = new StreamWriter(newPath, true);
+            _closed = false;
         }
     }
 }
