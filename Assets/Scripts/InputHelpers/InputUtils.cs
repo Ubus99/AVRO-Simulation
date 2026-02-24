@@ -1,6 +1,6 @@
 ﻿using UnityEngine.InputSystem;
 
-namespace Utils
+namespace InputHelpers
 {
     public static class InputUtils
     {

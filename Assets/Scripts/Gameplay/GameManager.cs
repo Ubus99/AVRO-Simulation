@@ -1,8 +1,8 @@
 ﻿using System;
 using Gameplay.Missions;
+using InputHelpers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Utils;
 using Logger = Logging.Logger;
 
 namespace Gameplay

@@ -1,13 +1,12 @@
 using System.Collections.Generic;
-using System.Linq;
 using Gameplay;
 using Gameplay.Missions;
+using InputHelpers;
 using Logging;
 using UI.ListItem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-using Utils;
 
 namespace Scenes.Simulation.UI.CarView
 {
@@ -21,7 +20,7 @@ namespace Scenes.Simulation.UI.CarView
 
         [SerializeField]
         AudioSource missionAudio;
-        
+
         [SerializeField]
         AudioSource submitAudio;
 

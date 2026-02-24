@@ -165,6 +165,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   sceneToLoad: {fileID: 102900000, guid: 7ffd83728f8852a4d89005dacdf344ab, type: 3}
   targetPath: Assets/Scenes/Login/Login.unity
+--- !u!1 &1160053379
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1160053380}
+  - component: {fileID: 1160053381}
+  m_Layer: 0
+  m_Name: STT
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1160053380
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160053379}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 8.10689, y: -0.09585, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1160053381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160053379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a558ec540ee47ab98d8b1bd0ce80b4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Input::InputHelpers.VoiceInputManager
+  logMelModel: {fileID: 0}
+  encoderModel: {fileID: 0}
+  decoderModel: {fileID: 0}
+  decoderWithPastModel: {fileID: 0}
+  vocabJson: {fileID: 0}
+  backend: 512
+  micDevice: 
+  sampleRate: 16000
+  micBufferSeconds: 2
+  triggerRms: 0.02
+  minSecondsBetweenTriggers: 0.8
+  captureSeconds: 1
 --- !u!1 &1377478191
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,5 +505,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 249007024}
   - {fileID: 1703591600}
+  - {fileID: 1160053380}
   - {fileID: 1377478195}
   - {fileID: 1900225252}
