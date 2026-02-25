@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21373c5cb20a4a94982279dd5c70d3e6, type: 3}
   m_Name: Easy
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.DifficultySo
-  gameSpeed: 13
+  gameSpeed: 14
   maxMissions: 7
-  missionsToComplete: 20
+  missionsToComplete: 18
