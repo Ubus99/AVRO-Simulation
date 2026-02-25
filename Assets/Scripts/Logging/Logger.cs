@@ -15,10 +15,10 @@ namespace Logging
     {
         const string FileExtension = ".log";
 
-        readonly DateTime _creationTime = DateTime.Now;
-
         readonly ILogHandler _defaultLogHandler = Debug.unityLogger.logHandler;
         bool _closed;
+
+        DateTime _creationTime;
 
         string _logFilePath;
         StreamWriter _streamWriter;
@@ -49,6 +49,7 @@ namespace Logging
         public void Init(string directory, string name)
         {
             _subDirectory = directory;
+            _creationTime = DateTime.Now;
             (_streamWriter, _logFilePath) =
                 LogUtils.CreateLogWriter(name, FileExtension, directory, _creationTime);
 
