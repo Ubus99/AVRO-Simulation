@@ -22,7 +22,7 @@ namespace Scenes.Simulation.Scripts
             GameplayGlobals.ParticipantString,
             GameplayGlobals.GameModeString);
 
-            GameplayGlobals.setGameMode += OnSetGameMode;
+            GameplayGlobals.gameModeUpdatedEvent += OnSetGameMode;
             GameplayGlobals.restartEvent += OnRestart;
         }
 
@@ -44,11 +44,11 @@ namespace Scenes.Simulation.Scripts
         public void Dispose()
         {
             GameplayGlobals.restartEvent -= OnRestart;
-            GameplayGlobals.setGameMode -= OnSetGameMode;
+            GameplayGlobals.gameModeUpdatedEvent -= OnSetGameMode;
             _csvLogger?.Dispose();
         }
 
-        void OnSetGameMode(int id, GameplayGlobals.Input input, GameplayGlobals.Severity severity, bool practice)
+        void OnSetGameMode()
         {
             _csvLogger.Rename(GameplayGlobals.ParticipantString,GameplayGlobals.GameModeString);
         }

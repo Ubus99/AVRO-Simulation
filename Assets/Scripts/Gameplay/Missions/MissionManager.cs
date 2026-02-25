@@ -30,7 +30,7 @@ namespace Gameplay.Missions
             ShuffleMissions(_missions);
             _shuffledMissions = new List<MissionSo>(_missions);
 
-            GameplayGlobals.setGameMode += OnSetGameMode;
+            GameplayGlobals.gameModeUpdatedEvent += OnSetGameMode;
             MissionEvents.switchMissionEvent += OnMissionChange;
             MissionEvents.missionSubmittedEvent += OnMissionSubmitted;
             GameplayGlobals.restartEvent += OnRestart;
@@ -45,13 +45,13 @@ namespace Gameplay.Missions
         public void Dispose()
         {
             _csvLogger.Dispose();
-            GameplayGlobals.setGameMode -= OnSetGameMode;
+            GameplayGlobals.gameModeUpdatedEvent -= OnSetGameMode;
             MissionEvents.switchMissionEvent -= OnMissionChange;
             MissionEvents.missionSubmittedEvent -= OnMissionSubmitted;
             GameplayGlobals.restartEvent -= OnRestart;
         }
 
-        void OnSetGameMode(int id, GameplayGlobals.Input input, GameplayGlobals.Severity severity, bool practice)
+        void OnSetGameMode()
         {
             _csvLogger.Rename(GameplayGlobals.ParticipantString,
             GameplayGlobals.GameModeString);

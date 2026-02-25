@@ -23,24 +23,35 @@ namespace Gameplay
             Hard
         }
 
-        public static bool practiceMode = false;
-        public static Input currentInput = Input.Mouse;
-        public static Severity currentSeverity = Severity.Easy;
-        public static int currentID = 0;
+        public static GameSettings currentSettings = new()
+        {
+            ID = 0,
+            PracticeMode = false,
+            Input = Input.Mouse,
+            Severity = Severity.Easy
+        };
 
         // game events
         public static Action restartEvent;
         public static Action<Scenes> switchSceneEvent;
-        public static Action<int, Input, Severity, bool> setGameMode;
+        public static Action gameModeUpdatedEvent;
 
         public static string ParticipantString
         {
-            get { return $"P{currentID}"; }
+            get { return $"P{currentSettings.ID}"; }
         }
 
         public static string GameModeString
         {
-            get { return $"{currentInput.ToString()[0]}_{currentSeverity.ToString()[0]}"; }
+            get { return $"{currentSettings.Input.ToString()[0]}_{currentSettings.Severity.ToString()[0]}"; }
+        }
+
+        public struct GameSettings
+        {
+            public bool PracticeMode;
+            public Input Input;
+            public Severity Severity;
+            public int ID;
         }
     }
 }

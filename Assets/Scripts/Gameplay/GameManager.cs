@@ -35,7 +35,7 @@ namespace Gameplay
 
             _currentDifficulty = difficultyEasy;
 
-            GameplayGlobals.setGameMode += SetGameMode;
+            GameplayGlobals.gameModeUpdatedEvent += SetGameMode;
             GameplayGlobals.switchSceneEvent += SwitchScene;
             GameplayGlobals.restartEvent += OnGameRestart;
 
@@ -46,7 +46,7 @@ namespace Gameplay
         void FixedUpdate()
         {
             if (_missionManager.MissionsCompleted >= _currentDifficulty.missionsToComplete ||
-                GameplayGlobals.practiceMode &&
+                GameplayGlobals.currentSettings.PracticeMode &&
                 _missionManager.MissionsCompleted >= _currentDifficulty.missionsToComplete / 3)
             {
                 GameplayGlobals.restartEvent?.Invoke();
@@ -65,7 +65,7 @@ namespace Gameplay
 
         void OnGameRestart()
         {
-            GameplayGlobals.currentID = 0;
+            GameplayGlobals.currentSettings.ID = 0;
 
             _logger.Dispose();
             _logger.Init(GameplayGlobals.ParticipantString, GameplayGlobals.GameModeString);
@@ -105,14 +105,10 @@ namespace Gameplay
             }
         }
 
-        void SetGameMode(int id, GameplayGlobals.Input inputMethod, GameplayGlobals.Severity severity, bool practice)
+        void SetGameMode()
         {
-            GameplayGlobals.currentInput = inputMethod;
-            GameplayGlobals.currentSeverity = severity;
-            GameplayGlobals.currentID = id;
-            GameplayGlobals.practiceMode = practice;
 
-            switch (inputMethod)
+            switch (GameplayGlobals.currentSettings.Input)
             {
                 case GameplayGlobals.Input.Mouse:
                     InputUtils.SwitchToScheme("Keyboard&Mouse");
@@ -124,14 +120,18 @@ namespace Gameplay
                     InputUtils.SwitchToScheme("Keyboard");
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(inputMethod), inputMethod, null);
+                    throw new ArgumentOutOfRangeException(nameof(GameplayGlobals.currentSettings.Input),
+                    GameplayGlobals.currentSettings.Input,
+                    null);
             }
 
-            _currentDifficulty = severity switch
+            _currentDifficulty = GameplayGlobals.currentSettings.Severity switch
             {
                 GameplayGlobals.Severity.Easy => difficultyEasy,
                 GameplayGlobals.Severity.Hard => difficultyHard,
-                _ => throw new ArgumentOutOfRangeException(nameof(severity), severity, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(GameplayGlobals.currentSettings.Severity),
+                GameplayGlobals.currentSettings.Severity,
+                null)
             };
             _missionManager.MaxMissions = _currentDifficulty.maxMissions;
 

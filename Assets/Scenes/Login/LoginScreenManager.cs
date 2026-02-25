@@ -63,7 +63,13 @@ namespace Scenes.Login
             var index = _modeSelection.index;
             var input = _inputOptions[index / _severityOptions.Length];
             var severity = _severityOptions[index % _severityOptions.Length];
-            GameplayGlobals.setGameMode?.Invoke(_idField.value, input, severity, _practiceToggle.value);
+
+            GameplayGlobals.currentSettings.ID = _idField.value;
+            GameplayGlobals.currentSettings.Input = input;
+            GameplayGlobals.currentSettings.Severity = severity;
+            GameplayGlobals.currentSettings.PracticeMode = _practiceToggle.value;
+            GameplayGlobals.gameModeUpdatedEvent?.Invoke();
+
             GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Simulation);
         }
 
