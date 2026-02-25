@@ -32,7 +32,7 @@ namespace Scenes.Login
             foreach (var input in _inputOptions)
             foreach (var severity in _severityOptions)
             {
-                _modeSelection.choices.Add($"variant {_modeSelection.choices.Count.ToString()}");
+                _modeSelection.choices.Add($"Variant {input.ToString()[0]}_{severity.ToString()[0]}");
             }
 
             _idField.RegisterValueChangedCallback(_ => Validate());
