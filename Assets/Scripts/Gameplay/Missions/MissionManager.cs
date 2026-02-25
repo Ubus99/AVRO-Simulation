@@ -10,14 +10,16 @@ namespace Gameplay.Missions
     public class MissionManager : IDisposable
     {
         const string MissionPath = "MissionData/Bengt Scenarios/Missions";
-
-        public int MaxMissions;
         readonly List<MissionSo> _missions = new();
         readonly Random _random;
 
-        CSVLogger<MissionSo.MissionRecord> _csvLogger = new(GameplayGlobals.logName);
+        CSVLogger<MissionSo.MissionRecord> _csvLogger = new(GameplayGlobals.ParticipantString,
+        GameplayGlobals.GameModeString);
+
         MissionSo _currentMission;
         List<MissionSo> _shuffledMissions;
+
+        public int MaxMissions;
 
         public MissionManager(int maxMissions, int? randomSeed = null)
         {
@@ -28,7 +30,10 @@ namespace Gameplay.Missions
             ShuffleMissions(_missions);
             _shuffledMissions = new List<MissionSo>(_missions);
 
-            GameplayGlobals.setGameMode += (_, _, _) => _csvLogger.Rename(GameplayGlobals.logName);
+            GameplayGlobals.setGameMode += (_, _, _) =>
+                _csvLogger.Rename(
+                GameplayGlobals.ParticipantString,
+                GameplayGlobals.GameModeString);
             MissionEvents.switchMissionEvent += OnMissionChange;
             MissionEvents.missionSubmittedEvent += OnMissionSubmitted;
             GameplayGlobals.restartEvent += OnRestart;
@@ -51,7 +56,10 @@ namespace Gameplay.Missions
         void OnRestart()
         {
             _csvLogger.Dispose();
-            _csvLogger = new CSVLogger<MissionSo.MissionRecord>(GameplayGlobals.logName);
+            _csvLogger =
+                new CSVLogger<MissionSo.MissionRecord>(
+                GameplayGlobals.ParticipantString,
+                GameplayGlobals.GameModeString);
 
             Queue.Clear();
             ResetCompletedMissions();

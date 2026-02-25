@@ -61,7 +61,7 @@ namespace Utils.Editor
                 for (var i = 0; i < spline.Count; i++)
                 {
                     var knot = spline[i];
-                    
+
                     var worldPos = _splineContainer.transform.TransformPoint(knot.Position);
                     if (!NavMesh.SamplePosition(
                         worldPos,
@@ -69,7 +69,7 @@ namespace Utils.Editor
                         100.0f,
                         NavMesh.AllAreas))
                         continue;
-                    
+
                     var localPos = hit.position + offset;
                     knot.Position = _splineContainer.transform.InverseTransformPoint(localPos);
                     spline.SetKnot(i, knot);

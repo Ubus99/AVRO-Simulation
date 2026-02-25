@@ -34,7 +34,9 @@ namespace Scenes.Simulation.UI.CarView
 
         void Awake()
         {
-            _csvLogger = new CSVLogger<UIRecord>(GameplayGlobals.logName);
+            _csvLogger = new CSVLogger<UIRecord>(
+            GameplayGlobals.ParticipantString,
+            GameplayGlobals.GameModeString);
 
             var uiDocument = GetComponent<UIDocument>();
             var root = uiDocument.rootVisualElement;
@@ -87,7 +89,9 @@ namespace Scenes.Simulation.UI.CarView
         void OnRestart()
         {
             _csvLogger.Dispose();
-            _csvLogger = new CSVLogger<UIRecord>(GameplayGlobals.logName);
+            _csvLogger = new CSVLogger<UIRecord>(
+            GameplayGlobals.ParticipantString,
+            GameplayGlobals.GameModeString);
         }
 
         void CheckJumpPerformed()

@@ -1,28 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using System.IO;
 using System;
+using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 namespace AYellowpaper.SerializedCollections.Editor
 {
     public sealed class EditorUserSettings : ScriptableObject
     {
+        const string _filePath = "UserSettings/SerializedCollectionsEditorSettings.asset";
+
+        static EditorUserSettings _instance;
+
         [SerializeField]
-        private bool _alwaysShowSearch = false;
-        [SerializeField, Range(1, 10)]
-        private int _pageCountForSearch = 1;
-        [SerializeField, Min(1)]
-        private int _elementsPerPage = 10;
+        bool _alwaysShowSearch;
 
-        public bool AlwaysShowSearch => _alwaysShowSearch;
-        public int PageCountForSearch => _pageCountForSearch;
-        public int ElementsPerPage => _elementsPerPage;
+        [SerializeField]
+        [Range(1, 10)]
+        int _pageCountForSearch = 1;
 
-        private static EditorUserSettings _instance;
+        [SerializeField]
+        [Min(1)]
+        int _elementsPerPage = 10;
 
-        private const string _filePath = "UserSettings/SerializedCollectionsEditorSettings.asset";
+        public bool AlwaysShowSearch
+        {
+            get { return _alwaysShowSearch; }
+        }
+
+        public int PageCountForSearch
+        {
+            get { return _pageCountForSearch; }
+        }
+
+        public int ElementsPerPage
+        {
+            get { return _elementsPerPage; }
+        }
 
         public static EditorUserSettings Get()
         {
@@ -34,26 +47,24 @@ namespace AYellowpaper.SerializedCollections.Editor
             return _instance;
         }
 
-        private static void LoadInto(EditorUserSettings settings)
+        static void LoadInto(EditorUserSettings settings)
         {
             if (!File.Exists(_filePath)) return;
 
             try
             {
-                string json = File.ReadAllText(_filePath);
+                var json = File.ReadAllText(_filePath);
                 EditorJsonUtility.FromJsonOverwrite(json, settings);
-                return;
             }
             catch (Exception e)
             {
                 Debug.LogError(e);
-                return;
             }
         }
 
         internal static void Save()
         {
-            string contents = EditorJsonUtility.ToJson(Get());
+            var contents = EditorJsonUtility.ToJson(Get());
             File.WriteAllText(_filePath, contents);
         }
     }

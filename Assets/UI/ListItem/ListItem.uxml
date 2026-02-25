@@ -2,17 +2,24 @@
     <Style src="project://database/Assets/UI/MainStyle.uss?fileID=7433441132597879392&amp;guid=7bc33ff846e8b9241a0405236116a2bc&amp;type=3#MainStyle"/>
     <Style src="project://database/Assets/UI/ListItem/ListItem.uss?fileID=7433441132597879392&amp;guid=f8fc6d7cfcd81a2419b95d0830db471d&amp;type=3#ListItem"/>
     <ui:VisualElement name="list-item" style="border-bottom-color: rgb(0, 0, 0); margin-bottom: 0; padding-bottom: 0;">
-        <ui:VisualElement name="" style="flex-grow: 1; margin-bottom: 8px; margin-top: 8px; margin-right: 4px; margin-left: 4px;">
+        <ui:VisualElement name=""
+                          style="flex-grow: 1; margin-bottom: 8px; margin-top: 8px; margin-right: 4px; margin-left: 4px;">
             <ui:VisualElement name="top-section">
-                <ui:Image name="left-icon" source="project://database/Assets/Resources/Icons/lucide/square-x.svg?fileID=7388822144124034973&amp;guid=155bcb9fd19d9334980eeb7f151522c3&amp;type=3#square-x" tint-color="rgb(0, 0, 0)" class="lucide-icon hideable"/>
-                <ui:VisualElement style="flex-grow: 1; padding-top: 0; padding-right: 12px; padding-bottom: 0; padding-left: 12px; align-items: flex-start;">
+                <ui:Image name="left-icon"
+                          source="project://database/Assets/Resources/Icons/lucide/square-x.svg?fileID=7388822144124034973&amp;guid=155bcb9fd19d9334980eeb7f151522c3&amp;type=3#square-x"
+                          tint-color="rgb(0, 0, 0)" class="lucide-icon hideable"/>
+                <ui:VisualElement
+                        style="flex-grow: 1; padding-top: 0; padding-right: 12px; padding-bottom: 0; padding-left: 12px; align-items: flex-start;">
                     <ui:Label text="Label" name="main-text" class="item-heading" style="flex-grow: 0;"/>
                 </ui:VisualElement>
-                <ui:Image name="right-icon" source="project://database/Assets/Resources/Icons/lucide/square-x.svg?fileID=7388822144124034973&amp;guid=155bcb9fd19d9334980eeb7f151522c3&amp;type=3#square-x" tint-color="rgb(0, 0, 0)" class="lucide-icon hideable2"/>
+                <ui:Image name="right-icon"
+                          source="project://database/Assets/Resources/Icons/lucide/square-x.svg?fileID=7388822144124034973&amp;guid=155bcb9fd19d9334980eeb7f151522c3&amp;type=3#square-x"
+                          tint-color="rgb(0, 0, 0)" class="lucide-icon hideable2"/>
             </ui:VisualElement>
             <ui:VisualElement name="bottom-section">
                 <ui:VisualElement class="hideable" style="flex-grow: 0; width: 48px; height: 0;"/>
-                <ui:VisualElement style="flex-grow: 1; padding-top: 0; padding-right: 12px; padding-bottom: 0; padding-left: 12px;">
+                <ui:VisualElement
+                        style="flex-grow: 1; padding-top: 0; padding-right: 12px; padding-bottom: 0; padding-left: 12px;">
                     <ui:Label text="Label" name="support-text" style="font-size: 13px; -unity-font-style: bold;"/>
                 </ui:VisualElement>
             </ui:VisualElement>

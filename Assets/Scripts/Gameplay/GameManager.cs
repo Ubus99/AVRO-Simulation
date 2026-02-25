@@ -31,7 +31,7 @@ namespace Gameplay
         void Start()
         {
             _logger = Logger.instance;
-            _logger.Init(GameplayGlobals.logName);
+            _logger.Init(GameplayGlobals.ParticipantString, GameplayGlobals.GameModeString);
 
             _currentDifficulty = difficultyEasy;
 
@@ -66,7 +66,7 @@ namespace Gameplay
             GameplayGlobals.currentID = 0;
 
             _logger.Dispose();
-            _logger.Init(GameplayGlobals.logName);
+            _logger.Init(GameplayGlobals.ParticipantString, GameplayGlobals.GameModeString);
 
             GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Login);
         }
@@ -132,7 +132,7 @@ namespace Gameplay
             };
             _missionManager.MaxMissions = _currentDifficulty.maxMissions;
 
-            _logger.RenameLog(GameplayGlobals.logName);
+            _logger.RenameLog(GameplayGlobals.ParticipantString, GameplayGlobals.GameModeString);
         }
     }
 }

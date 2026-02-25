@@ -18,7 +18,9 @@ namespace Scenes.Simulation.Scripts
             _restartAction = InputSystem.actions.FindAction("Global/Restart");
             _restartAction.performed += _ => { GameplayGlobals.restartEvent?.Invoke(); };
 
-            _csvLogger = new CSVLogger<HumanInputRecord>(GameplayGlobals.logName);
+            _csvLogger = new CSVLogger<HumanInputRecord>(
+            GameplayGlobals.ParticipantString,
+            GameplayGlobals.GameModeString);
 
             GameplayGlobals.setGameMode += OnSetGameMode;
             GameplayGlobals.restartEvent += OnRestart;
@@ -27,7 +29,7 @@ namespace Scenes.Simulation.Scripts
         void FixedUpdate()
         {
             var mousePos = Mouse.current.position.ReadValue();
-            _csvLogger.Log(new HumanInputRecord
+            _csvLogger?.Log(new HumanInputRecord
             {
                 mouseX = mousePos.x,
                 mouseY = mousePos.y
@@ -48,13 +50,15 @@ namespace Scenes.Simulation.Scripts
 
         void OnSetGameMode(int id, GameplayGlobals.Input input, GameplayGlobals.Severity severity)
         {
-            _csvLogger.Rename(GameplayGlobals.logName);
+            _csvLogger.Rename(GameplayGlobals.ParticipantString,GameplayGlobals.GameModeString);
         }
 
         void OnRestart()
         {
             _csvLogger.Dispose();
-            _csvLogger = new CSVLogger<HumanInputRecord>(GameplayGlobals.logName);
+            _csvLogger = new CSVLogger<HumanInputRecord>(
+            GameplayGlobals.ParticipantString,
+            GameplayGlobals.GameModeString);
         }
 
         class HumanInputRecord : BaseRecord

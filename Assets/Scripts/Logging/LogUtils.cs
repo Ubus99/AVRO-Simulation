@@ -6,41 +6,86 @@ namespace Logging
 {
     public static class LogUtils
     {
-#if UNITY_EDITOR
-        static readonly string LogBasePath = Path.Combine(Application.dataPath, "logs");
-#else
-        static readonly string LogBasePath = Path.Combine(Application.dataPath, "logs");
-#endif
+        static readonly string LogBasePath =
+            Path.Combine(Application.dataPath, "logs");
 
-        public static void CreateLogDirectory()
+        static void EnsureDirectory(string subdirectory = null)
         {
-            Directory.CreateDirectory(LogBasePath);
+            var dir = string.IsNullOrEmpty(subdirectory)
+                ? LogBasePath
+                : Path.Combine(LogBasePath, subdirectory);
+
+            Directory.CreateDirectory(dir);
         }
 
-        public static void CreateLogDirectory(string directory)
+        // Single source of truth for file paths
+        static string GetFilePath(
+            string name,
+            string extension,
+            DateTime time,
+            string subdirectory = null)
         {
-            var path = Path.Combine(LogBasePath, directory);
-            Directory.CreateDirectory(path);
+            var dir = string.IsNullOrEmpty(subdirectory)
+                ? LogBasePath
+                : Path.Combine(LogBasePath, subdirectory);
+
+            var fileName = $"{time:yyyy-MM-dd_HH-mm-ss}_{name}.{extension.TrimStart('.')}";
+            return Path.Combine(dir, fileName);
         }
 
-        public static string GenerateFileName(string baseName, DateTime creationTime, string extension)
+        static StreamWriter Open(string fullPath)
         {
-            return $"{baseName}_{creationTime:yyyyMMdd-HHmm}{extension}";
+            return File.AppendText(fullPath);
         }
 
-        public static string GenerateFileName(string baseName, DateTime creationTime, Type identifier, string extension)
+        public static (StreamWriter writer, string path) CreateLogWriter(
+            string name,
+            string extension,
+            string subdirectory = null,
+            DateTime? time = null)
         {
-            return $"{baseName}_{creationTime:yyyyMMdd-HHmm}_{identifier.Name}{extension}";
+            var t = time ?? DateTime.Now;
+
+            EnsureDirectory(subdirectory);
+            var path = GetFilePath(name, extension, t, subdirectory);
+
+            return (Open(path), path);
         }
 
-        public static string GenerateFilePath(string baseName, DateTime creationTime, string extension)
+        public static (StreamWriter writer, string path) RenameLogFileAndReopen(
+            StreamWriter writer,
+            string currentPath,
+            string newName,
+            string extension,
+            string subdirectory = null,
+            DateTime? time = null)
         {
-            return Path.Combine(LogBasePath, GenerateFileName(baseName, creationTime, extension));
-        }
+            if (writer == null) throw new ArgumentNullException(nameof(writer));
+            if (!File.Exists(currentPath)) throw new FileNotFoundException(currentPath);
 
-        public static string GenerateFilePath(string baseName, DateTime creationTime, Type identifier, string extension)
-        {
-            return Path.Combine(LogBasePath, GenerateFileName(baseName, creationTime, identifier, extension));
+            try
+            {
+                writer.Flush();
+                writer.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            var t = time ?? DateTime.Now;
+
+            EnsureDirectory(subdirectory);
+            var newPath = GetFilePath(newName, extension, t, subdirectory);
+
+            File.Move(currentPath, newPath);
+
+            return (Open(newPath), newPath);
         }
     }
 }

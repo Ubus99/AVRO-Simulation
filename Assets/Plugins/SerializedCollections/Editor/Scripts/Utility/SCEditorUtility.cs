@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEditor;
-using System.Linq;
-using AYellowpaper.SerializedCollections.Editor.Data;
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using AYellowpaper.SerializedCollections.Editor.Data;
+using UnityEditor;
+using UnityEngine;
 
 namespace AYellowpaper.SerializedCollections.Editor
 {
@@ -25,7 +25,7 @@ namespace AYellowpaper.SerializedCollections.Editor
             if (drawAsList)
             {
                 float height = 0;
-                foreach (SerializedProperty child in GetChildren(property))
+                foreach (var child in GetChildren(property))
                     height += EditorGUI.GetPropertyHeight(child, true);
                 return height;
             }
@@ -41,7 +41,7 @@ namespace AYellowpaper.SerializedCollections.Editor
                 yield break;
             }
 
-            SerializedProperty end = property.GetEndProperty();
+            var end = property.GetEndProperty();
             property.NextVisible(true);
             do
             {
@@ -72,16 +72,19 @@ namespace AYellowpaper.SerializedCollections.Editor
 
         public static bool HasDrawerForProperty(SerializedProperty property, Type type)
         {
-            Type attributeUtilityType = typeof(SerializedProperty).Assembly.GetType("UnityEditor.ScriptAttributeUtility");
+            var attributeUtilityType =
+                typeof(SerializedProperty).Assembly.GetType("UnityEditor.ScriptAttributeUtility");
             if (attributeUtilityType == null)
                 return false;
-            var getDrawerMethod = attributeUtilityType.GetMethod("GetDrawerTypeForPropertyAndType", BindingFlags.Static | BindingFlags.NonPublic);
+            var getDrawerMethod = attributeUtilityType.GetMethod("GetDrawerTypeForPropertyAndType",
+            BindingFlags.Static | BindingFlags.NonPublic);
             if (getDrawerMethod == null)
                 return false;
             return getDrawerMethod.Invoke(null, new object[] { property, type }) != null;
         }
 
-        internal static void AddGenericMenuItem(GenericMenu genericMenu, bool isOn, bool isEnabled, GUIContent content, GenericMenu.MenuFunction action)
+        internal static void AddGenericMenuItem(GenericMenu genericMenu, bool isOn, bool isEnabled, GUIContent content,
+            GenericMenu.MenuFunction action)
         {
             if (isEnabled)
                 genericMenu.AddItem(content, isOn, action);
@@ -89,7 +92,8 @@ namespace AYellowpaper.SerializedCollections.Editor
                 genericMenu.AddDisabledItem(content);
         }
 
-        internal static void AddGenericMenuItem(GenericMenu genericMenu, bool isOn, bool isEnabled, GUIContent content, GenericMenu.MenuFunction2 action, object userData)
+        internal static void AddGenericMenuItem(GenericMenu genericMenu, bool isOn, bool isEnabled, GUIContent content,
+            GenericMenu.MenuFunction2 action, object userData)
         {
             if (isEnabled)
                 genericMenu.AddItem(content, isOn, action, userData);
@@ -102,10 +106,11 @@ namespace AYellowpaper.SerializedCollections.Editor
             try
             {
                 var classType = typeof(EditorGUI).Assembly.GetType("UnityEditor.ScriptAttributeUtility");
-                var methodInfo = classType.GetMethod("GetFieldInfoFromProperty", BindingFlags.Static | BindingFlags.NonPublic);
+                var methodInfo = classType.GetMethod("GetFieldInfoFromProperty",
+                BindingFlags.Static | BindingFlags.NonPublic);
                 var parameters = new object[] { property, null };
                 methodInfo.Invoke(null, parameters);
-                type = (Type) parameters[1];
+                type = (Type)parameters[1];
                 return true;
             }
             catch
@@ -114,27 +119,27 @@ namespace AYellowpaper.SerializedCollections.Editor
                 return false;
             }
         }
-        
+
         internal static float DoHorizontalScale(Rect rect, float value)
         {
             var controlId = GUIUtility.GetControlID(FocusType.Passive);
             var isMovingMouse = Event.current.type == EventType.MouseDrag;
             DoButtonControl(rect, controlId, false, false, GUIContent.none, GUIStyle.none);
-            
+
             if (controlId == GUIUtility.hotControl && isMovingMouse)
             {
                 value += Event.current.delta.x;
                 GUI.changed = true;
             }
-            
+
             EditorGUIUtility.AddCursorRect(rect, MouseCursor.ResizeHorizontal);
 
             return value;
         }
-        
+
         internal static bool DoButtonControl(Rect rect, int id, bool on, bool hover, GUIContent content, GUIStyle style)
         {
-            Event current = Event.current;
+            var current = Event.current;
             switch (current.type)
             {
                 case EventType.MouseDown:
@@ -163,8 +168,9 @@ namespace AYellowpaper.SerializedCollections.Editor
                     }
                     break;
                 case EventType.KeyDown:
-                    bool flag = current.alt || current.shift || current.command || current.control;
-                    if ((current.keyCode == KeyCode.Space || current.keyCode == KeyCode.Return || current.keyCode == KeyCode.KeypadEnter) && !flag && GUIUtility.keyboardControl == id)
+                    var flag = current.alt || current.shift || current.command || current.control;
+                    if ((current.keyCode == KeyCode.Space || current.keyCode == KeyCode.Return ||
+                         current.keyCode == KeyCode.KeypadEnter) && !flag && GUIUtility.keyboardControl == id)
                     {
                         current.Use();
                         GUI.changed = true;
@@ -178,7 +184,10 @@ namespace AYellowpaper.SerializedCollections.Editor
             return on;
         }
 
-        internal static bool HitTest(Rect rect, Vector2 point) => point.x >= rect.xMin && point.x < rect.xMax && point.y >= rect.yMin && point.y < rect.yMax;
+        internal static bool HitTest(Rect rect, Vector2 point)
+        {
+            return point.x >= rect.xMin && point.x < rect.xMax && point.y >= rect.yMin && point.y < rect.yMax;
+        }
 
 
         public static object GetPropertyValue(SerializedProperty prop, object target)
@@ -190,7 +199,8 @@ namespace AYellowpaper.SerializedCollections.Editor
                 if (element.Contains("["))
                 {
                     var elementName = element.Substring(0, element.IndexOf("["));
-                    var index = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", ""));
+                    var index = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "")
+                        .Replace("]", ""));
                     target = GetValue(target, elementName, index);
                 }
                 else
@@ -209,7 +219,8 @@ namespace AYellowpaper.SerializedCollections.Editor
             var f = type.GetFieldRecursive(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             if (f == null)
             {
-                var p = type.GetPropertyRecursive(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+                var p = type.GetPropertyRecursive(name,
+                BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
                 if (p == null)
                     return null;
                 return p.GetValue(source, null);
@@ -226,15 +237,15 @@ namespace AYellowpaper.SerializedCollections.Editor
             return enm.Current;
         }
 
-        private static FieldInfo GetFieldRecursive(this Type type, string name, BindingFlags bindingFlags)
+        static FieldInfo GetFieldRecursive(this Type type, string name, BindingFlags bindingFlags)
         {
             var fieldInfo = type.GetField(name, bindingFlags);
             if (fieldInfo == null && type.BaseType != null)
                 return type.BaseType.GetFieldRecursive(name, bindingFlags);
             return fieldInfo;
         }
-        
-        private static PropertyInfo GetPropertyRecursive(this Type type, string name, BindingFlags bindingFlags)
+
+        static PropertyInfo GetPropertyRecursive(this Type type, string name, BindingFlags bindingFlags)
         {
             var propertyInfo = type.GetProperty(name, bindingFlags);
             if (propertyInfo == null && type.BaseType != null)

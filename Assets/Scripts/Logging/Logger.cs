@@ -19,10 +19,10 @@ namespace Logging
 
         readonly ILogHandler _defaultLogHandler = Debug.unityLogger.logHandler;
         bool _closed;
-        string _fileName;
 
         string _logFilePath;
         StreamWriter _streamWriter;
+        string _subDirectory;
 
         public void Dispose()
         {
@@ -46,20 +46,11 @@ namespace Logging
             _defaultLogHandler.LogException(exception, context);
         }
 
-        public void Init(string name = "log")
+        public void Init(string directory, string name)
         {
-            _fileName = name;
-            try
-            {
-                _logFilePath = LogUtils.GenerateFilePath(_fileName, _creationTime, FileExtension);
-                LogUtils.CreateLogDirectory();
-                _streamWriter = File.AppendText(_logFilePath);
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                throw;
-            }
+            _subDirectory = directory;
+            (_streamWriter, _logFilePath) =
+                LogUtils.CreateLogWriter(name, FileExtension, directory, _creationTime);
 
             Debug.unityLogger.logHandler = this;
 
@@ -67,16 +58,18 @@ namespace Logging
             Debug.Log($"Log File created @{_logFilePath}");
         }
 
-        public void RenameLog(string newName)
+        public void RenameLog(string newDirectory, string newName)
         {
-            Dispose();
+            _subDirectory = newDirectory;
+            (_streamWriter, _logFilePath) =
+                LogUtils.RenameLogFileAndReopen(
+                _streamWriter,
+                _logFilePath,
+                newName,
+                FileExtension,
+                _subDirectory,
+                _creationTime);
 
-            var newPath = LogUtils.GenerateFilePath(newName, _creationTime, FileExtension);
-            var oldPath = LogUtils.GenerateFilePath(_fileName, _creationTime, FileExtension);
-            File.Move(oldPath, newPath);
-            _fileName = newName;
-
-            _streamWriter = new StreamWriter(newPath, true);
             _closed = false;
         }
     }

@@ -32,9 +32,14 @@ namespace Gameplay
         public static Action<Scenes> switchSceneEvent;
         public static Action<int, Input, Severity> setGameMode;
 
-        public static string logName
+        public static string ParticipantString
         {
-            get { return $"{currentID}_{currentInput}_{currentSeverity}"; }
+            get { return $"P{currentID}"; }
+        }
+
+        public static string GameModeString
+        {
+            get { return $"{currentInput.ToString()[0]}_{currentSeverity.ToString()[0]}"; }
         }
     }
 }

@@ -13,17 +13,19 @@ namespace Logging
         readonly DateTime _creationTime = DateTime.Now;
 
         CsvWriter _csv;
-        string _fileName;
+        string _filePath;
         StreamWriter _streamWriter;
+        string _subdirectory;
 
-        public CSVLogger(string fileName)
+        public CSVLogger(string directory, string name)
         {
-            _fileName = fileName;
-
-            LogUtils.CreateLogDirectory();
-
-            _streamWriter =
-                new StreamWriter(LogUtils.GenerateFilePath(_fileName, _creationTime, typeof(T), FileExtension));
+            _subdirectory = directory;
+            (_streamWriter, _filePath) =
+                LogUtils.CreateLogWriter(
+                $"{name}_{typeof(T).Name}",
+                FileExtension,
+                directory,
+                _creationTime);
             _csv = new CsvWriter(_streamWriter, CultureInfo.InvariantCulture);
 
             _csv.WriteHeader<T>();
@@ -32,29 +34,37 @@ namespace Logging
 
         public void Dispose()
         {
-            _csv.Flush();
-            _streamWriter.Flush();
+            try
+            {
+                _csv.Flush();
+                _streamWriter.Flush();
 
-            _csv.Dispose();
-            _streamWriter.Dispose();
+                _csv.Dispose();
+                _streamWriter.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
-        public void Rename(string newName)
+        public void Rename(string newDirectory, string newName)
         {
-            Dispose();
+            _subdirectory = newDirectory;
+            (_streamWriter, _filePath) =
+                LogUtils.RenameLogFileAndReopen(
+                _streamWriter,
+                _filePath, // old path before assignment
+                $"{newName}_{typeof(T).Name}",
+                FileExtension,
+                _subdirectory,
+                _creationTime);
 
-            var newPath = LogUtils.GenerateFilePath(newName, _creationTime, typeof(T), FileExtension);
-            var oldPath = LogUtils.GenerateFilePath(_fileName, _creationTime, typeof(T), FileExtension);
-            File.Move(oldPath, newPath);
-            _fileName = newName;
-
-            _streamWriter = new StreamWriter(newPath, true);
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = false
             };
             _csv = new CsvWriter(_streamWriter, config);
-            //_csv.NextRecord();
         }
 
         public void Log(T record)
