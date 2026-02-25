@@ -17,7 +17,7 @@ namespace Gameplay.Missions
         GameplayGlobals.GameModeString);
 
         MissionSo _currentMission;
-        List<MissionSo> _shuffledMissions;
+        List<MissionSo> _currentMissions;
 
         public int MaxMissions;
 
@@ -28,7 +28,7 @@ namespace Gameplay.Missions
 
             _missions.AddRange(Resources.LoadAll<MissionSo>(MissionPath));
             ShuffleMissions(_missions);
-            _shuffledMissions = new List<MissionSo>(_missions);
+            _currentMissions = new List<MissionSo>(_missions);
 
             GameplayGlobals.gameModeUpdatedEvent += OnSetGameMode;
             MissionEvents.switchMissionEvent += OnMissionChange;
@@ -126,19 +126,19 @@ namespace Gameplay.Missions
         {
             if (!ExecuteMissionsOnlyOnce)
             {
-                var randomMission = _shuffledMissions[_random.Next(_shuffledMissions.Count)];
+                var randomMission = _currentMissions[_random.Next(_currentMissions.Count)];
                 Assert.IsNotNull(randomMission);
                 return randomMission;
             }
 
-            if (_shuffledMissions.Count == 0)
+            if (_currentMissions.Count == 0)
             {
                 Debug.LogWarning("All missions completed. Call ResetCompletedMissions() to allow repeats.");
                 return null;
             }
 
-            var mission = _shuffledMissions[0];
-            _shuffledMissions.RemoveAt(0);
+            var mission = _currentMissions[0];
+            _currentMissions.RemoveAt(0);
             Assert.IsNotNull(mission);
             return mission;
         }
@@ -146,7 +146,8 @@ namespace Gameplay.Missions
         public void ResetCompletedMissions()
         {
             MissionsCompleted = 0;
-            _shuffledMissions = new List<MissionSo>(_missions);
+            ShuffleMissions(_missions);
+            _currentMissions = new List<MissionSo>(_missions);
         }
 
         void OnMissionSubmitted(MissionSubState missionSubState)
