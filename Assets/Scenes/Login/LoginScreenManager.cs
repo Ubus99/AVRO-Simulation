@@ -15,6 +15,7 @@ namespace Scenes.Login
         GameplayGlobals.Input[] _inputOptions;
         Button _loginButton;
         DropdownField _modeSelection;
+        Toggle _practiceToggle;
         GameplayGlobals.Severity[] _severityOptions;
 
         void Awake()
@@ -23,10 +24,6 @@ namespace Scenes.Login
             var root = uiDocument.rootVisualElement;
 
             _idField = root.Q<IntegerField>("IDField");
-
-            _loginButton = root.Q<Button>("ConfirmButton");
-            _loginButton.SetEnabled(false);
-            _loginButton.clicked += SubmitForm;
 
             _modeSelection = root.Q<DropdownField>("ScenarioDropdown");
             _inputOptions = Enumerable.ToArray(EnumerateEnumValues<GameplayGlobals.Input>());
@@ -40,6 +37,12 @@ namespace Scenes.Login
 
             _idField.RegisterValueChangedCallback(_ => Validate());
             _modeSelection.RegisterValueChangedCallback(_ => Validate());
+
+            _practiceToggle = root.Q<Toggle>("PracticeModeToggle");
+
+            _loginButton = root.Q<Button>("ConfirmButton");
+            _loginButton.SetEnabled(false);
+            _loginButton.clicked += SubmitForm;
         }
 
         void OnDisable()
@@ -60,7 +63,7 @@ namespace Scenes.Login
             var index = _modeSelection.index;
             var input = _inputOptions[index / _severityOptions.Length];
             var severity = _severityOptions[index % _severityOptions.Length];
-            GameplayGlobals.setGameMode?.Invoke(_idField.value, input, severity);
+            GameplayGlobals.setGameMode?.Invoke(_idField.value, input, severity, _practiceToggle.value);
             GameplayGlobals.switchSceneEvent?.Invoke(GameplayGlobals.Scenes.Simulation);
         }
 

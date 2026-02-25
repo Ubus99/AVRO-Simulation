@@ -45,7 +45,9 @@ namespace Gameplay
 
         void FixedUpdate()
         {
-            if (_missionManager.MissionsCompleted >= _currentDifficulty.missionsToComplete)
+            if (_missionManager.MissionsCompleted >= _currentDifficulty.missionsToComplete ||
+                GameplayGlobals.practiceMode &&
+                _missionManager.MissionsCompleted >= _currentDifficulty.missionsToComplete / 3)
             {
                 GameplayGlobals.restartEvent?.Invoke();
             }
@@ -103,11 +105,12 @@ namespace Gameplay
             }
         }
 
-        void SetGameMode(int id, GameplayGlobals.Input inputMethod, GameplayGlobals.Severity severity)
+        void SetGameMode(int id, GameplayGlobals.Input inputMethod, GameplayGlobals.Severity severity, bool practice)
         {
             GameplayGlobals.currentInput = inputMethod;
             GameplayGlobals.currentSeverity = severity;
             GameplayGlobals.currentID = id;
+            GameplayGlobals.practiceMode = practice;
 
             switch (inputMethod)
             {

@@ -1,14 +1,11 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
-         editor-extension-mode="False">
-    <Style src="project://database/Assets/Resources/MainStyle.uss?fileID=7433441132597879392&amp;guid=7bc33ff846e8b9241a0405236116a2bc&amp;type=3#MainStyle"/>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MainStyle.uss?fileID=7433441132597879392&amp;guid=7bc33ff846e8b9241a0405236116a2bc&amp;type=3#MainStyle"/>
     <Style src="project://database/Assets/Scenes/Login/LoginScreen.uss?fileID=7433441132597879392&amp;guid=2ab0e37a2c9cdfa4e96e6af30ee9f260&amp;type=3#LoginScreen"/>
     <ui:VisualElement class="bgLevel1" style="flex-grow: 1; align-items: center; justify-content: center;">
-        <ui:VisualElement class="rounded bgLevel2"
-                          style="align-items: center; justify-content: space-evenly; width: 25%; font-size: 18px; -unity-font-style: bold; padding-top: 24px; padding-right: 24px; padding-bottom: 24px; padding-left: 24px; height: auto;">
-            <ui:IntegerField label="Participant ID" placeholder-text="ID" name="IDField" enabled="true"
-                             support-expressions="false" class="item unity-base-field__aligned"
-                             style="-unity-text-align: middle-left;"/>
+        <ui:VisualElement class="rounded bgLevel2" style="align-items: center; justify-content: space-evenly; width: 25%; font-size: 18px; -unity-font-style: bold; padding-top: 24px; padding-right: 24px; padding-bottom: 24px; padding-left: 24px; height: auto;">
+            <ui:IntegerField label="Participant ID" placeholder-text="ID" name="IDField" enabled="true" support-expressions="false" class="item unity-base-field__aligned" style="-unity-text-align: middle-left;"/>
             <ui:DropdownField label="Scenario" name="ScenarioDropdown" class="item unity-base-field__aligned"/>
+            <ui:Toggle label="Practice Mode" name="PracticeModeToggle" style="width: 100%;"/>
             <ui:Button text="Confirm" name="ConfirmButton" class="rounded item" style="flex-grow: 0;"/>
         </ui:VisualElement>
     </ui:VisualElement>

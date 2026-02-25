@@ -48,7 +48,7 @@ namespace Scenes.Simulation.Scripts
             _csvLogger?.Dispose();
         }
 
-        void OnSetGameMode(int id, GameplayGlobals.Input input, GameplayGlobals.Severity severity)
+        void OnSetGameMode(int id, GameplayGlobals.Input input, GameplayGlobals.Severity severity, bool practice)
         {
             _csvLogger.Rename(GameplayGlobals.ParticipantString,GameplayGlobals.GameModeString);
         }

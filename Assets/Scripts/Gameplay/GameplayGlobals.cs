@@ -23,6 +23,7 @@ namespace Gameplay
             Hard
         }
 
+        public static bool practiceMode = false;
         public static Input currentInput = Input.Mouse;
         public static Severity currentSeverity = Severity.Easy;
         public static int currentID = 0;
@@ -30,7 +31,7 @@ namespace Gameplay
         // game events
         public static Action restartEvent;
         public static Action<Scenes> switchSceneEvent;
-        public static Action<int, Input, Severity> setGameMode;
+        public static Action<int, Input, Severity, bool> setGameMode;
 
         public static string ParticipantString
         {
