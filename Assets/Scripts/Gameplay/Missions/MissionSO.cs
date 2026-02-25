@@ -41,7 +41,6 @@ namespace Gameplay.Missions
             }
         }
 
-
         public bool Equals(IListItemData other)
         {
             throw new NotImplementedException();
@@ -57,10 +56,7 @@ namespace Gameplay.Missions
             get { return _icons["chevron-right"]; }
         }
 
-        public string mainText
-        {
-            get { return $"Car #{Mathf.FloorToInt(Random.Range(1000, 9999))}"; }
-        }
+        public string mainText { get; set; }
 
         public string supportText { get; } = null;
 
@@ -81,6 +77,7 @@ namespace Gameplay.Missions
 
         public void Load()
         {
+            mainText = $"Car #{Mathf.FloorToInt(Random.Range(1000, 9999))}";
             record.TimeLoaded = Time.timeSinceLevelLoad;
         }
 
