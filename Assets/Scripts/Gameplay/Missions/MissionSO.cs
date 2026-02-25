@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Logging;
 using UI.Icons;
 using UI.ListItem;
@@ -143,6 +142,7 @@ namespace Gameplay.Missions
             if (!states.Any()) return;
             subStates.Clear();
             subStates.AddRange(states);
+            subStates.OrderBy(state => state.actionName);
 
             EditorUtility.SetDirty(this);
         }

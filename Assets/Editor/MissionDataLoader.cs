@@ -28,7 +28,7 @@ namespace Editor
 
         void OnValidate()
         {
-            var texturesList = Resources.LoadAll<Texture2D>("MissionData/Bengt Scenarios");
+            var texturesList = Resources.LoadAll<Texture2D>("MissionData");
             var missionStrings = new List<string>();
 
             _textures.Clear();
@@ -103,9 +103,9 @@ namespace Editor
             }
 
             // Create missing missions
-            const string folder = "Assets/Resources/MissionData/Bengt Scenarios/Missions";
+            const string folder = "Assets/Resources/MissionData/Missions";
             if (!AssetDatabase.IsValidFolder(folder))
-                AssetDatabase.CreateFolder("Assets/Resources/Bengt Scenarios/MissionData", "Missions");
+                AssetDatabase.CreateFolder("Assets/Resources/MissionData", "Missions");
 
             foreach (var id in expectedMissionIds)
             {

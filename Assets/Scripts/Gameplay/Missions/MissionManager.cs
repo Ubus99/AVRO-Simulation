@@ -9,7 +9,7 @@ namespace Gameplay.Missions
 {
     public class MissionManager : IDisposable
     {
-        const string MissionPath = "MissionData/Bengt Scenarios/Missions";
+        const string MissionPath = "MissionData/Missions";
         readonly List<MissionSo> _missions = new();
         readonly Random _random;
 
