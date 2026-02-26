@@ -106,7 +106,8 @@ namespace Gameplay.Missions
         }
 
         public bool RightIconInteractable { get; } = false;
-        
+        public Action ButtonAction { get; } = null;
+
         public string RightButtonLabel { get; } = null;
 
         public string MainText { get; set; }

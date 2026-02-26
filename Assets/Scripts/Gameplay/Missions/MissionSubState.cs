@@ -74,6 +74,11 @@ namespace Gameplay.Missions
 
         public bool RightIconInteractable { get; } = true;
 
+        public Action ButtonAction
+        {
+            get { return () => MissionEvents.missionSubmittedEvent?.Invoke(this); }
+        }
+
         public string RightButtonLabel { get; } = "submit";
 
         public string MainText

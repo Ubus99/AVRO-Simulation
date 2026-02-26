@@ -3,12 +3,12 @@
     <Style src="project://database/Assets/UI/MainStyle.uss?fileID=7433441132597879392&amp;guid=7bc33ff846e8b9241a0405236116a2bc&amp;type=3#MainStyle"/>
     <Style src="project://database/Assets/UI/ListItem/ListItem.uss?fileID=7433441132597879392&amp;guid=f8fc6d7cfcd81a2419b95d0830db471d&amp;type=3#ListItem"/>
     <ui:VisualElement name="CarView" style="flex-grow: 1; height: 64px;">
-        <ui:VisualElement name="Header" class="toolBar" style="align-items: stretch; flex-shrink: 0; flex-direction: row; justify-content: space-between;">
+        <ui:VisualElement name="Header" class="toolBar" style="align-items: stretch; flex-direction: row; justify-content: space-between; height: 64px;">
             <ui:VisualElement style="flex-grow: 0; width: 20%; flex-shrink: 0;"/>
             <ui:VisualElement name="" style="flex-grow: 1;"/>
-            <ui:VisualElement class="divider" style="width: 1px; height: auto; margin-right: 0; margin-left: 0; margin-bottom: 8px; margin-top: 8px; flex-shrink: 1;"/>
+            <ui:VisualElement class="divider" style="width: 1px; height: auto; margin-right: 0; margin-left: 0; margin-bottom: 8px; margin-top: 8px; flex-shrink: 1; display: none;"/>
             <ui:VisualElement style="flex-grow: 0; width: 20%; flex-shrink: 0; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px;">
-                <ui:Button text="Confirm" double-click-selects-word="false" triple-click-selects-line="false" name="confirm-button" class="rounded" style="height: 64px; margin-top: 6px; margin-right: 6px; margin-bottom: 6px; margin-left: 6px;"/>
+                <ui:Button text="Confirm" double-click-selects-word="false" triple-click-selects-line="false" name="confirm-button" class="rounded" style="height: 64px; margin-top: 6px; margin-right: 6px; margin-bottom: 6px; margin-left: 6px; display: none;"/>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="Body" style="flex-direction: row; align-items: stretch; align-self: auto; justify-content: space-between; flex-grow: 1;">

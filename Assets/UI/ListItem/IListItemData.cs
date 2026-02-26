@@ -8,6 +8,7 @@ namespace UI.ListItem
         public VectorImage LeftImage { get; }
         public VectorImage RightImage { get; }
         public bool RightIconInteractable { get; }
+        public Action ButtonAction { get; }
         public string RightButtonLabel { get; }
         public string MainText { get; }
         public string SupportText { get; }
@@ -18,6 +19,10 @@ namespace UI.ListItem
             return Equals(LeftImage, other.LeftImage)
                    && Equals(RightImage, other.RightImage)
                    && RightIconInteractable == other.RightIconInteractable
+                   && ButtonAction == other.ButtonAction
+                   && RightButtonLabel == other.RightButtonLabel
+                   && MainText == other.MainText
+                   && SupportText == other.SupportText
                    && ApproximateHeight == other.ApproximateHeight;
         }
     }
