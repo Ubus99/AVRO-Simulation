@@ -1,0 +1,31 @@
+.lucide-icon {
+    width: 24px;
+    height: 24px;
+    padding-top: 1px;
+    padding-left: 1px;
+    padding-bottom: 1px;
+    padding-right: 1px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+
+.lucide-wrapper {
+    flex-shrink: 0;
+    flex-grow: 0;
+    margin-top: 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+}
+
+.unity-button__image {
+    padding-top: 1px;
+    padding-right: 1px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}

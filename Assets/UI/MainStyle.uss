@@ -2,6 +2,7 @@
     --mainTextColor: rgb(13, 13, 13);
     --bgColor1: rgb(255, 255, 255);
     --bgColor2: rgb(229, 229, 229);
+    --bgColor3: rgb(204, 204, 204);
     --bgColorEmpty: rgb(46, 46, 46);
     --borderColor1: rgb(26, 26, 26);
     --focusColor: rgb(0, 40, 255);

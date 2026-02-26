@@ -80,21 +80,29 @@ namespace UI
                 _listView.virtualizationMethod = CollectionVirtualizationMethod.FixedHeight;
             }
 
-            _listView.makeItem = () =>
-            {
-                var instance = _itemTemplate.Instantiate();
-                var instanceLogic = new ListItemController();
-                instance.userData = instanceLogic;
-                instanceLogic.LoadVisualElement(instance);
-                return instance;
-            };
-
-            _listView.bindItem = (element, i) =>
-            {
-                if (i >= 0 && i < _listData.Count)
-                    (element.userData as ListItemController)?.SetData(_listData[i]);
-            };
+            _listView.makeItem = MakeItem;
+            _listView.bindItem = BindItem;
+            _listView.selectionChanged += _ => _listView.RefreshItems(); // refresh all items
             _listView.itemsSource = _listData;
+        }
+
+        VisualElement MakeItem()
+        {
+            var instance = _itemTemplate.Instantiate();
+            var instanceLogic = new ListItemController();
+            instance.userData = instanceLogic;
+            instanceLogic.LoadVisualElement(instance);
+            return instance;
+        }
+
+        void BindItem(VisualElement element, int i)
+        {
+            var item = element.userData as ListItemController;
+            if (i < 0 || i >= _listData.Count)
+                return;
+
+            item?.SetData(_listData[i]);
+            item?.SetSelected(_listView.selectedIndices.Contains(i));
         }
 
         // PUBLIC API: update the list contents later on
@@ -133,7 +141,7 @@ namespace UI
             // reassign itemsSource to ensure the ListView picks up the changed Count,
             // then force a visual refresh of visible items.
             if (_listData.FirstOrDefault() is { } item)
-                _listView.fixedItemHeight = item.approximateHeight;
+                _listView.fixedItemHeight = item.ApproximateHeight;
             _listView.itemsSource = _listData;
             _listView.RefreshItems();
         }

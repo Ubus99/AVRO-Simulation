@@ -1,0 +1,4 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Lucide.uss?fileID=7433441132597879392&amp;guid=7147a07ad9d51eb4f9b48f065f0e58cc&amp;type=3#Lucide"/>
+    <ui:Image source="project://database/Assets/Resources/Icons/lucide/accessibility.svg?fileID=7388822144124034973&amp;guid=468edd3945d1c4844bb7da7a5c9a2eb6&amp;type=3#accessibility" class="icon" style="padding-top: 1px; padding-left: 1px; padding-bottom: 1px; padding-right: 1px;"/>
+</ui:UXML>

@@ -21,12 +21,6 @@
     flex-grow: 1;
 }
 
-.lucide-icon {
-    width: 48px;
-    height: 48px;
-    padding: 16px;
-}
-
 .unity-collection-view__item {
     background-color: rgb(255, 255, 255);
 }
@@ -37,4 +31,33 @@
 
 .unity-collection-view__item--selected {
     background-color: rgb(242, 242, 242);
+}
+
+.unity-button {
+    background-color: var(--bgColor2);
+    color: var(--mainTextColor);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.unity-button:hover {
+    background-color: var(--bgColor3);
+}
+
+.unity-button:active {
+    background-color: rgb(178, 178, 178);
+}
+
+.unity-button__image {
+    margin-left: 8px;
+}
+
+.unity-button--with-icon > .unity-image {
+    --unity-image-tint-color: var(--mainTextColor);
+}
+
+.lucide-wrapper {
+    -unity-background-image-tint-color: var(--mainTextColor);
 }

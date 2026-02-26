@@ -1,4 +1,5 @@
 ﻿using System;
+using UI.Icons;
 using UI.ListItem;
 using UnityEditor;
 using UnityEngine;
@@ -39,68 +40,59 @@ namespace Gameplay.Missions
         public AdsAction actionName;
         public OddChange actionDescription;
         public bool isCorrect;
+        IconAtlas _icons;
+
+        void OnEnable()
+        {
+            _icons = IconAtlasRegistry.Get("lucide");
+            if (!_icons)
+            {
+                throw new NullReferenceException("Icon Database not found");
+            }
+        }
 
 #if UNITY_EDITOR
         void OnValidate()
         {
-            if (mainTexture)
-            {
-                EditorApplication.delayCall += () =>
-                    AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(this), mainTexture.name);
+            if (!mainTexture) return;
 
-                isCorrect = mainTexture.name.EndsWith("C");
-            }
+            EditorApplication.delayCall += () =>
+                AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(this), mainTexture.name);
+
+            isCorrect = mainTexture.name.EndsWith("C");
         }
 #endif
 
-        public VectorImage leftImage
+        #region IListItemData
+
+        public VectorImage LeftImage { get; } = null;
+
+        public VectorImage RightImage
         {
-            get { return null; }
+            get { return _icons["chevron-right"]; }
         }
 
-        public VectorImage rightImage
-        {
-            get { return null; }
-        }
+        public bool RightIconInteractable { get; } = true;
 
-        public string mainText
+        public string RightButtonLabel { get; } = "submit";
+
+        public string MainText
         {
             get { return actionName.ToString().ToSentenceCase(); }
         }
 
-        public string supportText
+        public string SupportText
         {
             get { return $"- {actionDescription.ToString().ToSentenceCase()}"; }
         }
 
-        public int approximateHeight
-        {
-            get { return 62; }
-        }
+        public int ApproximateHeight { get; } = 62;
 
         public bool Equals(IListItemData other)
         {
-            return other != null &&
-                   mainText == other.mainText &&
-                   supportText == other.supportText &&
-                   leftImage == other.leftImage &&
-                   rightImage == other.rightImage;
+            return base.Equals(other);
         }
 
-        public bool Equals(MissionSubState other)
-        {
-            return Equals(mainTexture, other.mainTexture) && actionName == other.actionName &&
-                   actionDescription == other.actionDescription;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is MissionSubState other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(mainTexture, (int)actionName, (int)actionDescription);
-        }
+        #endregion
     }
 }

@@ -41,29 +41,6 @@ namespace Gameplay.Missions
             }
         }
 
-        public bool Equals(IListItemData other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public VectorImage leftImage
-        {
-            get { return null; }
-        }
-
-        public VectorImage rightImage
-        {
-            get { return _icons["chevron-right"]; }
-        }
-
-        public string mainText { get; set; }
-
-        public string supportText { get; } = null;
-
-        public int approximateHeight
-        {
-            get { return 50; }
-        }
 
         public Texture2D GetRouteTexture()
         {
@@ -77,7 +54,7 @@ namespace Gameplay.Missions
 
         public void Load()
         {
-            mainText = $"Car #{Mathf.FloorToInt(Random.Range(1000, 9999))}";
+            MainText = $"Car #{Mathf.FloorToInt(Random.Range(1000, 9999))}";
             record.TimeLoaded = Time.timeSinceLevelLoad;
         }
 
@@ -115,6 +92,38 @@ namespace Gameplay.Missions
                 get { return timeToComplete + timeToStart; }
             }
         }
+
+        #region IListItemData
+
+        public VectorImage LeftImage
+        {
+            get { return null; }
+        }
+
+        public VectorImage RightImage
+        {
+            get { return _icons["chevron-right"]; }
+        }
+
+        public bool RightIconInteractable { get; } = false;
+        
+        public string RightButtonLabel { get; } = null;
+
+        public string MainText { get; set; }
+
+        public string SupportText { get; } = null;
+
+        public int ApproximateHeight
+        {
+            get { return 50; }
+        }
+
+        public bool Equals(IListItemData other)
+        {
+            return base.Equals(other);
+        }
+
+        #endregion
 
 #if UNITY_EDITOR
         string ownPath
