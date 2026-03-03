@@ -47,7 +47,7 @@ namespace Gameplay
         {
             if (_missionManager.MissionsCompleted >= _currentDifficulty.missionsToComplete ||
                 GameplayGlobals.currentSettings.PracticeMode &&
-                _missionManager.MissionsCompleted >= _currentDifficulty.missionsToComplete / 3)
+                _missionManager.MissionsCompleted >= _currentDifficulty.missionsToComplete / 4)
             {
                 GameplayGlobals.restartEvent?.Invoke();
             }
