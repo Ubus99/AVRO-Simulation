@@ -9,3 +9,5 @@ While this is becoming more common, there has been little research into the desi
 This Application proposes one such interface used to test remote operation in the laboratory.
 
 The interface is not feature complete, but anyone is welcome to contribute.
+
+REquires Unity 6000.3.9f1
